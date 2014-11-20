@@ -40,8 +40,6 @@
     </p>
 
     <p>
-      Compute the result
-
       <span id="aspm"></span>
       <script type="text/javascript" language="javascript" src="md5.js"></script>
       <input  type="hidden" name="md5" id="md" value="1">
