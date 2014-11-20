@@ -24,8 +24,17 @@
         Remember me on this computer
       </label>
     </p>
-    <p class="submit"><input type="submit" name="commit" value="Login"></p>
+
+    <p class="submit">
+      <input type="submit" name="commit" value="Login">
+      <a href="signup">
+        <input type="button" value="Sign up" onclick="signup">
+      </a>
+    </p>
   </form>
 
+  <div>
+    <p>Forgot your password? <a href="reset">Click here to reset it</a>.</p>
+  </div>
 </body>
 </html>

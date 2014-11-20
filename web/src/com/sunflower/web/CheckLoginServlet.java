@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Andriy on 11/18/2014.
@@ -14,10 +16,20 @@ import java.io.IOException;
 public class CheckLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("error", "");
-        String login = request.getParameter("login");
+        String login = request.getParameter("login").toLowerCase();
         String password = request.getParameter("password");
-
-        if(validateUser(login, password)){
+        if(login == null || login.equals("") || password == null || password.equals("")){
+            request.setAttribute("login", login);
+            request.setAttribute("error", "Login or password can`t be empty");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        if(!StaticFunctions.isValidEmail(login) || !StaticFunctions.isValidPassword(password)){
+            request.setAttribute("error", "Bad login or password format");
+            request.getRequestDispatcher("login.jsp").forward(request,response);
+            return;
+        }
+        if(validateUser(login, StaticFunctions.getHashCode(password))){
             //code for loggining in
             //request.setAttribute("error", "Hallo, user");
             //request.getRequestDispatcher("login.jsp").forward(request,response);
@@ -25,7 +37,7 @@ public class CheckLoginServlet extends HttpServlet {
         else
         {
             request.setAttribute("login", login);
-            request.setAttribute("error", "Not valid OMG");
+            request.setAttribute("error", "Not valid user");
             request.getRequestDispatcher("login.jsp").forward(request,response);
         }
     }
@@ -35,9 +47,7 @@ public class CheckLoginServlet extends HttpServlet {
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
-
     boolean validateUser(String login, String password) {
         return false;
     }
-
 }

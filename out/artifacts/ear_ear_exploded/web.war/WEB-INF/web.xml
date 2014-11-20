@@ -11,6 +11,18 @@
         <servlet-name>CheckLoginServlet</servlet-name>
         <servlet-class>com.sunflower.web.CheckLoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <servlet-class>com.sunflower.web.ResetPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CompleteServlet</servlet-name>
+        <servlet-class>com.sunflower.web.CompleteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SignUpServlet</servlet-name>
+        <servlet-class>com.sunflower.web.SignUpServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>HelloWorldServlet</servlet-name>
@@ -19,5 +31,17 @@
     <servlet-mapping>
         <servlet-name>CheckLoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/reset</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompleteServlet</servlet-name>
+        <url-pattern>/complete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SignUpServlet</servlet-name>
+        <url-pattern>/signup</url-pattern>
     </servlet-mapping>
 </web-app>
