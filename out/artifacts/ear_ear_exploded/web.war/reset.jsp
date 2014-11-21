@@ -20,6 +20,7 @@
       <font color="red"> ${requestScope.login_error}</font>
     </p>
     <p class="submit"><input type="submit" name="commit" value="Reset"></p>
+    <input  type="hidden" name="check" value="">
   </form>
 
 </body>

@@ -1,7 +1,10 @@
 package com.sunflower.web;
 
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +12,7 @@ import java.util.regex.Pattern;
  * Created by Andriy on 11/20/2014.
  */
 public class StaticFunctions {
+    public static Map<String,String> users = new HashMap<String, String>();
     private static final Pattern EMAIL_PATTERN = Pattern.compile( "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
@@ -34,7 +38,7 @@ public class StaticFunctions {
     }
 
     public static boolean isEmailExist(String login) {
-        return 0 == login.compareTo("andry-124@mail.ru");
+        return users.containsKey(login);
     }
 
     public static String getHashCode(String password){

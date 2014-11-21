@@ -15,8 +15,8 @@ public class ResetPasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("login_error", "");
         String check = request.getParameter("check");
-        if(check != null || !check.equals("")){
-            response.sendRedirect("google.com");
+        if(check != null && !check.equals("")){
+            response.sendRedirect("www.google.com");
             return;
         }
 

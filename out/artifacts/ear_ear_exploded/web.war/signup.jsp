@@ -39,31 +39,7 @@
       <input type="password" name="repeat_password" value="">
     </p>
 
-    <p>
-      <span id="aspm"></span>
-      <script type="text/javascript" language="javascript" src="md5.js"></script>
-      <input  type="hidden" name="md5" id="md" value="1">
-      <script language="javascript">
-
-        // функция для генерации случайных чисел в диапазоне от m до n
-        function randomNumber(m,n){
-          m = parseInt(m);
-          n = parseInt(n);
-          return Math.floor( Math.random() * (n - m + 1) ) + m;
-        };
-
-        var aspmA = randomNumber(1,23); // генерируем число
-        var aspmB = randomNumber(1,23); // генерируем число
-        var sumAB = aspmA + aspmB;  // вычисляем сумму
-        document.getElementById('aspm').innerHTML = aspmA + ' + ' + aspmB + ' = ';  // показываем пользователю выражение
-        document.getElementById('md').value = md5(sumAB);
-
-      </script>
-
-
-      <input type="text" name="capcha" value="">
-      <font color="red"> ${requestScope.capcha_error} </font>
-    </p>
+    <input  type="hidden" name="check" value="">
 
     <p class="submit"><input type="submit" name="commit" value="Sign up!"></p>
   </form>

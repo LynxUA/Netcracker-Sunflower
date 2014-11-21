@@ -23,6 +23,12 @@
         <servlet-name>SignUpServlet</servlet-name>
         <servlet-class>com.sunflower.web.SignUpServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <servlet-class>com.sunflower.web.WelcomeServlet</servlet-class>
+    </servlet>
+
+
 
     <servlet-mapping>
         <servlet-name>HelloWorldServlet</servlet-name>
@@ -43,5 +49,9 @@
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <url-pattern>/welcome</url-pattern>
     </servlet-mapping>
 </web-app>
