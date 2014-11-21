@@ -14,10 +14,17 @@ import java.io.IOException;
 public class ResetPasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("login_error", "");
+        String check = request.getParameter("check");
+        if(check != null || !check.equals("")){
+            response.sendRedirect("google.com");
+            return;
+        }
+
         String login = request.getParameter("login").toLowerCase();
         if(StaticFunctions.isValidEmail(login)){
             if(!StaticFunctions.isEmailExist(login)){
                 request.setAttribute("login_error", "Sorry, but there is no user with such email");
+                request.setAttribute("login", login);
                 request.getRequestDispatcher("reset.jsp").forward(request,response);
             } else{
                 response.sendRedirect("complete");

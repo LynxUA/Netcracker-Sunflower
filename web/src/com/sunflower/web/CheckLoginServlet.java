@@ -16,10 +16,16 @@ import java.security.NoSuchAlgorithmException;
 public class CheckLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("error", "");
+        String check = request.getParameter("check");
+        if(check != null || !check.equals("")){
+            response.sendRedirect("google.com");
+            return;
+        }
+
         String login = request.getParameter("login").toLowerCase();
         String password = request.getParameter("password");
+        request.setAttribute("login", login);
         if(login == null || login.equals("") || password == null || password.equals("")){
-            request.setAttribute("login", login);
             request.setAttribute("error", "Login or password can`t be empty");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;

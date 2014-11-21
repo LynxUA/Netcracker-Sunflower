@@ -19,7 +19,7 @@
       <input type="text" name="login" value="${requestScope.login}" placeholder="email">
       <font color="red"> ${requestScope.login_error}</font>
     </p>
-    <p class="submit"><input type="submit" name="commit" value="Login"></p>
+    <p class="submit"><input type="submit" name="commit" value="Reset"></p>
   </form>
 
 </body>

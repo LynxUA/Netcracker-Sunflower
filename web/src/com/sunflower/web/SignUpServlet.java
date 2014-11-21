@@ -14,7 +14,11 @@ import java.io.IOException;
 public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         clearError(request);
-        request.setAttribute("capcha_error", "");
+        String check = request.getParameter("check");
+        if(check != null || !check.equals("")){
+            response.sendRedirect("google.com");
+            return;
+        }
 
         String login = request.getParameter("login");
         String name = request.getParameter("name");
@@ -60,24 +64,6 @@ public class SignUpServlet extends HttpServlet {
         if(!StaticFunctions.isValidPassword(password))
         {
             request.setAttribute("password_error", "Wrong password format");
-            request.getRequestDispatcher("signup.jsp").forward(request, response);
-            return;
-        }
-
-        String capcha = request.getParameter("capcha");
-        if(capcha == null || capcha.isEmpty()){
-            request.setAttribute("capcha_error", "Enter the result");
-            request.getRequestDispatcher("signup.jsp").forward(request, response);
-            return;
-        }
-
-        String md5 = request.getParameter("md5");
-
-        if(StaticFunctions.getHashCode(capcha).compareTo(md5) != 0)
-        {
-            request.setAttribute("capcha_error", "Wrong result");
-            request.setAttribute("password_error", StaticFunctions.getHashCode(capcha));
-            request.setAttribute("login_error", md5);
             request.getRequestDispatcher("signup.jsp").forward(request, response);
             return;
         }

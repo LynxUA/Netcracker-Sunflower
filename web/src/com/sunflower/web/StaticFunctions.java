@@ -13,6 +13,14 @@ public class StaticFunctions {
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})");
+//    (			# Start of group
+//            (?=.*\d)		#   must contains one digit from 0-9
+//            (?=.*[a-z])		#   must contains one lowercase characters
+//            (?=.*[A-Z])		#   must contains one uppercase characters
+//            (?=.*[@#$%])		#   must contains one special symbols in the list "@#$%"
+//            .		#     match anything with previous condition checking
+//    {6,20}	#        length at least 6 characters and maximum of 20
+//            )			# End of group
 
     public static boolean isValidPassword(String password){
 //        Matcher matcher = PASSWORD_PATTERN.matcher(password);
