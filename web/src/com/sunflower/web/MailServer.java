@@ -25,18 +25,18 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class MailServer {
-    public static void messageAfterRegistration(String name, String login, String password, String email) throws Exception {
+    public static void messageAfterRegistration(String name, String password, String email) throws Exception {
         Map<String, String> rootMap = new HashMap<String, String>();//here are fields, which we wanted to paste into template
         rootMap.put("name", name);
-        rootMap.put("login", login);
+        rootMap.put("login", email);
         rootMap.put("password", password);
         sendMessage(email, rootMap, "mail-registration-template.ftl","Registration on SunFlower");
     }
 
-    public static void messagePasswordReminder(String login, String email){
+    public static void messagePasswordReminder(String email){
         Map<String, String> rootMap = new HashMap<String, String>();//here are fields, which we wanted to paste into template
         rootMap.put("name", "name from database");
-        rootMap.put("login", login);
+        rootMap.put("login", email);
         rootMap.put("password", "password from db");
        sendMessage(email, rootMap, "mail-reminder-password-template.ftl","SunFlower remind your password");
     }
