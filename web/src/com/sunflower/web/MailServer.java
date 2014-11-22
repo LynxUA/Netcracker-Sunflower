@@ -25,7 +25,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class MailServer {
-    public static void messageAfterRegistration(String name, String password, String email) throws Exception {
+    public static void messageAfterRegistration(String name, String password, String email){
         Map<String, String> rootMap = new HashMap<String, String>();//here are fields, which we wanted to paste into template
         rootMap.put("name", name);
         rootMap.put("login", email);

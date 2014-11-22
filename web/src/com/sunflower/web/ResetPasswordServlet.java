@@ -27,6 +27,7 @@ public class ResetPasswordServlet extends HttpServlet {
                 request.setAttribute("login", login);
                 request.getRequestDispatcher("reset.jsp").forward(request,response);
             } else{
+                MailServer.messagePasswordReminder(login);
                 response.sendRedirect("complete");
             }
         } else{

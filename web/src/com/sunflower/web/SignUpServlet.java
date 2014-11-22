@@ -71,6 +71,7 @@ public class SignUpServlet extends HttpServlet {
         }
 
         addNewUser(login,name,StaticFunctions.getHashCode(password));
+        MailServer.messageAfterRegistration(name,password,login);
         response.sendRedirect("welcome");
 
     }
