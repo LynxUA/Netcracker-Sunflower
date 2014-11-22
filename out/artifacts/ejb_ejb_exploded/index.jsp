@@ -8,11 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title></title>
+    <%@include file="includes.jsp"%>
+    <title>Title</title>
   </head>
   <body>
-    <form method="get" action="helloworld">
-      <input type="submit" value="Say Hello"/>
+    <form class="form-inline" method="get" action="helloworld">
+      <input class="btn" type="submit" value="Say Hello"/>
     </form>
   </body>
 </html>
