@@ -59,11 +59,7 @@ public class MailServer {
             Message message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(email));//user e-mail
             message.setSubject(messageTitle);
-            BodyPart body = new MimeBodyPart();
-            body.setContent(makeTemplate(rootMap, readFile(templateName)), "text/html");
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(body);
-            message.setContent(multipart, "text/html");
+            message.setContent(makeTemplate(rootMap, readFile(templateName)), "text/html");
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
