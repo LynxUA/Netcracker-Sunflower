@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Andriy on 11/18/2014.
@@ -17,15 +15,15 @@ public class CheckLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("error", "");
         String check = request.getParameter("check");
-        if(check != null || !check.equals("")){
-            response.sendRedirect("google.com");
+        if(check != null && !check.isEmpty()){
+            response.sendRedirect("www.google.com");
             return;
         }
 
         String login = request.getParameter("login").toLowerCase();
         String password = request.getParameter("password");
         request.setAttribute("login", login);
-        if(login == null || login.equals("") || password == null || password.equals("")){
+        if(login == null || login.isEmpty() || password == null || password.isEmpty()){
             request.setAttribute("error", "Login or password can`t be empty");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
@@ -37,8 +35,8 @@ public class CheckLoginServlet extends HttpServlet {
         }
         if(validateUser(login, StaticFunctions.getHashCode(password))){
             //code for loggining in
-            //request.setAttribute("error", "Hallo, user");
-            //request.getRequestDispatcher("login.jsp").forward(request,response);
+            //request.getSession().setAttribute("user",user);
+            response.sendRedirect("welcome");
         }
         else
         {
@@ -54,6 +52,9 @@ public class CheckLoginServlet extends HttpServlet {
     }
 
     boolean validateUser(String login, String password) {
-        return false;
+        String value = StaticFunctions.users.get(login);
+        if(value == null)
+            return false;
+        return value.compareTo(password) == 0;
     }
 }

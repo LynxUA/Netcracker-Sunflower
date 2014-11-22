@@ -1,5 +1,7 @@
 package com.sunflower.web;
 
+import javafx.util.Pair;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,8 +17,8 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         clearError(request);
         String check = request.getParameter("check");
-        if(check != null || !check.equals("")){
-            response.sendRedirect("google.com");
+        if(check != null && !check.equals("")){
+            response.sendRedirect("www.google.com");
             return;
         }
 
@@ -68,14 +70,18 @@ public class SignUpServlet extends HttpServlet {
             return;
         }
 
-
-        request.getRequestDispatcher("signup.jsp").forward(request, response);
+        addNewUser(login,name,StaticFunctions.getHashCode(password));
+        response.sendRedirect("welcome");
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         clearError(request);
         request.getRequestDispatcher("signup.jsp").forward(request, response);
+    }
+    private void addNewUser(String login, String name, String password){
+        StaticFunctions.users.put(login,password);
+        return;
     }
     private void clearError(HttpServletRequest request) {
         request.setAttribute("login_error", "");
