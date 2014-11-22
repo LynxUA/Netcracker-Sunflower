@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+  <%@include file="includes.jsp"%>
     <title>Login page</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
 
   <font color="red"><h2> ${requestScope.error}</h2></font>
   <form method="post" action="login">
-    <p><input type="text" name="login" value="${requestScope.login}" placeholder="Login"></p>
+    <p><input type="text" name="login" value="${requestScope.login}" placeholder="E-mail"></p>
     <p><input type="password" name="password" value="" placeholder="Password"></p>
     <p class="remember_me">
       <label>
@@ -31,6 +32,7 @@
         <input type="button" value="Sign up" onclick="signup">
       </a>
     </p>
+    <input  type="hidden" name="check" value="">
   </form>
 
   <div>
