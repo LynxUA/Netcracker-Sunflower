@@ -29,7 +29,7 @@
     </servlet>
     <servlet>
         <servlet-name>XmlServlet</servlet-name>
-        <servlet-class>com.sunflower.report</servlet-class>
+        <servlet-class>com.sunflower.report.XmlServlet</servlet-class>
     </servlet>
 
 

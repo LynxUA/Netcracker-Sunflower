@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <link rel="stylesheet" href="style/style.css">
-<link rel="stylesheet" href="style/bootstrap.css">
-<link rel="stylesheet" href="style/bootstrap-theme.css">
-<link rel="script" href="js/jquery-1.11.1.js">
-<link rel="script" href="js/bootstrap.js">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
