@@ -30,5 +30,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="ojdbc6-11.2.0.4" level="project" />
+    <orderEntry type="library" name="poi-3.10.1-20140818" level="project" />
+    <orderEntry type="library" name="poi-ooxml-3.10.1-20140818" level="project" />
   </component>
 </module>

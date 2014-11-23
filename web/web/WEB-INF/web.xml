@@ -27,6 +27,10 @@
         <servlet-name>WelcomeServlet</servlet-name>
         <servlet-class>com.sunflower.web.WelcomeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>XmlServlet</servlet-name>
+        <servlet-class>com.sunflower.report.XmlServlet</servlet-class>
+    </servlet>
 
 
 
@@ -53,5 +57,9 @@
     <servlet-mapping>
         <servlet-name>WelcomeServlet</servlet-name>
         <url-pattern>/welcome</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>XmlServlet</servlet-name>
+        <url-pattern>/xmlxprt</url-pattern>
     </servlet-mapping>
 </web-app>
