@@ -164,6 +164,7 @@ while(fileIn.read(outputByte, 0, 4096) != -1)
 fileIn.close();
 out.flush();
 out.close();
+             f.delete();
          } else {
              //nothing to show
              response.setStatus(HttpServletResponse.SC_NO_CONTENT);
