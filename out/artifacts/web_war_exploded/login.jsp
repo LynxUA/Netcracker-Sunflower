@@ -12,7 +12,7 @@
     <title>Login page</title>
 </head>
 <body>
-
+  <%@include file="header.jsp"%>
   <h1>Login page</h1>
 
   <font color="red"><h2> ${requestScope.error}</h2></font>

@@ -3,6 +3,14 @@
     <output-path>$PROJECT_DIR$/out/artifacts/web_war</output-path>
     <root id="archive" name="web_war.war">
       <element id="artifact" artifact-name="web:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/mail-1.4.jar" />
+          <element id="library" level="project" name="ojdbc6-11.2.0.4" />
+          <element id="library" level="project" name="poi-3.10.1-20140818" />
+          <element id="library" level="project" name="poi-ooxml-3.10.1-20140818" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>

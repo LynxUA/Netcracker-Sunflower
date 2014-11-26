@@ -8,10 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <%@include file="includes.jsp"%>
     <title>Sign up</title>
 </head>
 <body>
-
+  <%@include file="header.jsp"%>
   <h1>Sign up</h1>
 
   <font color="red"><h2> ${requestScope.error}</h2></font>

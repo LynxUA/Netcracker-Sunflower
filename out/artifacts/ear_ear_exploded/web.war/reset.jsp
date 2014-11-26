@@ -8,10 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+  <%@include file="includes.jsp"%>
     <title>Reset password page</title>
 </head>
 <body>
-
+  <%@include file="header.jsp"%>
   <h1>Reset password</h1>
 
   <form method="post" action="reset">
