@@ -1,7 +1,5 @@
 package com.sunflower.web;
 
-import javafx.util.Pair;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,11 +15,13 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         clearError(request);
         String check = request.getParameter("check");
-        if(check != null && !check.equals("")){
+        if(check == null && !check.equals("")){
             response.sendRedirect("www.google.com");
             return;
         }
-
+        if(request.getSession().getAttribute("current_user") != null){
+            response.sendRedirect("welcome");
+        }
         String login = request.getParameter("login");
         String name = request.getParameter("name");
         String password = request.getParameter("password");
@@ -31,6 +31,12 @@ public class SignUpServlet extends HttpServlet {
         request.setAttribute("name",name);
         request.setAttribute("password",password);
         request.setAttribute("repeat_password",repeat_password);
+
+        if(login.isEmpty()){
+            request.setAttribute("login_error", "Email can`t be empty");
+            request.getRequestDispatcher("signup.jsp").forward(request, response);
+            return;
+        }
 
         if(!StaticFunctions.isValidEmail(login)){
             request.setAttribute("login_error", "Wrong email format");
@@ -52,7 +58,7 @@ public class SignUpServlet extends HttpServlet {
 
         if(password == null || repeat_password == null ||
                 (password.compareTo("") == 0) || (repeat_password.compareTo("") == 0)) {
-            request.setAttribute("password_error", "Fill the passwords");
+                request.setAttribute("password_error", "Type the passwords");
             request.getRequestDispatcher("signup.jsp").forward(request, response);
             return;
         }
@@ -72,6 +78,7 @@ public class SignUpServlet extends HttpServlet {
 
         addNewUser(login,name,StaticFunctions.getHashCode(password));
         MailServer.messageAfterRegistration(name,password,login);
+
         response.sendRedirect("welcome");
 
     }

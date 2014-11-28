@@ -21,6 +21,12 @@ public class ResetPasswordServlet extends HttpServlet {
         }
 
         String login = request.getParameter("login").toLowerCase();
+
+        if(login.isEmpty()){
+            request.setAttribute("login_error", "Email can`t be empty");
+            request.getRequestDispatcher("reset.jsp").forward(request, response);
+            return;
+        }
         if(StaticFunctions.isValidEmail(login)){
             if(!StaticFunctions.isEmailExist(login)){
                 request.setAttribute("login_error", "Sorry, but there is no user with such email");
