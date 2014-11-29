@@ -32,9 +32,18 @@
         <servlet-class>com.sunflower.report.XmlServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>RequestServlet</servlet-name>
+        <servlet-class>com.sunflower.web.RequestServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LocationServlet</servlet-name>
+        <servlet-class>com.sunflower.web.LocationServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>UserInstanceServlet</servlet-name>
         <servlet-class>com.sunflower.web.UserInstanceServlet</servlet-class>
     </servlet>
+
 
 
     <servlet-mapping>
@@ -68,5 +77,13 @@
     <servlet-mapping>
         <servlet-name>UserInstanceServlet</servlet-name>
         <url-pattern>/user_si</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestServlet</servlet-name>
+        <url-pattern>/request</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LocationServlet</servlet-name>
+        <url-pattern>/location</url-pattern>
     </servlet-mapping>
 </web-app>
