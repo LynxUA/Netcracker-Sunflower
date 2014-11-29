@@ -13,9 +13,8 @@
     <title>User's instances</title>
 </head>
 <body>
-<h2>User's instances</h2>
-
 <div class="bs-example">
+  <h3>User's instances</h3>
   <table class="table table-striped table-bordered table-hover table-condensed">
   <thead style="background-color: #5f5e5d; color: white;">
   <tr>
@@ -24,34 +23,35 @@
   </tr>
   </thead>
     <tbody>
-    <tr class="success">
-      <td>Instance1</td>
-      <td>Active</td>
-    </tr>
-    <tr>
-      <td>Instance2</td>
-      <td>Planned</td>
-    </tr>
-    <tr class="danger">
-      <td>Instance3</td>
-      <td>Disconnected</td>
-    </tr>
-    <tr>
-      <td>Instance4</td>
-      <td>Planned</td>
-    </tr>
-    <tr>
-      <td>Instance5</td>
-      <td>Planned</td>
-    </tr>
-    <tr>
-      <td>Instance6</td>
-      <td>Planned</td>
-    </tr>
-    <tr>
-      <td>Instance7</td>
-      <td>Planned</td>
-    </tr>
+        <tr class="success">
+          <td><a href="location.jsp">Instance1</a></td>
+          <td>Active</td>
+        </tr>
+
+        <tr>
+          <td><a href="location.jsp">Instance2</a></td>
+          <td>Planned</td>
+        </tr>
+
+        <tr class="danger">
+          <td><a href="location.jsp">Instance3</a></td>
+          <td>Disconnected</td>
+        </tr>
+
+        <tr>
+          <td>Instance4</td>
+          <td>Planned</td>
+        </tr>
+
+        <tr>
+          <td>Instance5</td>
+          <td>Planned</td>
+        </tr>
+
+        <tr>
+          <td>Instance6</td>
+          <td>Planned</td>
+        </tr>
     </tbody>
   </table>
 </div>
