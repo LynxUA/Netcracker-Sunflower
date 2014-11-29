@@ -31,7 +31,7 @@
             <ul class="dropdown-menu">
               <li><a href="login">Login</a></li>
               <li><a href="signup">Signup</a></li>
-              <li><a href="#">Your location</a></li>
+              <li><a href="location">Your location</a></li>
               <li class="divider"></li>
               <li><a href="progress.jsp">Progress</a></li>
             </ul>
