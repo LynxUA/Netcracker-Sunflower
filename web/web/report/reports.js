@@ -31,6 +31,7 @@ function doCompletion() {
     // req.send(null);
 }
 function doProf(){
+<<<<<<< HEAD
     month=document.getElementById("month");
     year=document.getElementById("year");
     /* a=0;
@@ -57,6 +58,15 @@ function doProf(){
     var url = "xmlxprt?action=prof&month=" + escape(month.value)+"&year="+ escape(year.value);
     var url2=location.href+""+url;
     url3=url2.replace("/report/?","/")
+=======
+ month=document.getElementById("month");
+  year=document.getElementById("year");
+  var a=1;
+  month=month.parse
+  var url = "xmlxprt?action=prof&month=" + escape(month.value)+"&year="+ escape(year.value);
+        var url2=location.href+""+url;
+    var url3=url2.replace("/report","")
+>>>>>>> 08ad13d6bcb6d0feed68ba936d5d81be7059d56e
     window.location.href = url3;
 }
 function doRI(){

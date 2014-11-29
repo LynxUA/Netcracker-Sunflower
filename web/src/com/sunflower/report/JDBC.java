@@ -17,7 +17,7 @@ public class JDBC {
     public  Connection connect() {
         try {
 
-            url = "jdbc:oracle:thin:@// http://194.44.143.139:1521/xe";
+            url = "jdbc:oracle:thin:@194.44.143.139:1521/xe";
 
             System.out.println(url);
             Class.forName(driverName);

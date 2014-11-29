@@ -12,31 +12,51 @@
     <title>Login page</title>
 </head>
 <body>
+<<<<<<< HEAD
   <%@include file="header.jsp"%>
   <h1>Login page</h1>
+=======
+  <div class="container">
+    <div class="row voffset-25">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <img src="http://s11.postimg.org/7kzgji28v/logo_sm_2_mr_1.png" class="img-responsive center-block" alt="Sunflower"/>
+          </div>
+          <div class="panel-body">
+            <form accept-charset="UTF-8" role="form" class="form-signin" action="login" method="post">
+              <%if(request.getAttribute("error") != null && !((String) request.getAttribute("error")).isEmpty()){%>
+                <div class="alert alert-danger" role="alert">${requestScope.error}</div>
+              <%}%>
+              <fieldset>
+                <label class="panel-login">
+                  <div class="login_result"></div>
+                </label>
+                <input class="form-control" placeholder="Email" value="${requestScope.login}" name="login" type="text">
+                <br/>
+                <input class="form-control" placeholder="Password" name="password" type="password">
+                <br/>
 
-  <font color="red"><h2> ${requestScope.error}</h2></font>
-  <form method="post" action="login">
-    <p><input type="text" name="login" value="${requestScope.login}" placeholder="E-mail"></p>
-    <p><input type="password" name="password" value="" placeholder="Password"></p>
-    <p class="remember_me">
-      <label>
-        <input type="checkbox" name="remember_me" id="remember_me">
-        Remember me on this computer
-      </label>
-    </p>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
+                </div>
+>>>>>>> 08ad13d6bcb6d0feed68ba936d5d81be7059d56e
 
-    <p class="submit">
-      <input type="submit" name="commit" value="Login">
-      <a href="signup">
-        <input type="button" value="Sign up" onclick="signup">
-      </a>
-    </p>
-    <input  type="hidden" name="check" value="">
-  </form>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <a href="signup" class="btn btn-lg btn-primary btn-block">Sign Up</a>
+                </div>
 
-  <div>
-    <p>Forgot your password? <a href="reset">Click here to reset it</a>.</p>
+                <input  type="hidden" name="check" value="">
+              </fieldset>
+              <br/>
+              <div>
+                <p>Forgot your password? <a href="reset">Click here to reset it</a>.</p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>
