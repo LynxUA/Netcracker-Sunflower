@@ -12,10 +12,8 @@
     <title>Reset password page</title>
 </head>
 <body>
-<<<<<<< HEAD
   <%@include file="header.jsp"%>
-  <h1>Reset password</h1>
-=======
+
 
   <div class="container">
     <div class="row voffset-25">
@@ -27,7 +25,6 @@
             </div>
           </div>
           <div class="panel-body">
->>>>>>> 08ad13d6bcb6d0feed68ba936d5d81be7059d56e
 
             <form accept-charset="UTF-8" role="form" class="form-signin" action="reset" method="post">
               <%if(request.getAttribute("login_error") != null && !((String) request.getAttribute("login_error")).isEmpty()){%>

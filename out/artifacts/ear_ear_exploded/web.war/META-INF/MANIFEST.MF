@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Class-Path: web_war_exploded/poi-3.10.1-20140818.jar web_war_exploded/poi-ooxml-3.10.1-20140818.jar web_war_exploded/ojdbc6-11.2.0.4.jar

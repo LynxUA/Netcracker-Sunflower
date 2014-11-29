@@ -8,50 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-<<<<<<< HEAD
-    <%@include file="includes.jsp"%>
-    <title>Sign up</title>
-</head>
-<body>
-  <%@include file="header.jsp"%>
-  <h1>Sign up</h1>
-
-  <font color="red"><h2> ${requestScope.error}</h2></font>
-  <form method="post" action="signup">
-    <p>
-      E-mail<br/>
-      <input type="text" name="login" value="${requestScope.login}">
-      <font color="red"> ${requestScope.login_error} </font>
-    </p>
-
-    <p>
-      Name<br/>
-      <input type="text" name="name" value="${requestScope.name}">
-      <font color="red"> ${requestScope.name_error} </font>
-    </p>
-
-    <p>
-      Password<br/>
-      <input type="password" name="password" value="">
-      <font color="red"> ${requestScope.password_error} </font>
-    </p>
-
-    <p>
-      Repeat password<br/>
-      <input type="password" name="repeat_password" value="">
-    </p>
-
-    <input  type="hidden" name="check" value="">
-
-    <p class="submit"><input type="submit" name="commit" value="Sign up!"></p>
-  </form>
-=======
   <%@include file="includes.jsp"%>
     <title>Sign up</title>
 </head>
 <body>
 
-
+<%@include file="header.jsp"%>
   <div class="container">
     <div class="row voffset-25">
       <div class="col-md-8 col-md-offset-2">
@@ -101,6 +63,5 @@
      </div>
   </div>
 
->>>>>>> 08ad13d6bcb6d0feed68ba936d5d81be7059d56e
 </body>
 </html>

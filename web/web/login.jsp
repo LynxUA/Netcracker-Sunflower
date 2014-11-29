@@ -12,10 +12,7 @@
     <title>Login page</title>
 </head>
 <body>
-<<<<<<< HEAD
   <%@include file="header.jsp"%>
-  <h1>Login page</h1>
-=======
   <div class="container">
     <div class="row voffset-25">
       <div class="col-md-8 col-md-offset-2">
@@ -40,8 +37,6 @@
                 <div class="col-xs-6 col-sm-6 col-md-6">
                   <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
                 </div>
->>>>>>> 08ad13d6bcb6d0feed68ba936d5d81be7059d56e
-
                 <div class="col-xs-6 col-sm-6 col-md-6">
                   <a href="signup" class="btn btn-lg btn-primary btn-block">Sign Up</a>
                 </div>

@@ -1,0 +1,16 @@
+.bs-example{
+	margin: 20px;
+}
+
+.voffset-10  {
+	margin-top: 10px;
+}
+.voffset-25  {
+	margin-top: 25px;
+}
+.voffset-50  {
+	margin-top: 50px;
+}
+.voffset-100  {
+	margin-top: 100px;
+}
