@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-         <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+        <%@include file="includes.jsp"%>
         <title>Current Task</title>
         <style>
 
@@ -25,6 +25,7 @@
         </style>
     </head>
     <body>
+    <%@include file="header.jsp"%>
     <aside>
         <ul class="nav nav-list bs-docs-sidenav affix">
             <li>
