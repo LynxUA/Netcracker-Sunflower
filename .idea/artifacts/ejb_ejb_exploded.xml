@@ -3,7 +3,9 @@
     <output-path>$PROJECT_DIR$/out/artifacts/ejb_ejb_exploded</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="ejb/ejb/EJB" />
-      <element id="module-output" name="ejb" />
+      <element id="artifact" artifact-name="web:war exploded" />
+      <element id="javaee-facet-resources" facet="ear/javaeeApplication/javaEEApplication" />
+      <element id="module-output" name="ear" />
     </root>
   </artifact>
 </component>

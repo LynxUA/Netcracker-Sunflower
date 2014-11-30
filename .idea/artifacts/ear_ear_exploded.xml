@@ -2,19 +2,19 @@
   <artifact type="exploded-ear" name="ear:ear exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/ear_ear_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="ear/javaeeApplication/javaEEApplication" />
-      <element id="directory" name="lib">
-        <element id="library" level="project" name="poi-ooxml-3.10.1-20140818" />
-        <element id="library" level="project" name="poi-3.10.1-20140818" />
-        <element id="library" level="project" name="ojdbc6-11.2.0.4" />
-        <element id="file-copy" path="$PROJECT_DIR$/mail-1.4.jar" />
+      <element id="directory" name="web.war">
+        <element id="artifact" artifact-name="web:war exploded" />
       </element>
       <element id="directory" name="ejb.jar">
         <element id="artifact" artifact-name="ejb:ejb exploded" />
       </element>
-      <element id="directory" name="web.war">
-        <element id="artifact" artifact-name="web:war exploded" />
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="poi-3.10.1-20140818" />
+        <element id="file-copy" path="$PROJECT_DIR$/mail-1.4.jar" />
+        <element id="library" level="project" name="ojdbc6-11.2.0.4" />
       </element>
+      <element id="javaee-facet-resources" facet="ear/javaeeApplication/javaEEApplication" />
+      <element id="module-output" name="ear" />
     </root>
   </artifact>
 </component>
