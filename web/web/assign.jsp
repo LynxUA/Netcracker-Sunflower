@@ -38,8 +38,10 @@
 
   </style>
 </head>
-<body>
-<%@include file="header.jsp"%>
+ <div id="wrape">
+    <%@include file="header.jsp"%>
+
+    <div id="body">
 <aside>
   <ul class="nav nav-list bs-docs-sidenav affix">
     <li>
@@ -76,5 +78,7 @@
   <input  type="text" >
 </div>
 
-</body>
+      <%@include file="footer.jsp"%>
+    </div>
+  </div>
 </html>
