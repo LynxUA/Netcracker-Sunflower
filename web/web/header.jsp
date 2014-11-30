@@ -7,6 +7,7 @@
 --%>
 
 
+<div id="wrap">
 <div id="header">
   <div class="bs-example">
     <nav id="myNavbar" class="navbar navbar-default" role="navigation">

@@ -30,7 +30,7 @@ body {
 	padding:0;
 	height:100%;
 }
-#wrape {
+#wrap {
 	min-height:100%;
 	position:relative;
 }
@@ -43,7 +43,7 @@ body {
 }
 #footer {
 	position:absolute;
-	bottom:70px;
-	width:99%;
+	bottom:30px;
+	width:98.5%;
 	height:40px;   /* Height of the footer */
 }
