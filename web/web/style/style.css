@@ -1,6 +1,5 @@
 .bs-example{
-	margin-left: 25px;
-	margin-right: 25px;
+	margin: 20px;
 }
 #map-canvas {
 	width: 640px;

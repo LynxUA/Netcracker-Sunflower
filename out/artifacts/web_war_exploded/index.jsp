@@ -7,23 +7,20 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>
-    <%@include file="includes.jsp"%>
-    <title>Netcracker Sunflower</title>
-  </head>
-  <body>
+<head>
+  <%@include file="includes.jsp"%>
+  <title>Netcracker Sunflower</title>
+</head>
+<body>
 
-  <div id="wrape">
-    <%@include file="header.jsp"%>
+<%@include file="header.jsp"%>
 
-    <div id="body">
-      <form action="report/"><input type="submit" type="button" value="Reports"></form>
-      <form action="helloworld"><input type="submit" type="button" value="Bean test"></form>
-    </div>
+<div id="body">
+  <form action="report/"><input type="submit" type="button" value="Reports"></form>
+  <form action="helloworld"><input type="submit" type="button" value="Bean test"></form>
+</div>
 
 
-      <%@include file="footer.jsp"%>
-    </div>
-  </div>
-  </body>
+<%@include file="footer.jsp"%>
+</body>
 </html>
