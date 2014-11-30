@@ -1,5 +1,13 @@
 .bs-example{
-	margin: 20px;
+	margin-left: 25px;
+	margin-right: 25px;
+}
+#map-canvas {
+	width: 640px;
+	height: 480px;
+	margin: 0px;
+	padding: 0px;
+	right: 20px;
 }
 
 .voffset-10  {

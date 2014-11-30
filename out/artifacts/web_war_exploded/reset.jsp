@@ -12,6 +12,8 @@
     <title>Reset password page</title>
 </head>
 <body>
+  <%@include file="header.jsp"%>
+
 
   <div class="container">
     <div class="row voffset-25">

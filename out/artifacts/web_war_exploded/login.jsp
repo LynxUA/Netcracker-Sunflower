@@ -13,11 +13,17 @@
 </head>
 
 <body>
+<<<<<<< HEAD
 <div id="container">
     <%@include file="header.jsp"%>
 
   <div id="body">
     <div class="container">
+=======
+  <%@include file="header.jsp"%>
+  <div class="container">
+    <div class="row voffset-25">
+>>>>>>> origin/master
       <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -40,7 +46,6 @@
                 <div class="col-xs-6 col-sm-6 col-md-6">
                   <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
                 </div>
-
                 <div class="col-xs-6 col-sm-6 col-md-6">
                   <a href="signup" class="btn btn-lg btn-primary btn-block">Sign Up</a>
                 </div>

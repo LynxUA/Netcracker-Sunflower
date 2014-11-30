@@ -12,11 +12,13 @@
     <title>Netcracker Sunflower</title>
   </head>
   <body>
+<<<<<<< HEAD
   <div id="container">
     <%@include file="header.jsp"%>
 
     <div id="body">
-
+      <form action="report/"><input type="submit" type="button" value="Reports"></form>
+      <form action="helloworld"><input type="submit" type="button" value="Bean test"></form>
     </div>
 
 
