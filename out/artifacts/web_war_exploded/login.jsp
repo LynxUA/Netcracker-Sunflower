@@ -9,11 +9,15 @@
 <html>
 <head>
   <%@include file="includes.jsp"%>
-    <title>Login page</title>
+  <title>Login page</title>
 </head>
+
 <body>
+
+<div id="container">
   <%@include file="header.jsp"%>
-  <div class="container">
+
+  <div id="body">
     <div class="row voffset-25">
       <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
@@ -23,7 +27,7 @@
           <div class="panel-body">
             <form accept-charset="UTF-8" role="form" class="form-signin" action="login" method="post">
               <%if(request.getAttribute("error") != null && !((String) request.getAttribute("error")).isEmpty()){%>
-                <div class="alert alert-danger" role="alert">${requestScope.error}</div>
+              <div class="alert alert-danger" role="alert">${requestScope.error}</div>
               <%}%>
               <fieldset>
                 <label class="panel-login">
@@ -52,6 +56,8 @@
         </div>
       </div>
     </div>
+
+    <%@include file="footer.jsp"%>
   </div>
 </body>
 </html>

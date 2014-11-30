@@ -12,8 +12,18 @@
     <title>Netcracker Sunflower</title>
   </head>
   <body>
+
+  <div id="wrape">
     <%@include file="header.jsp"%>
-    <form action="report/"><input type="submit" type="button" value="Reports"></form>
-    <form action="helloworld"><input type="submit" type="button" value="Bean test"></form>
+
+    <div id="body">
+      <form action="report/"><input type="submit" type="button" value="Reports"></form>
+      <form action="helloworld"><input type="submit" type="button" value="Bean test"></form>
+    </div>
+
+
+      <%@include file="footer.jsp"%>
+    </div>
+  </div>
   </body>
 </html>
