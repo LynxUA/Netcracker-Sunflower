@@ -1,8 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1eac3d7c-d3f2-4a88-92bf-55cccd58e0d8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="1eac3d7c-d3f2-4a88-92bf-55cccd58e0d8" name="Default" comment="#4reports">
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\.name" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\artifacts\ear_ear_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\artifacts\ejb_ejb_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\artifacts\web_war.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\artifacts\web_war_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\compiler.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\copyright\profiles_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\dataSources.ids" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\dataSources.local.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\dataSources.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\inspectionProfiles\Project_Default.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\inspectionProfiles\profiles_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\libraries\Java_EE_6_Java_EE_6.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\libraries\activation.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\libraries\ojdbc6_11_2_0_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\libraries\poi_3_10_1_20140818.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\libraries\poi_ooxml_3_10_1_20140818.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\scopes\scope_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\META-INF\application.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\ejb.jar\META-INF\ejb-jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\ejb.jar\com\sunflower\ejb\HelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\ejb.jar\com\sunflower\ejb\HelloWorldBean.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\ejb.jar\com\sunflower\ejb\HelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\ejb.jar\com\sunflower\ejb\LocalHelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\ejb.jar\com\sunflower\ejb\LocalHelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\lib\mail-1.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\lib\ojdbc6-11.2.0.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\lib\poi-3.10.1-20140818.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\lib\poi-ooxml-3.10.1-20140818.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\WEB-INF\classes\com\sunflower\ejb\HelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\WEB-INF\classes\com\sunflower\ejb\HelloWorldBean.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\WEB-INF\classes\com\sunflower\ejb\HelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\WEB-INF\classes\com\sunflower\ejb\LocalHelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\WEB-INF\classes\com\sunflower\ejb\LocalHelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\header.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\index.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\login.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\reset.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\signup.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ear_ear_exploded\web.war\style\style.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ejb_ejb_exploded\META-INF\ejb-jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ejb_ejb_exploded\com\sunflower\ejb\HelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ejb_ejb_exploded\com\sunflower\ejb\HelloWorldBean.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ejb_ejb_exploded\com\sunflower\ejb\HelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ejb_ejb_exploded\com\sunflower\ejb\LocalHelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\ejb_ejb_exploded\com\sunflower\ejb\LocalHelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\CurrentTask.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\WEB-INF\classes\com\sunflower\ejb\HelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\WEB-INF\classes\com\sunflower\ejb\HelloWorldBean.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\WEB-INF\classes\com\sunflower\ejb\HelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\WEB-INF\classes\com\sunflower\ejb\LocalHelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\WEB-INF\classes\com\sunflower\ejb\LocalHelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\WEB-INF\classes\com\sunflower\web\LocationServlet.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\WEB-INF\classes\com\sunflower\web\RequestServlet.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\WEB-INF\classes\com\sunflower\web\UserInstanceServlet.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\assign.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\css\bootstrap-theme.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\css\bootstrap-theme.css.map" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\css\bootstrap-theme.min.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\css\bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\css\bootstrap.css.map" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\css\bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\fonts\glyphicons-halflings-regular.eot" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\fonts\glyphicons-halflings-regular.svg" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\fonts\glyphicons-halflings-regular.ttf" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\fonts\glyphicons-halflings-regular.woff" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\footer.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\header.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\index.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\js\bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\js\bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\js\npm.js" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\location.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\login.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\request.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\reset.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\signup.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\style\style.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\artifacts\web_war_exploded\user_si.jsp" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\production\ejb\com\sunflower\ejb\HelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\production\ejb\com\sunflower\ejb\HelloWorldBean.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\production\ejb\com\sunflower\ejb\HelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\production\ejb\com\sunflower\ejb\LocalHelloWorld.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\production\ejb\com\sunflower\ejb\LocalHelloWorldHome.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\production\web\com\sunflower\web\LocationServlet.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\production\web\com\sunflower\web\RequestServlet.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\out\production\web\com\sunflower\web\UserInstanceServlet.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
     <ignored path="Netcracker-Sunflower.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,7 +129,7 @@
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.046376813" vertical-offset="0" max-vertical-offset="345">
-              <caret line="1" column="1" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
+              <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -683,7 +776,7 @@
       <workItem from="1417167509299" duration="806000" />
       <workItem from="1417348765503" duration="13220000" />
       <workItem from="1417365593839" duration="675000" />
-      <workItem from="1417373365211" duration="2050000" />
+      <workItem from="1417373365211" duration="3188000" />
     </task>
     <task id="LOCAL-00001" summary="#4reports">
       <created>1416855739504</created>
@@ -709,11 +802,17 @@
       <option name="project" value="LOCAL" />
       <updated>1417378796183</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="#4reports">
+      <created>1417378864049</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1417378864049</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30454000" />
+    <option name="totallyTimeSpent" value="31592000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -1185,7 +1284,7 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.046376813" vertical-offset="0" max-vertical-offset="345">
-          <caret line="1" column="1" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
+          <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
           <folding />
         </state>
       </provider>
