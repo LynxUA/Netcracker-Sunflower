@@ -10,6 +10,10 @@
   <div class="bs-example">
     <nav id="myNavbar" class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
+      <ul class="nav navbar-nav">
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
 
     </nav>
   </div>

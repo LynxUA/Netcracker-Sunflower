@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="Oracle - @194.44.143.139" uuid="26e486fd-2e58-46b6-878c-c5b6221a476e">
-      <secret-storage>master_key</secret-storage>
-      <user-name>sunflower</user-name>
-      <schema-pattern>*.SUNFLOWER *.SYS *.SYSTEM</schema-pattern>
-      <default-schemas>*.SUNFLOWER *.SYS *.SYSTEM</default-schemas>
-    </data-source>
+    <data-source name="Oracle - @194.44.143.139" uuid="26e486fd-2e58-46b6-878c-c5b6221a476e" />
   </component>
 </project>

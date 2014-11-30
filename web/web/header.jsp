@@ -27,6 +27,7 @@
           <ul class="nav navbar-nav">
             <li><a href="/webWeb/">Home</a></li>
             <li><a href="#">Profile</a></li>
+            <li><a href="catalog.jsp">Show catalog</a></li>
 
           </ul>
           <ul class="nav navbar-nav navbar-right">
