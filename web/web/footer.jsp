@@ -1,0 +1,16 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Andriy
+  Date: 11/30/2014
+  Time: 2:32 PM
+  To change this template use File | Settings | File Templates.
+--%>
+
+<div class="bs-example">
+  <nav id="myNavbar" class="navbar navbar-default" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="container">
+
+    </div>
+  </nav>
+</div>
