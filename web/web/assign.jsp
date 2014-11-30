@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>assign ports</title>
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <%@include file="includes.jsp"%>
   <style>
 
     aside {
@@ -39,6 +39,7 @@
   </style>
 </head>
 <body>
+<%@include file="header.jsp"%>
 <aside>
   <ul class="nav nav-list bs-docs-sidenav affix">
     <li>
