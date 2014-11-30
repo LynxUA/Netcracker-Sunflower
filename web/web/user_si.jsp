@@ -11,7 +11,7 @@
         <%@include file="includes.jsp"%>
         <title>User's instances</title>
     </head>
-    
+
     <body>
         <%@include file="header.jsp"%>
         <div id="body">

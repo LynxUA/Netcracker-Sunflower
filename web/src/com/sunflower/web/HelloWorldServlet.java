@@ -34,7 +34,7 @@ public class HelloWorldServlet extends HttpServlet {
         }
 
         try {
-            helloWorldBean = ((HelloWorldHome) ic.lookup("java:global/ear_ear_exploded/ejb/HelloWorldEJB!com.sunflower.ejb.HelloWorldHome")).create();
+            helloWorldBean = ((HelloWorldHome) ic.lookup("java:global/ear_ear/ejb/HelloWorldEJB!com.sunflower.ejb.HelloWorldHome")).create();
         } catch (NamingException e) {
             e.printStackTrace();
         } catch (CreateException e) {
