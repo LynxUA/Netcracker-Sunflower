@@ -12,8 +12,8 @@
     <title>Netcracker Sunflower</title>
   </head>
   <body>
-<<<<<<< HEAD
-  <div id="container">
+
+  <div id="wrape">
     <%@include file="header.jsp"%>
 
     <div id="body">

@@ -9,21 +9,16 @@
 <html>
 <head>
   <%@include file="includes.jsp"%>
-    <title>Login page</title>
+  <title>Login page</title>
 </head>
 
 <body>
-<<<<<<< HEAD
+
 <div id="container">
-    <%@include file="header.jsp"%>
+  <%@include file="header.jsp"%>
 
   <div id="body">
-    <div class="container">
-=======
-  <%@include file="header.jsp"%>
-  <div class="container">
     <div class="row voffset-25">
->>>>>>> origin/master
       <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -62,11 +57,7 @@
       </div>
     </div>
 
-  </div>
-
     <%@include file="footer.jsp"%>
-
-</div>
-
+  </div>
 </body>
 </html>
