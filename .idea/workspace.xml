@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1eac3d7c-d3f2-4a88-92bf-55cccd58e0d8" name="Default" comment="">
       <change type="DELETED" beforePath="D:\GitHub\NetCracker-Sunflower\Netcracker-Sunflower\.idea\workspace.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
     <ignored path="Netcracker-Sunflower.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,8 +36,8 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-              <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.046376813" vertical-offset="0" max-vertical-offset="345">
+              <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -683,7 +684,7 @@
       <workItem from="1417167509299" duration="806000" />
       <workItem from="1417348765503" duration="13220000" />
       <workItem from="1417365593839" duration="675000" />
-      <workItem from="1417373365211" duration="3398000" />
+      <workItem from="1417373365211" duration="3730000" />
     </task>
     <task id="LOCAL-00001" summary="#4reports">
       <created>1416855739504</created>
@@ -727,11 +728,17 @@
       <option name="project" value="LOCAL" />
       <updated>1417380055940</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="#4reports">
+      <created>1417380212897</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1417380212897</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31802000" />
+    <option name="totallyTimeSpent" value="32134000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -1202,8 +1209,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-          <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.046376813" vertical-offset="0" max-vertical-offset="345">
+          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
           <folding />
         </state>
       </provider>
