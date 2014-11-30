@@ -13,15 +13,13 @@
   </head>
   <body>
   <div id="container">
-    <div id="header">
-      <%@include file="header.jsp"%>
-    </div>
+    <%@include file="header.jsp"%>
 
     <div id="body">
 
     </div>
 
-    <div id="footer">
+
       <%@include file="footer.jsp"%>
     </div>
   </div>

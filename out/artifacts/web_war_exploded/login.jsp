@@ -14,10 +14,7 @@
 
 <body>
 <div id="container">
-  <div id="header">
     <%@include file="header.jsp"%>
-  </div>
-
 
   <div id="body">
     <div class="container">
@@ -59,12 +56,11 @@
         </div>
       </div>
     </div>
+
   </div>
 
-
-  <div id="footer">
     <%@include file="footer.jsp"%>
-  </div>
+
 </div>
 
 </body>

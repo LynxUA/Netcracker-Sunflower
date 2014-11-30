@@ -5,6 +5,8 @@
   Time: 04:14
   To change this template use File | Settings | File Templates.
 --%>
+
+<div id="header">
   <div class="bs-example">
     <nav id="myNavbar" class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -49,3 +51,4 @@
       </div>
     </nav>
   </div>
+</div>
