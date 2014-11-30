@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1eac3d7c-d3f2-4a88-92bf-55cccd58e0d8" name="Default" comment="Watch catalog by location added!">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/web/catalog.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/web/catalogResponce.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/web_war_exploded/footer.jsp" afterPath="$PROJECT_DIR$/out/artifacts/web_war_exploded/footer.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/web_war_exploded/header.jsp" afterPath="$PROJECT_DIR$/out/artifacts/web_war_exploded/header.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/web/header.jsp" afterPath="$PROJECT_DIR$/web/web/header.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/web_war_exploded/style/style.css" afterPath="$PROJECT_DIR$/out/artifacts/web_war_exploded/style/style.css" />
+    <list default="true" id="1eac3d7c-d3f2-4a88-92bf-55cccd58e0d8" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Netcracker-Sunflower.iws" />
@@ -847,7 +838,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962668" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
