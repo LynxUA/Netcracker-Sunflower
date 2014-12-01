@@ -20,7 +20,7 @@ public class SignUpServlet extends HttpServlet {
             return;
         }
         if(request.getSession().getAttribute("current_user") != null){
-            response.sendRedirect("welcome");
+            response.sendRedirect("");
         }
         String login = request.getParameter("login");
         String name = request.getParameter("name");
@@ -79,7 +79,7 @@ public class SignUpServlet extends HttpServlet {
         addNewUser(login,name,StaticFunctions.getHashCode(password));
         MailServer.messageAfterRegistration(name,password,login);
 
-        response.sendRedirect("welcome");
+        response.sendRedirect("");
 
     }
 
