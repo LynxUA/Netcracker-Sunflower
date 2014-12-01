@@ -22,7 +22,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li><a href="/webWeb/">Home</a></li>
-          <li><a href="#">Profile</a></li>
+          <li><a href="profile">Profile</a></li>
 
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -31,7 +31,7 @@
             <ul class="dropdown-menu">
               <li><a href="login">Login</a></li>
               <li><a href="signup">Signup</a></li>
-              <li><a href="#">Your location</a></li>
+              <li><a href="location">Your location</a></li>
               <li class="divider"></li>
               <li><a href="progress.jsp">Progress</a></li>
             </ul>
