@@ -43,6 +43,10 @@
         <servlet-name>UserInstanceServlet</servlet-name>
         <servlet-class>com.sunflower.web.UserInstanceServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ContactUsServlet</servlet-name>
+        <servlet-class>com.sunflower.web.ContactUsServlet</servlet-class>
+    </servlet>
 
 
 
@@ -86,4 +90,10 @@
         <servlet-name>LocationServlet</servlet-name>
         <url-pattern>/location</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContactUsServlet</servlet-name>
+        <url-pattern>/contuctus</url-pattern>
+    </servlet-mapping>
+
+
 </web-app>
