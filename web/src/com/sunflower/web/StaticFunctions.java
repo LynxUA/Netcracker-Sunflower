@@ -64,4 +64,7 @@ public class StaticFunctions {
         return sb.toString();
     }
 
+    public static void sendSupportEmail(String name, String email, String text) {
+        //Here should be text for processing massage.
+    }
 }
