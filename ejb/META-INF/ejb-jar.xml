@@ -15,7 +15,34 @@
       <transaction-type>Container</transaction-type>
 
     </session>
+    <entity>
+      <ejb-name>UserEJB</ejb-name>
+      <local-home>com.sunflower.ejb.user.LocalUserHome</local-home>
+      <local>com.sunflower.ejb.user.LocalUser</local>
+      <ejb-class>com.sunflower.ejb.user.UserBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.String</prim-key-class>
+      <reentrant>True</reentrant>
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/User</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.user.LocalUserHome</local-home>
+        <local>com.sunflower.ejb.user.LocalUser</local>
+        <ejb-link>UserEJB</ejb-link>
+      </ejb-local-ref>
+
+    </entity>
   </enterprise-beans>
+
+  <assembly-descriptor>
+    <container-transaction>
+      <method>
+        <ejb-name>UserEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
 
 </ejb-jar>
 

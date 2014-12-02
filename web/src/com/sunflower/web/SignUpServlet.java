@@ -1,5 +1,14 @@
 package com.sunflower.web;
 
+import com.sunflower.ejb.EJBFunctions;
+import com.sunflower.ejb.user.LocalUser;
+import com.sunflower.ejb.user.LocalUserHome;
+import com.sunflower.ejb.user.UserBean;
+
+import javax.ejb.CreateException;
+import javax.ejb.FinderException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,32 +29,41 @@ public class SignUpServlet extends HttpServlet {
             return;
         }
         if(request.getSession().getAttribute("current_user") != null){
-            response.sendRedirect("");
+            response.sendRedirect("welcome");
         }
         String login = request.getParameter("login");
+        String email = request.getParameter("email");
         String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
         String password = request.getParameter("password");
         String repeat_password = request.getParameter("repeat_password");
 
-        request.setAttribute("login",login);
+        request.setAttribute("login", login);
+        request.setAttribute("email",email);
         request.setAttribute("name",name);
+        request.setAttribute("surname", surname);
         request.setAttribute("password",password);
         request.setAttribute("repeat_password",repeat_password);
 
         if(login.isEmpty()){
-            request.setAttribute("login_error", "Email can`t be empty");
+            request.setAttribute("login_error", "Login can`t be empty");
+            request.getRequestDispatcher("signup.jsp").forward(request, response);
+            return;
+        }
+        if(email.isEmpty()){
+            request.setAttribute("email_error", "Email can`t be empty");
             request.getRequestDispatcher("signup.jsp").forward(request, response);
             return;
         }
 
-        if(!StaticFunctions.isValidEmail(login)){
-            request.setAttribute("login_error", "Wrong email format");
+        if(!StaticFunctions.isValidEmail(email)){
+            request.setAttribute("email_error", "Wrong email format");
             request.getRequestDispatcher("signup.jsp").forward(request, response);
             return;
         }
 
-        if(StaticFunctions.isEmailExist(login)){
-            request.setAttribute("login_error", "Such email is already registered");
+        if(StaticFunctions.isEmailExist(email)){
+            request.setAttribute("email_error", "Such email is already registered");
             request.getRequestDispatcher("signup.jsp").forward(request, response);
             return;
         }
@@ -76,10 +94,19 @@ public class SignUpServlet extends HttpServlet {
             return;
         }
 
-        addNewUser(login,name,StaticFunctions.getHashCode(password));
-        MailServer.messageAfterRegistration(name,password,login);
+        //addNewUser(login, email,name,StaticFunctions.getHashCode(password));
+        //addNewUser(login, email,name, password);
+        if(EJBFunctions.createUser(login, email, name, surname, password)==null){
+            request.setAttribute("login_error", "User with this login is already exist");
+            request.getRequestDispatcher("signup.jsp").forward(request, response);
+        }else{
+            request.getSession().setAttribute("login", login);
+            /** Прибрати*/
+            System.out.println(login);
+        }
+        MailServer.messageAfterRegistration(name,password,email);
 
-        response.sendRedirect("");
+        response.sendRedirect("welcome");
 
     }
 
@@ -87,10 +114,32 @@ public class SignUpServlet extends HttpServlet {
         clearError(request);
         request.getRequestDispatcher("signup.jsp").forward(request, response);
     }
-    private void addNewUser(String login, String name, String password){
-        StaticFunctions.users.put(login,password);
+    /*private void addNewUser(String login,String email, String name, String password){
+        //StaticFunctions.users.put(login,password);
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalUserHome home = null;
+        try {
+            home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalUser user = null;
+        try {
+            if (home != null) {
+                user = home.create(login, email, name, "Burlakov", password, 1);
+            }
+        } catch (CreateException e) {
+            e.printStackTrace();
+        }
+        System.out.println("hurray");
+
         return;
-    }
+    }*/
     private void clearError(HttpServletRequest request) {
         request.setAttribute("login_error", "");
         request.setAttribute("name_error","");
