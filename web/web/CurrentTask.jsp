@@ -24,10 +24,10 @@
 
         </style>
     </head>
-    <div id="wrape">
+    <body>
     <%@include file="header.jsp"%>
 
-    <div id="body">
+    
     <aside>
         <ul class="nav nav-list bs-docs-sidenav affix">
             <li>
@@ -65,6 +65,5 @@
         </div>
         
          <%@include file="footer.jsp"%>
-    </div>
-  </div>
+  </body>
 </html>
