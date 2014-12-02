@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.*;
@@ -28,15 +29,33 @@ public class Xlscrtr {
     HSSFCell cell;
     String filename=null;
     File f=null;
-    public File newor(Connection connection, Date d1, Date d2) throws SQLException {
+    public File newor(Connection connection, Date d1, Date d2,ArrayList<String> locations) throws SQLException {
 
         java.sql.Date sd1=new java.sql.Date(d1.getTime());
         java.sql.Date sd2=new java.sql.Date(d2.getTime());
         System.out.println(d1);
         System.out.print(sd1);
-        PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM orders WHERE Order_date between ? and ? ");
-        pstmt.setDate(1, sd1);
-        pstmt.setDate(2,sd2);
+        String pst ="SELECT * FROM orders WHERE location=? ";
+        String locationpstmt="OR location =? ";
+        for (int a=1; a<locations.size();a++)
+        {
+            pst+=locationpstmt;
+        }
+        pst+="and Order_date between ? and ?";
+        PreparedStatement pstmt = connection.prepareStatement(pst);
+        int a;
+        for (a=1; a<=locations.size();a++)
+        {
+            pstmt.setString(a,locations.get(a-1));
+            System.out.println(a);
+            System.out.println(locations.get(a-1));
+        }
+        System.out.println(pst);
+
+        pstmt.setDate(a, sd1);
+        a++;
+        System.out.println(a);
+        pstmt.setDate(a,sd2);
         ResultSet rs = pstmt.executeQuery();
         
         try {
@@ -185,7 +204,7 @@ public class Xlscrtr {
             }
         }
 
-        public File disconperperiod(Connection connection, Date d1, Date d2) throws SQLException {
+        public File disconperperiod(Connection connection, Date d1, Date d2, ArrayList<String> locations) throws SQLException {
 
 
 
@@ -193,10 +212,32 @@ public class Xlscrtr {
                 java.sql.Date sd2 = new java.sql.Date(d2.getTime());
                 System.out.println(d1);
                 System.out.print(sd1);
-                PreparedStatement pstmt = connection.prepareStatement("SELECT ORDER_ID ,FIRSTNAME, LASTNAME, Location, ORDER_DATE FROM orders WHERE ORDERTYPE='disconnect' AND Order_date BETWEEN ? AND ? ");
-                pstmt.setDate(1, sd1);
-                pstmt.setDate(2, sd2);
-                ResultSet rs = pstmt.executeQuery();
+
+            String pst ="SELECT ORDER_ID ,FIRSTNAME, LASTNAME, Location, ORDER_DATE FROM orders WHERE ORDERTYPE='disconnect' and location in ( ?";
+            String locationpstmt=",? ";
+            for (int a=1; a<locations.size();a++)
+            {
+
+                pst+=locationpstmt;
+            }
+            pst+=") and Order_date between ? and ?";
+            System.out.println(pst);
+            PreparedStatement pstmt = connection.prepareStatement(pst);
+            int a;
+            for (a=1; a<=locations.size();a++)
+            {
+                pstmt.setString(a,locations.get(a-1));
+                System.out.println(a);
+                System.out.println(locations.get(a-1));
+            }
+            System.out.println(pst);
+
+            pstmt.setDate(a, sd1);
+            a++;
+            System.out.println(a);
+            pstmt.setDate(a,sd2);
+            ResultSet rs = pstmt.executeQuery();
+
                 File f=null;
 
                 try {
@@ -293,3 +334,4 @@ public class Xlscrtr {
             return font;
         }
 }
+
