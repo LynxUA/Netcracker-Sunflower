@@ -17,12 +17,12 @@ import java.util.Enumeration;
  */
 
 public class UserBean implements EntityBean {
-    public String login;
-    public String email;
-    public String name;
-    public String surname;
-    public String password;
-    public int group;
+    private String login;
+    private String email;
+    private String name;
+    private String surname;
+    private String password;
+    private int group;
 
     private EntityContext entityContext;
     private OracleDataSource dataSource;
