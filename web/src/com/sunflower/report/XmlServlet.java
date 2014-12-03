@@ -99,6 +99,21 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
        { String d1 = request.getParameter("date1");
          String d2 = request.getParameter("date2");
          String select=request.getParameter("option");
+           String loc="loc1";
+           int a=1;
+
+           ArrayList<String> locations =new ArrayList<String>();
+           while(request.getParameter(loc)!=null)
+           {
+               System.out.println(request.getParameter(loc));
+               locations.add(request.getParameter(loc));
+               String as=Integer.toString(a);
+               a++;
+               String as1=Integer.toString(a);
+               loc=loc.replace(as,as1);
+           }
+
+
          System.out.println(select);
          String url = request.getRequestURL().toString();
          System.out.println(d2);System.out.println(url);
@@ -109,21 +124,17 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
           System.out.println(date1);  
              if(select.equals("New orders per period")){
                  urladded=true;
-                 f=xlscrtr.newor(connection, date1, date2);
+                 f=xlscrtr.newor(connection, date1, date2, locations);
              }
              else  if(select.equals("Disconnects per period")){
                  urladded=true;
-                 f=xlscrtr.disconperperiod(connection, date1, date2);
+                 f=xlscrtr.disconperperiod(connection, date1, date2,locations);
              }
      }
    
            
          
-        
-         
-       
-        
-             System.out.println(f.getName());
+
      }
        else if(action.equals("prof"))
        {

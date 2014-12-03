@@ -7,64 +7,61 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <%@include file="includes.jsp"%>
-        <title>Current Task</title>
-        <style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%@include file="includes.jsp"%>
+    <title>Current Task</title>
+    <style>
+        aside {
+            padding: 10px;
+            width: 200px;
+            float: left;
+        }
+        p {padding: 1% 7% 1% 7%;
+            margin: 1% 7% 1% 7%  }
+    </style>
+</head>
+<body>
+<%@include file="header.jsp"%>
 
-            aside {
 
-                padding: 10px;
-                width: 200px;
-                float: left;
-            }
-            div {padding: 1% 10% 1% 10%;
-                margin: 1% 10% 1% 10%  }
-
-        </style>
-    </head>
-    <div id="wrape">
-    <%@include file="header.jsp"%>
-
-    <div id="body">
-    <aside>
-        <ul class="nav nav-list bs-docs-sidenav affix">
-            <li>
+<aside>
+    <ul class="nav nav-list bs-docs-sidenav affix">
+        <li>
             <a href="assign.jsp">Assign port</a>
         </li>
-            <li>
-                <a href="modify.jsp">Modify</a>
-            </li>
-            <li>
-                <a href="CurrentTask.jsp">Current Task</a>
-            </li>
-        </ul>
-    </aside>
-        <div>
-        <table class="table  table-bordered table-striped" height="90">
-            <thead>
-                <tr>
-                    <th>USER_ID</th>
-                    <th>Order</th>
-                    <th>Provider_Location</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-        <DIV>
-        <button class="btn btn-primary">Complete</button>
-        <button class="btn btn-primary">Suspend</button>
-        </div>
-        
-         <%@include file="footer.jsp"%>
-    </div>
-  </div>
+        <li>
+            <a href="modify.jsp">Modify</a>
+        </li>
+        <li>
+            <a href="CurrentTask.jsp">Current Task</a>
+        </li>
+    </ul>
+</aside>
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%" >
+    <table class="table  table-bordered table-striped" height="90">
+        <thead>
+        <tr>
+            <th>USER_ID</th>
+            <th>Order</th>
+            <th>Provider_Location</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>
+    <button class="btn btn-primary">Complete</button>
+    <button class="btn btn-primary">Suspend</button>
+</p>
+
+<%@include file="footer.jsp"%>
+</body>
 </html>

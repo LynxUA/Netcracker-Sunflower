@@ -12,7 +12,7 @@
       <!-- Brand and toggle get grouped for better mobile display -->
       <ul class="nav navbar-nav">
         <li><a href="#">About us</a></li>
-        <li><a href="#">Profile</a></li>
+        <li><a href="contuctus">Contuct us</a></li>
       </ul>
 
     </nav>

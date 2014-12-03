@@ -57,7 +57,10 @@ public class MailServer {
                 });
         try {
             Message message = new MimeMessage(session);
-            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(email));//user e-mail
+           InternetAddress[] address = {new InternetAddress(email)};
+            String from="nc.sunflower.2014@gmail.com";
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO,address);
             message.setSubject(messageTitle);
             message.setContent(makeTemplate(rootMap, readFile(templateName)), "text/html");
             Transport.send(message);

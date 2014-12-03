@@ -8,40 +8,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>assign ports</title>
-    <%@include file="includes.jsp"%>
+  <title>assign ports</title>
+  <%@include file="includes.jsp"%>
   <style>
-
     aside {
-
       padding: 10px;
       width: 200px;
       float: left;
     }
     select, input {
-
       padding:0.5% 2% 0.5% 2% ;
       margin: 0.5% 2% 0.5% 2%;
       width: 30%;
-      height: 3%;
-
+      height: 4%;
     }
-    div {padding: 0.3% 10% 0.3% 10%;
-      margin: 0.3% 10% 0.3% 10%  }
+    p {padding: 0.3% 7% 0.3% 7%;
+      margin: 0.3% 7% 0.3% 7%  }
     pre {
-
       width:70%
     }
     button{
       width:15%;
     }
-
   </style>
 </head>
- <div id="wrape">
-    <%@include file="header.jsp"%>
+<body>
+<%@include file="header.jsp"%>
 
-    <div id="body">
+
 <aside>
   <ul class="nav nav-list bs-docs-sidenav affix">
     <li>
@@ -55,8 +49,8 @@
     </li>
   </ul>
 </aside>
-<div><pre>   Port                                  User ID</pre></div>
-<div>
+<p><pre>   Port                                  User ID</pre></p>
+<p>
   <select>
     <option selected="true" style="display:none" >Provider location</option>
     <option></option>
@@ -65,20 +59,20 @@
   <input  type="text" >
 
   <button align="right" style="float: right;" class="btn btn-primary" width="15%">Assign port  </button>
-</div>
-<div>
+</p>
+<p>
   <select >
     <option selected="true" style="display:none;" >Select router</option>
     <option></option>
   </select>
   <button  align="right" style="float: right;" class="btn btn-primary" width="15%">Unssign port</button>
 
-</div>
-<div>
+</p>
+<p>
   <input  type="text" >
-</div>
+</p>
 
-      <%@include file="footer.jsp"%>
-    </div>
-  </div>
+<%@include file="footer.jsp"%>
+
+</body>
 </html>
