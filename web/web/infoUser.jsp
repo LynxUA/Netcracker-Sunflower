@@ -19,7 +19,8 @@
 
 <%@include file="header.jsp"%>
 
-<table width="50%">
+<table cellpadding="50" width="50%">
+  <tbody>
   <tr>
     <th>Name</th>
     <th>Surname</th>
@@ -30,6 +31,7 @@
     <th>Balance</th>
 
   </tr>
+
   <tr>
     <td><h4>Petro</h4></td>
     <td><h4>Petrov</h4></td>
@@ -39,11 +41,12 @@
     <td><h3 style="color:green">Online</h3></td>
     <td><h4>50</h4></td>
   </tr>
-
+  </tbody>
+</table>
   <p>
     <button class="btn btn-large btn-primary" type="button">Block</button>
   </p>
-/* my second commit*/
+
 
 <%@include file="footer.jsp"%>
 

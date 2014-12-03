@@ -83,7 +83,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
          String action=request.getParameter("action");
          
          
-         EcxelExp excelexp=new EcxelExp();
+         //EcxelExp excelexp=new EcxelExp();
          Xlscrtr xlscrtr=new Xlscrtr();
          Boolean urladded=false;
         
@@ -150,9 +150,9 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
        else if(action.equals("ri"))
        {
            urladded=true;
-           ArrayList inf1= excelexp.Inf1();
-           ArrayList inf2= excelexp.Inf1();
-          f=excelexp.Test(inf1, inf2);
+           //ArrayList inf1= excelexp.Inf1();
+          // ArrayList inf2= excelexp.Inf1();
+          //f=excelexp.Test(inf1, inf2);
        }
          
          if (urladded) {

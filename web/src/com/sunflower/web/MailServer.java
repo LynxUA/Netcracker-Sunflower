@@ -28,7 +28,7 @@ public class MailServer {
     protected static void messageAfterRegistration(String name, String password, String email){
         Map<String, String> rootMap = new HashMap<String, String>();//here are fields, which we wanted to paste into template
         rootMap.put("name", name);
-        rootMap.put("login", login);
+        //rootMap.put("login", login);
         rootMap.put("password", password);
         sendMessage(email, rootMap, "mail-registration-template.ftl","Registration on SunFlower");
     }

@@ -105,7 +105,7 @@ public class SignUpServlet extends HttpServlet {
             /** Прибрати*/
             System.out.println(login);
         }
-        MailServer.messageAfterRegistration(name,password,email,login);
+        //MailServer.messageAfterRegistration(name,password,email,login);
 
         response.sendRedirect("welcome");
 
