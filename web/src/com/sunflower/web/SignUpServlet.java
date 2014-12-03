@@ -96,15 +96,16 @@ public class SignUpServlet extends HttpServlet {
 
         //addNewUser(login, email,name,StaticFunctions.getHashCode(password));
         //addNewUser(login, email,name, password);
-        if(EJBFunctions.createUser(login, email, name, surname, password)==null){
+        if(EJBFunctions.createUser(login.toLowerCase(), email, name, surname, password)==null){
             request.setAttribute("login_error", "User with this login is already exist");
             request.getRequestDispatcher("signup.jsp").forward(request, response);
         }else{
             request.getSession().setAttribute("login", login);
+            request.getSession().setAttribute("status", 1);
             /** Прибрати*/
             System.out.println(login);
         }
-        MailServer.messageAfterRegistration(name,password,email);
+        MailServer.messageAfterRegistration(name,password,email,login);
 
         response.sendRedirect("welcome");
 

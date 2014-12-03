@@ -28,7 +28,7 @@ public class MailServer {
     protected static void messageAfterRegistration(String name, String password, String email){
         Map<String, String> rootMap = new HashMap<String, String>();//here are fields, which we wanted to paste into template
         rootMap.put("name", name);
-        rootMap.put("login", email);
+        rootMap.put("login", login);
         rootMap.put("password", password);
         sendMessage(email, rootMap, "mail-registration-template.ftl","Registration on SunFlower");
     }
@@ -57,7 +57,10 @@ public class MailServer {
                 });
         try {
             Message message = new MimeMessage(session);
-            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(email));//user e-mail
+           InternetAddress[] address = {new InternetAddress(email)};
+            String from="nc.sunflower.2014@gmail.com";
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO,address);
             message.setSubject(messageTitle);
             message.setContent(makeTemplate(rootMap, readFile(templateName)), "text/html");
             Transport.send(message);

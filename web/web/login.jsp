@@ -33,7 +33,7 @@
                 <label class="panel-login">
                   <div class="login_result"></div>
                 </label>
-                <input class="form-control" placeholder="Email" value="${requestScope.login}" name="login" type="text">
+                <input class="form-control" placeholder="Login" value="${requestScope.login}" name="login" type="text">
                 <br/>
                 <input class="form-control" placeholder="Password" name="password" type="password">
                 <br/>

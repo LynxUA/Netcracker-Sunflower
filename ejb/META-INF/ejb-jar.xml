@@ -32,6 +32,23 @@
       </ejb-local-ref>
 
     </entity>
+  <entity>
+    <ejb-name>TaskEJB</ejb-name>
+    <local-home>com.sunflower.ejb.task.LocalTaskHome</local-home>
+    <local>com.sunflower.ejb.task.LocalTask</local>
+    <ejb-class>com.sunflower.ejb.task.TaskBean</ejb-class>
+    <persistence-type>Bean</persistence-type>
+    <prim-key-class>java.lang.Integer</prim-key-class>
+    <reentrant>True</reentrant>
+    <ejb-local-ref>
+      <ejb-ref-name>ejb/Task</ejb-ref-name>
+      <ejb-ref-type>Entity</ejb-ref-type>
+      <local-home>com.sunflower.ejb.task.LocalTaskHome</local-home>
+      <local>com.sunflower.ejb.task.LocalTask</local>
+      <ejb-link>TaskEJB</ejb-link>
+    </ejb-local-ref>
+  </entity>
+
   </enterprise-beans>
 
   <assembly-descriptor>
@@ -42,7 +59,13 @@
       </method>
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
+    <container-transaction>
+      <method>
+        <ejb-name>TaskEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
   </assembly-descriptor>
-
 </ejb-jar>
 
