@@ -19,39 +19,31 @@
 
 <%@include file="header.jsp"%>
 
-<div id="body">
-  <table class="table table-condensed" width="20" >
+<table width="50%">
+  <tr>
+    <th>Name</th>
+    <th>Surname</th>
+    <th>Telephone</th>
+    <th>Location</th>
+    <th>Service</th>
+    <th>Status</th>
+    <th>Balance</th>
 
-    <tr width="20">
-      <td >#</td>
-      <th >Имя</th>
-      <th >Фамилия</th>
-      <th >Имя пользователя</th>
-    </tr>
+  </tr>
+  <tr>
+    <td><h4>Petro</h4></td>
+    <td><h4>Petrov</h4></td>
+    <td><h4>0109090909</h4> </td>
+    <td><h4>Poznichki</h4></td>
+    <td><h4>Unlimited</h4></td>
+    <td><h3 style="color:green">Online</h3></td>
+    <td><h4>50</h4></td>
+  </tr>
 
-    <tbody>
-    <tr>
-      <td rowspan="3">1</td>
-      <td rowspan="2">Mark</td>
-
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Jacob</td>
-
-    </tr>
-    <tr>
-      <td>" " </td>
-      <td>  </td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-
+  <p>
+    <button class="btn btn-large btn-primary" type="button">Block</button>
+  </p>
+/* my second commit*/
 
 <%@include file="footer.jsp"%>
 
