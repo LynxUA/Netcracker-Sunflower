@@ -1,9 +1,12 @@
 package com.sunflower.ejb;
 
+import com.sunflower.ejb.task.LocalTask;
+import com.sunflower.ejb.user.BadPasswordException;
 import com.sunflower.ejb.user.LocalUser;
 import com.sunflower.ejb.user.LocalUserHome;
 
 import javax.ejb.CreateException;
+import javax.ejb.FinderException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -40,6 +43,26 @@ public class EJBFunctions {
     }
     public static void findUser(String login){
 
+    }
+    public static LocalUser login(String login, String password) throws Exception, BadPasswordException, FinderException {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalUserHome home = null;
+        try {
+            home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.findUser(login, password);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
     }
 
 }

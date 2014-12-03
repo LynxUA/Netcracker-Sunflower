@@ -1,5 +1,11 @@
 package com.sunflower.web;
 
+import com.sunflower.ejb.EJBFunctions;
+import com.sunflower.ejb.task.LocalTask;
+import com.sunflower.ejb.user.BadPasswordException;
+import com.sunflower.ejb.user.LocalUser;
+
+import javax.ejb.FinderException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +26,8 @@ public class CheckLoginServlet extends HttpServlet {
             return;
         }
 
-        String login = request.getParameter("login").toLowerCase();
+        //String login = request.getParameter("login").toLowerCase();
+        String login = request.getParameter("login");
         String password = request.getParameter("password");
         request.setAttribute("login", login);
         if(login == null || login.isEmpty() || password == null || password.isEmpty()){
@@ -28,22 +35,47 @@ public class CheckLoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        if(!StaticFunctions.isValidEmail(login) || !StaticFunctions.isValidPassword(password)){
-            request.setAttribute("error", "Bad login or password format");
+        if(!StaticFunctions.isValidPassword(password)){
+            request.setAttribute("error", "Bad password format");
             request.getRequestDispatcher("login.jsp").forward(request,response);
             return;
         }
-        if(validateUser(login, StaticFunctions.getHashCode(password))){
-            //code for loggining in
-            //request.getSession().setAttribute("user",user);
-            response.sendRedirect("welcome");
-        }
-        else
-        {
-            request.setAttribute("login", login);
-            request.setAttribute("error", "Not valid user");
+//        if(validateUser(login, StaticFunctions.getHashCode(password))){
+//            //code for loggining in
+//            //request.getSession().setAttribute("user",user);
+//            response.sendRedirect("welcome");
+//        }
+        LocalUser user;
+        try {
+            user = EJBFunctions.login(login, password);
+        } catch(FinderException e){
+            request.setAttribute("error", "User with this login wasn't found");
             request.getRequestDispatcher("login.jsp").forward(request,response);
+            return;
+        } catch(BadPasswordException e){
+            request.setAttribute("error", "Bad password");
+            request.getRequestDispatcher("login.jsp").forward(request,response);
+            return;
+        } catch (Exception e) {
+            //ejb exception
+            e.printStackTrace();
+            request.getRequestDispatcher("login.jsp").forward(request,response);
+            return;
         }
+        request.getSession().setAttribute("login", user.getLogin());
+        request.getSession().setAttribute("status", user.getGroup());
+        response.sendRedirect("welcome");
+//        if(validateUser(login, password){
+//            //code for loggining in
+//            //request.getSession().setAttribute("user",user);
+//
+//        }
+//        else
+//        {
+//            request.setAttribute("login", login);
+//            request.setAttribute("error", "Not valid user");
+//            request.getRequestDispatcher("login.jsp").forward(request,response);
+//        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

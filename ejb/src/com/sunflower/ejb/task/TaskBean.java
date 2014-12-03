@@ -196,7 +196,6 @@ public class TaskBean implements EntityBean {
         return null;
     }
 
-    @Override
     public void ejbPostCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
 
     }

@@ -12,4 +12,5 @@ public interface LocalUser extends EJBLocalObject {
     public String getSurname();
     public String getPassword();
     public void setPassword(String password);
+    public int getGroup();
 }

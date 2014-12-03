@@ -59,8 +59,6 @@
       </method>
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
-  </assembly-descriptor>
-  <assembly-descriptor>
     <container-transaction>
       <method>
         <ejb-name>TaskEJB</ejb-name>

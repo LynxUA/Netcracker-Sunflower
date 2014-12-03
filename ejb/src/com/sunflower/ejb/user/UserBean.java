@@ -22,6 +22,7 @@ public class UserBean implements EntityBean {
     private String name;
     private String surname;
     private String password;
+
     private int group;
 
     private EntityContext entityContext;
@@ -41,7 +42,7 @@ public class UserBean implements EntityBean {
                 System.out.println("something wrong with connection");
 
             }
-            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE LOGIN = ?");
+            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE LOGIN LIKE ?");
             statement.setString(1, key);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -84,7 +85,7 @@ public class UserBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("DELETE FROM SUN_USER WHERE LOGIN = ?");
+            statement = connection.prepareStatement("DELETE FROM SUN_USER WHERE LOGIN LIKE ?");
             statement.setString(1, login);
             if (statement.executeUpdate() < 1) {
                 throw new RemoveException("Exception while deleting");
@@ -116,19 +117,26 @@ public class UserBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("SELECT EMAIL, NAME, SURNAME, PASSWORD FROM SUN_USER WHERE LOGIN = ?");
+            statement = connection.prepareStatement("SELECT EMAIL, NAME, SURNAME, PASSWORD, ID_GROUP_USER FROM SUN_USER WHERE LOGIN LIKE ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 throw new NoSuchEntityException("...");
             }
             email = resultSet.getString(1);
+
             name = resultSet.getString(2);
+
             surname = resultSet.getString(3);
+
             password = resultSet.getString(4);
+
             group = resultSet.getInt(5);
 
+
         } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -147,15 +155,22 @@ public class UserBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement(
-                    "UPDATE SUN_USER SET EMAIL = ?, NAME = ?, SURNAME = ?, PASSWORD = ?, ID_GROUP_USER = ? WHERE LOGIN = ?");
+            statement = connection.prepareStatement("UPDATE SUN_USER SET EMAIL = ?, NAME = ?, SURNAME = ?, PASSWORD = ?, ID_GROUP_USER = ? WHERE LOGIN LIKE ?");
+
             statement.setString(1, email);
+
             statement.setString(2, name);
+
             statement.setString(3, surname);
+
             statement.setString(4, password);
+
             statement.setInt(5, group);
+
             statement.setString(6, login);
+
             if (statement.executeUpdate() < 1) {
+                System.out.println("bad statement");
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
@@ -225,6 +240,46 @@ public class UserBean implements EntityBean {
 
     }
 
+    public String ejbFindUser(String login, String password) throws FinderException, BadPasswordException {
+        ejbFindByPrimaryKey(login);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            try {
+                connection = dataSource.getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN LIKE ?) AND (PASSWORD LIKE ?)");
+            statement.setString(1, login);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new BadPasswordException();
+            }
+            return login;
+        }/*catch(BadPasswordException e){
+            System.out.println("????????????????????????");
+            throw e;
+        }*/
+        catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public String getLogin() {
         return login;
     }
@@ -248,4 +303,9 @@ public class UserBean implements EntityBean {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int getGroup() {
+        return group;
+    }
+
 }
