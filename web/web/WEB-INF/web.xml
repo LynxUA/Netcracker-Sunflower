@@ -110,6 +110,7 @@
         <local>com.sunflower.ejb.user.LocalUser</local>
         <ejb-link>UserEJB</ejb-link>
     </ejb-local-ref>
+
     <ejb-local-ref>
         <ejb-ref-name>ejb/Task</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
@@ -118,5 +119,11 @@
         <ejb-link>TaskEJB</ejb-link>
     </ejb-local-ref>
 
-
+    <ejb-local-ref>
+        <ejb-ref-name>ejb/ServiceOrder</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome</local-home>
+        <local>com.sunflower.ejb.ServiceOrder.LocalServiceOrder</local>
+        <ejb-link>ServiceOrderEJB</ejb-link>
+    </ejb-local-ref>
 </web-app>
