@@ -114,10 +114,6 @@
         <servlet-name>ExitServlet</servlet-name>
         <url-pattern>/exit</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TestServlet</servlet-name>
-        <url-pattern>/test</url-pattern>
-    </servlet-mapping>
 
     <ejb-local-ref>
         <ejb-ref-name>ejb/User</ejb-ref-name>
