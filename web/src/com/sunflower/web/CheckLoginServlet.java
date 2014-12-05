@@ -27,7 +27,7 @@ public class CheckLoginServlet extends HttpServlet {
         }
 
         //String login = request.getParameter("login").toLowerCase();
-        String login = request.getParameter("login");
+        String login = request.getParameter("login").toLowerCase();
         String password = request.getParameter("password");
         request.setAttribute("login", login);
         if(login == null || login.isEmpty() || password == null || password.isEmpty()){
@@ -59,12 +59,13 @@ public class CheckLoginServlet extends HttpServlet {
         } catch (Exception e) {
             //ejb exception
             e.printStackTrace();
+
             request.getRequestDispatcher("login.jsp").forward(request,response);
             return;
         }
         request.getSession().setAttribute("login", user.getLogin());
         request.getSession().setAttribute("status", user.getGroup());
-        response.sendRedirect("welcome");
+        response.sendRedirect("/webWeb/");
 //        if(validateUser(login, password){
 //            //code for loggining in
 //            //request.getSession().setAttribute("user",user);
