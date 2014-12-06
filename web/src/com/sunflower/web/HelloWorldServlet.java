@@ -4,11 +4,9 @@ import com.sunflower.ejb.HelloWorld;
 import com.sunflower.ejb.HelloWorldHome;
 
 import javax.ejb.CreateException;
-import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +32,7 @@ public class HelloWorldServlet extends HttpServlet {
         }
 
         try {
-            helloWorldBean = ((HelloWorldHome) ic.lookup("java:global/ear_ear/ejb/HelloWorldEJB!com.sunflower.ejb.HelloWorldHome")).create();
+            helloWorldBean = ((HelloWorldHome) ic.lookup("java:global/ear_ear_exploded/ejb/HelloWorldEJB!com.sunflower.ejb.HelloWorldHome")).create();
         } catch (NamingException e) {
             e.printStackTrace();
         } catch (CreateException e) {
