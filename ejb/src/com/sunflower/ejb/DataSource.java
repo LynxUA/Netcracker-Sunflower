@@ -1,23 +1,25 @@
 package com.sunflower.ejb;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import oracle.jdbc.pool.OracleDataSource;
+
+import java.sql.SQLException;
 
 /**
  * Created by denysburlakov on 03.12.14.
  */
 public class DataSource {
-    private static javax.sql.DataSource dataSource;
-
+    private static OracleDataSource dataSource;
     public static void setDataSource(){
         try {
-            InitialContext ic = new InitialContext();
-            dataSource =  (javax.sql.DataSource) ic.lookup("jdbc_local/XE");//change to your JDBC Resouces
-        } catch (NamingException e) {
+            dataSource = new OracleDataSource();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+        dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
+        dataSource.setUser("sunflower");
+        dataSource.setPassword("sunflower14");
     }
-    public static javax.sql.DataSource getDataSource(){
+    public static OracleDataSource getDataSource(){
         return dataSource;
     }
 }
