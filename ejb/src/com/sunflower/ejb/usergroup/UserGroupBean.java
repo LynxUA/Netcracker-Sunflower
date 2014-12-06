@@ -60,6 +60,12 @@ public class UserGroupBean implements EntityBean {
     public void unsetEntityContext() throws EJBException {
 
         this.entityContext = null;
+
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void ejbRemove() throws RemoveException, EJBException {
@@ -95,7 +101,7 @@ public class UserGroupBean implements EntityBean {
 
     //Loads stored data to bean from DB
     public void ejbLoad() throws EJBException {
-
+        primaryKey = (Integer)entityContext.getPrimaryKey();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
