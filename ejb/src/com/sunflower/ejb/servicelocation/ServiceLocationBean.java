@@ -1,4 +1,4 @@
-package com.sunflower.ejb.task;
+package com.sunflower.ejb.servicelocation;
 
 import com.sunflower.ejb.DataSource;
 
@@ -9,19 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by denysburlakov on 03.12.14.
+ * Created by denysburlakov on 05.12.14.
  */
-
-public class TaskBean implements EntityBean {
-    private int id_task;
-    private String description;
-    private String status;
-    private int id_group_user;
+public class ServiceLocationBean implements EntityBean {
+    private int id_serv_location;
+    private String location;
+    private int id_prov_location;
     private int id_order;
-
     private EntityContext entityContext;
-    public TaskBean() {
 
+    public ServiceLocationBean() {
     }
 
     public Integer ejbFindByPrimaryKey(Integer key) throws FinderException {
@@ -36,7 +33,7 @@ public class TaskBean implements EntityBean {
                 System.out.println("something wrong with connection");
 
             }
-            statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE ID_TASK = ?");
+            statement = connection.prepareStatement("SELECT ID_SERV_LOCATION FROM SERVICE_LOCATION WHERE ID_SERV_LOCATION = ?");
             statement.setInt(1, key);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -72,8 +69,8 @@ public class TaskBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("DELETE FROM TASK WHERE ID_TASK = ?");
-            statement.setInt(1, id_task);
+            statement = connection.prepareStatement("DELETE FROM SERVICE_LOCATION WHERE ID_SERV_LOCATION = ?");
+            statement.setInt(1, id_serv_location);
             if (statement.executeUpdate() < 1) {
                 throw new RemoveException("Exception while deleting");
             }
@@ -99,21 +96,20 @@ public class TaskBean implements EntityBean {
     }
 
     public void ejbLoad() throws EJBException {
-        id_task = (Integer) entityContext.getPrimaryKey();
+        id_serv_location = (Integer) entityContext.getPrimaryKey();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT DESCRITION, STATUS, ID_GROUP_USER, ID_ORDER FROM TASK WHERE ID_TASK = ?");
-            statement.setInt(1, id_task);
+            statement = connection.prepareStatement("SELECT LOCATION, ID_PROV_LOCATION, ID_ORDER FROM SERVICE_LOCATION WHERE ID_SERV_LOCATION = ?");
+            statement.setInt(1, id_serv_location);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 throw new NoSuchEntityException("...");
             }
-            description = resultSet.getString(1);
-            status = resultSet.getString(2);
-            id_group_user = resultSet.getInt(3);
-            id_order = resultSet.getInt(4);
+            location = resultSet.getString(1);
+            id_prov_location = resultSet.getInt(2);
+            id_order = resultSet.getInt(3);
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
@@ -134,12 +130,11 @@ public class TaskBean implements EntityBean {
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement(
-                    "UPDATE TASK SET DESCRIPTION = ?, STATUS = ?, ID_GROUP_USER = ?, ID_ORDER = ? WHERE ID_TASK = ?");
-            statement.setString(1, description);
-            statement.setString(2, status);
-            statement.setInt(3, id_group_user);
-            statement.setInt(4, id_order);
-            statement.setInt(5, id_task);
+                    "UPDATE SERVICE_LOCATION SET LOCATION = ?, ID_PROV_LOCATION = ?, ID_ORDER = ? WHERE ID_SERV_LOCATION = ?");
+            statement.setString(1, location);
+            statement.setInt(2, id_prov_location);
+            statement.setInt(3, id_order);
+            statement.setInt(4, id_serv_location);
             if (statement.executeUpdate() < 1) {
                 throw new NoSuchEntityException("...");
             }
@@ -156,10 +151,9 @@ public class TaskBean implements EntityBean {
         }
     }
 
-    public Integer ejbCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
-        this.description = description;
-        this.status = status;
-        this.id_group_user = id_group_user;
+    public Integer ejbCreate(String location, int id_prov_location, int id_order) throws CreateException {
+        this.location = location;
+        this.id_prov_location = id_prov_location;
         this.id_order = id_order;
         Connection connection = null;
         PreparedStatement statement = null;
@@ -169,17 +163,16 @@ public class TaskBean implements EntityBean {
             } catch (SQLException e) {
                 throw new EJBException("Ошибка dataSource");
             }
-            statement = connection.prepareStatement("INSERT INTO TASK"
-                    + "(DESCRIPTION, STATUS, ID_GROUP_USER, ID_ORDER) VALUES(?, ?, ?, ?)");
-            statement.setString(1, description);
-            statement.setString(2, status);
-            statement.setInt(3, id_group_user);
-            statement.setInt(4, id_order);
+            statement = connection.prepareStatement("INSERT INTO SERVICE_LOCATION"
+                    + "(LOCATION, ID_PROV_LOCATION, ID_ORDER) VALUES(?, ?, ?)");
+            statement.setString(1, location);
+            statement.setInt(2, id_prov_location);
+            statement.setInt(3, id_order);
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
             }
-            id_task = statement.getGeneratedKeys().getInt(1);
-            return id_task;
+            id_serv_location = statement.getGeneratedKeys().getInt(1);
+            return id_serv_location;
         } catch (SQLException e) {
             //throw new EJBException("Ошибка INSERT");
             System.out.println(e.getMessage());
@@ -195,36 +188,31 @@ public class TaskBean implements EntityBean {
         return null;
     }
 
-    public void ejbPostCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
+    public void ejbPostCreate(String location, int id_prov_location, int id_order) throws CreateException {
 
     }
 
-    public int getId_group_user() {
-        return id_group_user;
-    }
-
-    public int getId_task() {
-        return id_task;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
+    public int getId_prov_location() {
+        return id_prov_location;
     }
 
     public int getId_order() {
         return id_order;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
+    public void setId_order(int id_order) {
+        this.id_order = id_order;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setId_prov_location(int id_prov_location) {
+        this.id_prov_location = id_prov_location;
+    }
 }

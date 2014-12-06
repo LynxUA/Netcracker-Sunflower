@@ -48,6 +48,42 @@
       <ejb-link>TaskEJB</ejb-link>
     </ejb-local-ref>
   </entity>
+    <entity>
+      <ejb-name>ServiceLocationEJB</ejb-name>
+      <local-home>com.sunflower.ejb.servicelocation.LocalServiceLocationHome</local-home>
+      <local>com.sunflower.ejb.servicelocation.LocalServiceLocation</local>
+      <ejb-class>com.sunflower.ejb.servicelocation.ServiceLocationBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/ServiceLocation</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.servicelocation.LocalServiceLocationHome</local-home>
+        <local>com.sunflower.ejb.servicelocation.LocalServiceLocation</local>
+        <ejb-link>ServiceLocationEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
+
+
+
+
+    <entity>
+      <ejb-name>ServiceOrderEJB</ejb-name>
+      <local-home>com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome</local-home>
+      <local>com.sunflower.ejb.ServiceOrder.LocalServiceOrder</local>
+      <ejb-class>com.sunflower.ejb.ServiceOrder.ServiceOrderBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/Task</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome</local-home>
+        <local>com.sunflower.ejb.ServiceOrder.LocalServiceOrder</local>
+        <ejb-link>ServiceOrderEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
 
   </enterprise-beans>
 
@@ -59,13 +95,31 @@
       </method>
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
+
+    <container-transaction>
+    <method>
+      <ejb-name>TaskEJB</ejb-name>
+      <method-name>*</method-name>
+    </method>
+    <trans-attribute>Required</trans-attribute>
+  </container-transaction>
     <container-transaction>
       <method>
-        <ejb-name>TaskEJB</ejb-name>
+        <ejb-name>ServiceLocationEJB</ejb-name>
         <method-name>*</method-name>
       </method>
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
+
+    <container-transaction>
+      <method>
+        <ejb-name>ServiceOrderEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+
   </assembly-descriptor>
+
 </ejb-jar>
 
