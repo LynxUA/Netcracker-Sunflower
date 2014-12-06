@@ -12,7 +12,7 @@ public class DataSource {
     public static void setDataSource(){
         try {
             InitialContext ic = new InitialContext();
-            dataSource =  (javax.sql.DataSource) ic.lookup("jdbc_local/XE");
+            dataSource =  (javax.sql.DataSource) ic.lookup("jdbc_local/XE");//change to your JDBC Resouces
         } catch (NamingException e) {
             e.printStackTrace();
         }
