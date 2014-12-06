@@ -5,7 +5,7 @@
 
   <enterprise-beans>
 
-    <session>
+    <session >
       <ejb-name>HelloWorldEJB</ejb-name>
       <home>com.sunflower.ejb.HelloWorldHome</home>
       <remote>com.sunflower.ejb.HelloWorld</remote>
@@ -14,6 +14,7 @@
       <ejb-class>com.sunflower.ejb.HelloWorldBean</ejb-class>
       <session-type>Stateless</session-type>
       <transaction-type>Container</transaction-type>
+
     </session>
 
     <entity>
@@ -32,6 +33,7 @@
         <local>com.sunflower.ejb.user.LocalUser</local>
         <ejb-link>UserEJB</ejb-link>
       </ejb-local-ref>
+
     </entity>
 
   <entity>
@@ -51,6 +53,42 @@
       <ejb-link>TaskEJB</ejb-link>
     </ejb-local-ref>
   </entity>
+    <entity>
+      <ejb-name>ServiceLocationEJB</ejb-name>
+      <local-home>com.sunflower.ejb.servicelocation.LocalServiceLocationHome</local-home>
+      <local>com.sunflower.ejb.servicelocation.LocalServiceLocation</local>
+      <ejb-class>com.sunflower.ejb.servicelocation.ServiceLocationBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/ServiceLocation</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.servicelocation.LocalServiceLocationHome</local-home>
+        <local>com.sunflower.ejb.servicelocation.LocalServiceLocation</local>
+        <ejb-link>ServiceLocationEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
+
+
+
+
+    <entity>
+      <ejb-name>ServiceOrderEJB</ejb-name>
+      <local-home>com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome</local-home>
+      <local>com.sunflower.ejb.ServiceOrder.LocalServiceOrder</local>
+      <ejb-class>com.sunflower.ejb.ServiceOrder.ServiceOrderBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/Task</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome</local-home>
+        <local>com.sunflower.ejb.ServiceOrder.LocalServiceOrder</local>
+        <ejb-link>ServiceOrderEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
 
     <entity>
       <ejb-name>UserGroupEJB</ejb-name>
@@ -72,6 +110,15 @@
   </enterprise-beans>
 
   <assembly-descriptor>
+
+    <container-transaction>
+      <method>
+        <ejb-name>ServiceLocationEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+    
     <container-transaction>
       <method>
         <ejb-name>UserEJB</ejb-name>
@@ -95,6 +142,15 @@
       </method>
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
+
+    <container-transaction>
+      <method>
+        <ejb-name>ServiceOrderEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+
   </assembly-descriptor>
 
 </ejb-jar>

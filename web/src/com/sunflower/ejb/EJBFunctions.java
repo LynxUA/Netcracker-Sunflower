@@ -1,6 +1,9 @@
 package com.sunflower.ejb;
 
+import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
+import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
 import com.sunflower.ejb.task.LocalTask;
+import com.sunflower.ejb.task.LocalTaskHome;
 import com.sunflower.ejb.user.BadPasswordException;
 import com.sunflower.ejb.user.LocalUser;
 import com.sunflower.ejb.user.LocalUserHome;
@@ -17,7 +20,7 @@ public class EJBFunctions {
     private EJBFunctions(){
 
     }
-    public static String createUser(String login, String email, String name, String surname, String password){
+    public static LocalUser createUser(String login, String email, String name, String surname, String password) throws CreateException {
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -31,13 +34,9 @@ public class EJBFunctions {
             e.printStackTrace();
         }
         LocalUser user = null;
-        try {
-            if (home != null) {
-                user = home.create(login, email, name, surname, password, 1);
-                return user.getLogin();
-            }
-        } catch (CreateException e) {
-            return null;
+        if (home != null) {
+            user = home.create(login, email, name, surname, password, 1);
+            return user;
         }
         return null;
     }
@@ -64,5 +63,74 @@ public class EJBFunctions {
             throw new Exception("Error with EJBs");
         }
     }
+    public static LocalTask createTask(String description, String status, int id_group_user, int id_order) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
 
+        if (home != null) {
+            try {
+                return home.create(description, status, id_group_user, id_order);
+            } catch (CreateException e) {
+                e.printStackTrace();
+            }
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+        return null;
+    }
+
+    public static LocalServiceOrder createServiceOrder(Integer id, String status, String scenarion, int group_id){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrder service_order = null;
+        try {
+            service_order = home.create(status, scenarion, group_id, id);
+            return service_order;
+        } catch (CreateException e) {
+            return null;
+        }
+    }
+
+    public static Object findServiceOrder(int id) {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrder service_order = null;
+        try {
+            service_order = home.findByPrimaryKey(id);
+            return service_order;
+        } catch (FinderException e) {
+            return null;
+        }
+
+    }
 }

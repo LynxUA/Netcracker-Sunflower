@@ -1,6 +1,6 @@
-package com.sunflower.ejb.task;
+package com.sunflower.ejb.ServiceOrder;
 
-import com.sunflower.ejb.DataSource;
+import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
 import java.sql.Connection;
@@ -9,18 +9,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by denysburlakov on 03.12.14.
+ * Created by Andriy on 12/3/2014.
  */
-
-public class TaskBean implements EntityBean {
-    private int id_task;
-    private String description;
+public class ServiceOrderBean implements EntityBean {
     private String status;
-    private int id_group_user;
-    private int id_order;
+    private String scenario;
+    private int group_id;
+    private int id;
 
     private EntityContext entityContext;
-    public TaskBean() {
+    private OracleDataSource dataSource;
+
+
+    public ServiceOrderBean() {
 
     }
 
@@ -29,20 +30,20 @@ public class TaskBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             try {
-                connection = DataSource.getDataSource().getConnection();
+                connection = dataSource.getConnection();
             }catch(SQLException e)
             {
                 System.out.println(e.getErrorCode());
                 System.out.println("something wrong with connection");
 
             }
-            statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE ID_TASK = ?");
+            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
             statement.setInt(1, key);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 throw new ObjectNotFoundException("...");
             }
-            return key;
+            return Integer.valueOf(key);
         } catch (SQLException e) {
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
@@ -58,9 +59,14 @@ public class TaskBean implements EntityBean {
 
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
-        if(DataSource.getDataSource()==null){
-            DataSource.setDataSource();
+        try {
+            dataSource = new OracleDataSource();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
+        dataSource.setUser("sunflower");
+        dataSource.setPassword("sunflower14");
     }
 
     public void unsetEntityContext() throws EJBException {
@@ -71,9 +77,9 @@ public class TaskBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("DELETE FROM TASK WHERE ID_TASK = ?");
-            statement.setInt(1, id_task);
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
+            statement.setInt(1, id);
             if (statement.executeUpdate() < 1) {
                 throw new RemoveException("Exception while deleting");
             }
@@ -99,21 +105,20 @@ public class TaskBean implements EntityBean {
     }
 
     public void ejbLoad() throws EJBException {
-        id_task = (Integer) entityContext.getPrimaryKey();
+        id = (Integer) entityContext.getPrimaryKey();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT DESCRITION, STATUS, ID_GROUP_USER, ID_ORDER FROM TASK WHERE ID_TASK = ?");
-            statement.setInt(1, id_task);
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement("SELECT STATUS, SCENARIO,ID_GROUP_USER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 throw new NoSuchEntityException("...");
             }
-            description = resultSet.getString(1);
-            status = resultSet.getString(2);
-            id_group_user = resultSet.getInt(3);
-            id_order = resultSet.getInt(4);
+            status = resultSet.getString(1);
+            scenario = resultSet.getString(2);
+            group_id = resultSet.getInt(3);
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
@@ -132,14 +137,14 @@ public class TaskBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = DataSource.getDataSource().getConnection();
+            connection = dataSource.getConnection();
+
             statement = connection.prepareStatement(
-                    "UPDATE TASK SET DESCRIPTION = ?, STATUS = ?, ID_GROUP_USER = ?, ID_ORDER = ? WHERE ID_TASK = ?");
-            statement.setString(1, description);
-            statement.setString(2, status);
-            statement.setInt(3, id_group_user);
-            statement.setInt(4, id_order);
-            statement.setInt(5, id_task);
+                    "UPDATE SERVICE_ORDER SET STATUS = ?, SCENARIO = ?, ID_GROUP_USER = ? WHERE ID_ORDER = ?");
+            statement.setString(1, status);
+            statement.setString(2, scenario);
+            statement.setInt(3, group_id);
+            statement.setInt(4, id);
             if (statement.executeUpdate() < 1) {
                 throw new NoSuchEntityException("...");
             }
@@ -156,30 +161,38 @@ public class TaskBean implements EntityBean {
         }
     }
 
-    public Integer ejbCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
-        this.description = description;
+
+    public Integer ejbCreate(String status, String scenario, int group_id, int id) throws CreateException {
+        try {
+            ejbFindByPrimaryKey(id);
+            throw new DuplicateKeyException("...");
+        } catch (FinderException e) { /*
+        Как это ни странно, именно возникновение исключения
+        дает нам повод и возможность выполнять дальнейшие
+        действия. Поэтому здесь ничего не происходит.
+      */}
+        this.id = id;
         this.status = status;
-        this.id_group_user = id_group_user;
-        this.id_order = id_order;
+        this.scenario = scenario;
+        this.group_id = group_id;
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             try{
-                connection = DataSource.getDataSource().getConnection();
+                connection = dataSource.getConnection();
             } catch (SQLException e) {
                 throw new EJBException("Ошибка dataSource");
             }
-            statement = connection.prepareStatement("INSERT INTO TASK"
-                    + "(DESCRIPTION, STATUS, ID_GROUP_USER, ID_ORDER) VALUES(?, ?, ?, ?)");
-            statement.setString(1, description);
+            statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER"
+                    + "(ID_ORDER,STATUS,SCENARIO,ID_GROUP_USER) VALUES(?, ?, ?, ?)");
+            statement.setInt(1, id);
             statement.setString(2, status);
-            statement.setInt(3, id_group_user);
-            statement.setInt(4, id_order);
+            statement.setString(3, scenario);
+            statement.setInt(4, group_id);
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
             }
-            id_task = statement.getGeneratedKeys().getInt(1);
-            return id_task;
+            return id;
         } catch (SQLException e) {
             //throw new EJBException("Ошибка INSERT");
             System.out.println(e.getMessage());
@@ -195,36 +208,28 @@ public class TaskBean implements EntityBean {
         return null;
     }
 
-    public void ejbPostCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
+    public void ejbPostCreate(String status, String scenario, int group_id, int id) throws CreateException {
 
-    }
-
-    public int getId_group_user() {
-        return id_group_user;
-    }
-
-    public int getId_task() {
-        return id_task;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public int getId_order() {
-        return id_order;
+    public String getScenario() {
+        return scenario;
     }
 
+    public int getUserGroup() {
+        return group_id;
+    }
+
+    public int getId() {
+        return id;
+    }
 
 }
