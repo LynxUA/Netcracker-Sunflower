@@ -1,9 +1,8 @@
 package com.sunflower.ejb.usergroup;
 
+import com.sunflower.ejb.DataSource;
+
 import javax.ejb.*;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,12 +48,10 @@ public class UserGroupBean implements EntityBean {
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
         try {
-            InitialContext ic = new InitialContext();
-            DataSource dataSource =  (DataSource) ic.lookup("jdbc/XE");
-            connection = dataSource.getConnection();
 
-    } catch (NamingException e) {
-        e.printStackTrace();
+            if(DataSource.getDataSource()==null) DataSource.setDataSource();
+            connection = DataSource.getDataSource().getConnection();
+
     } catch (SQLException e) {
         e.printStackTrace();
     }
@@ -212,18 +209,19 @@ public class UserGroupBean implements EntityBean {
 
         try {
 
-            ps = connection.prepareStatement("INSERT INTO user_group (position, group_name)" +
-                    " VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+            String query = "INSERT INTO user_group (position, group_name) VALUES (?,?)";
+
+            ps = connection.prepareStatement(query, new String[]{"ID_GROUP_USER"});
             ps.setString(1,position);
             ps.setString(2,groupName);
             ps.executeUpdate();
 
             rs = ps.getGeneratedKeys();
 
-            if (rs.next()){
+            while(rs.next()){
                 primaryKey = rs.getInt(1);
-                System.out.println("*********" + primaryKey + "**********");
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
