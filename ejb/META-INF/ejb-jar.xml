@@ -2,9 +2,10 @@
 <!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
 
 <ejb-jar>
+
   <enterprise-beans>
 
-    <session >
+    <session>
       <ejb-name>HelloWorldEJB</ejb-name>
       <home>com.sunflower.ejb.HelloWorldHome</home>
       <remote>com.sunflower.ejb.HelloWorld</remote>
@@ -13,8 +14,8 @@
       <ejb-class>com.sunflower.ejb.HelloWorldBean</ejb-class>
       <session-type>Stateless</session-type>
       <transaction-type>Container</transaction-type>
-
     </session>
+
     <entity>
       <ejb-name>UserEJB</ejb-name>
       <local-home>com.sunflower.ejb.user.LocalUserHome</local-home>
@@ -23,6 +24,7 @@
       <persistence-type>Bean</persistence-type>
       <prim-key-class>java.lang.String</prim-key-class>
       <reentrant>True</reentrant>
+
       <ejb-local-ref>
         <ejb-ref-name>ejb/User</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
@@ -30,8 +32,8 @@
         <local>com.sunflower.ejb.user.LocalUser</local>
         <ejb-link>UserEJB</ejb-link>
       </ejb-local-ref>
-
     </entity>
+
   <entity>
     <ejb-name>TaskEJB</ejb-name>
     <local-home>com.sunflower.ejb.task.LocalTaskHome</local-home>
@@ -40,6 +42,7 @@
     <persistence-type>Bean</persistence-type>
     <prim-key-class>java.lang.Integer</prim-key-class>
     <reentrant>True</reentrant>
+
     <ejb-local-ref>
       <ejb-ref-name>ejb/Task</ejb-ref-name>
       <ejb-ref-type>Entity</ejb-ref-type>
@@ -49,6 +52,23 @@
     </ejb-local-ref>
   </entity>
 
+    <entity>
+      <ejb-name>UserGroupEJB</ejb-name>
+      <local-home>com.sunflower.ejb.usergroup.LocalUserGroupHome</local-home>
+      <local>com.sunflower.ejb.usergroup.LocalUserGroup</local>
+      <ejb-class>com.sunflower.ejb.usergroup.UserGroupBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/UserGroup</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.usergroup.LocalUserGroupHome</local-home>
+        <local>com.sunflower.ejb.usergroup.LocalUserGroup</local>
+        <ejb-link>UserGroupEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
   </enterprise-beans>
 
   <assembly-descriptor>
@@ -59,6 +79,7 @@
       </method>
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
+
     <container-transaction>
       <method>
         <ejb-name>TaskEJB</ejb-name>
@@ -66,6 +87,15 @@
       </method>
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
+
+    <container-transaction>
+      <method>
+        <ejb-name>UserGroupEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
   </assembly-descriptor>
+
 </ejb-jar>
 
