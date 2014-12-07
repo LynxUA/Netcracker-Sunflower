@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class ServiceOrderBean implements EntityBean {
     private String status;
     private String scenario;
-    private int group_id;
+    private String login;
     private int id;
 
     private EntityContext entityContext;
@@ -110,7 +110,7 @@ public class ServiceOrderBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("SELECT STATUS, SCENARIO,ID_GROUP_USER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
+            statement = connection.prepareStatement("SELECT STATUS, SCENARIO,LOGIN FROM SERVICE_ORDER WHERE ID_ORDER = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -118,7 +118,7 @@ public class ServiceOrderBean implements EntityBean {
             }
             status = resultSet.getString(1);
             scenario = resultSet.getString(2);
-            group_id = resultSet.getInt(3);
+            login = resultSet.getString(3);
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
@@ -140,10 +140,10 @@ public class ServiceOrderBean implements EntityBean {
             connection = dataSource.getConnection();
 
             statement = connection.prepareStatement(
-                    "UPDATE SERVICE_ORDER SET STATUS = ?, SCENARIO = ?, ID_GROUP_USER = ? WHERE ID_ORDER = ?");
+                    "UPDATE SERVICE_ORDER SET STATUS = ?, SCENARIO = ?, LOGIN = ? WHERE ID_ORDER = ?");
             statement.setString(1, status);
             statement.setString(2, scenario);
-            statement.setInt(3, group_id);
+            statement.setString(3, login);
             statement.setInt(4, id);
             if (statement.executeUpdate() < 1) {
                 throw new NoSuchEntityException("...");
@@ -162,7 +162,32 @@ public class ServiceOrderBean implements EntityBean {
     }
 
 
-    public Integer ejbCreate(String status, String scenario, int group_id, int id) throws CreateException {
+    public void ejbPostCreate(String status, String scenario, int group_id, int id) throws CreateException {
+
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getScenario() {
+        return scenario;
+    }
+
+    public String getUserLogin() {
+        return login;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public Integer ejbCreate(String status, String scenario, String login, int id) throws CreateException {
         try {
             ejbFindByPrimaryKey(id);
             throw new DuplicateKeyException("...");
@@ -174,7 +199,7 @@ public class ServiceOrderBean implements EntityBean {
         this.id = id;
         this.status = status;
         this.scenario = scenario;
-        this.group_id = group_id;
+        this.login = login;
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -184,11 +209,11 @@ public class ServiceOrderBean implements EntityBean {
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER"
-                    + "(ID_ORDER,STATUS,SCENARIO,ID_GROUP_USER) VALUES(?, ?, ?, ?)");
+                    + "(ID_ORDER,STATUS,SCENARIO,LOGIN) VALUES(?, ?, ?, ?)");
             statement.setInt(1, id);
             statement.setString(2, status);
             statement.setString(3, scenario);
-            statement.setInt(4, group_id);
+            statement.setString(4, login);
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
             }
@@ -208,28 +233,7 @@ public class ServiceOrderBean implements EntityBean {
         return null;
     }
 
-    public void ejbPostCreate(String status, String scenario, int group_id, int id) throws CreateException {
+    public void ejbPostCreate(String status, String scenario, String login, int id) throws CreateException {
 
     }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getScenario() {
-        return scenario;
-    }
-
-    public int getUserGroup() {
-        return group_id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
 }

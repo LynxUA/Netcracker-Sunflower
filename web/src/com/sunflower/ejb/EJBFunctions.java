@@ -89,7 +89,7 @@ public class EJBFunctions {
         return null;
     }
 
-    public static LocalServiceOrder createServiceOrder(Integer id, String status, String scenarion, int group_id){
+    public static LocalServiceOrder createServiceOrder(Integer id, String status, String scenarion, String login){
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -104,14 +104,14 @@ public class EJBFunctions {
         }
         LocalServiceOrder service_order = null;
         try {
-            service_order = home.create(status, scenarion, group_id, id);
+            service_order = home.create(status, scenarion, login, id);
             return service_order;
         } catch (CreateException e) {
             return null;
         }
     }
 
-    public static Object findServiceOrder(int id) {
+    public static LocalServiceOrder findServiceOrder(int id) {
         InitialContext ic = null;
         try {
             ic = new InitialContext();

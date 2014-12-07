@@ -56,12 +56,12 @@
         <servlet-class>com.sunflower.web.RegisterEmployeeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>TestServlet</servlet-name>
-        <servlet-class>com.sunflower.web.TestServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ExitServlet</servlet-name>
         <servlet-class>com.sunflower.web.ExitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserSO</servlet-name>
+        <jsp-file>userSO.jsp</jsp-file>
     </servlet>
 
 
@@ -121,6 +121,10 @@
     <servlet-mapping>
         <servlet-name>ExitServlet</servlet-name>
         <url-pattern>/exit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserSO</servlet-name>
+        <url-pattern>/user_so</url-pattern>
     </servlet-mapping>
 
     <ejb-local-ref>
