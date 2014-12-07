@@ -10,15 +10,13 @@ import java.io.IOException;
 /**
  * Created by denysburlakov on 29.11.14.
  */
-@WebServlet(name = "LocationServlet")
-public class LocationServlet extends HttpServlet {
+@WebServlet(name = "RequestServlet")
+public class OrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().setAttribute("location",request.getParameter("x")+" "+request.getParameter("y"));
-        request.getSession().setAttribute("y", Float.valueOf((String)(request.getParameter("y"))));
-        response.sendRedirect("/webWeb/");
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("location.jsp").forward(request, response);
+        request.getRequestDispatcher("order.jsp").forward(request, response);
     }
 }

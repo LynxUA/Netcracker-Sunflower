@@ -33,7 +33,7 @@
     </servlet>
     <servlet>
         <servlet-name>RequestServlet</servlet-name>
-        <servlet-class>com.sunflower.web.RequestServlet</servlet-class>
+        <servlet-class>com.sunflower.web.OrderServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LocationServlet</servlet-name>
@@ -52,12 +52,20 @@
         <servlet-class>com.sunflower.web.RegisterEmployeeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>TestServlet</servlet-name>
-        <servlet-class>com.sunflower.web.TestServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ExitServlet</servlet-name>
         <servlet-class>com.sunflower.web.ExitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GeneratePriceServlet</servlet-name>
+        <servlet-class>com.sunflower.system.GeneratePricesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveLocationServlet</servlet-name>
+        <servlet-class>com.sunflower.system.SaveLocationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.sunflower.web.OrderServlet</servlet-class>
     </servlet>
 
 
@@ -113,6 +121,18 @@
     <servlet-mapping>
         <servlet-name>ExitServlet</servlet-name>
         <url-pattern>/exit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GeneratePriceServlet</servlet-name>
+        <url-pattern>/generateprices</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveLocationServlet</servlet-name>
+        <url-pattern>/savelocation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
     </servlet-mapping>
 
     <ejb-local-ref>
