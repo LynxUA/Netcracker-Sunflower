@@ -77,7 +77,7 @@ public class SignUpServlet extends HttpServlet {
 
         if(password == null || repeat_password == null ||
                 (password.compareTo("") == 0) || (repeat_password.compareTo("") == 0)) {
-                request.setAttribute("password_error", "Type the passwords");
+            request.setAttribute("password_error", "Type the passwords");
             request.getRequestDispatcher("signup.jsp").forward(request, response);
             return;
         }
@@ -121,7 +121,7 @@ public class SignUpServlet extends HttpServlet {
 //            e.printStackTrace();
 //        }
         //MailServer.messageAfterRegistration(name,password,email,login);
-
+        MailServer.messageAfterRegistration(name,password,email,login);
         response.sendRedirect("/webWeb");
 
     }
