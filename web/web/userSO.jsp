@@ -15,7 +15,7 @@
   <title>User service orders</title>
 </head>
 <body>
-//CHange it to getting all user`s SOs
+--CHange it to getting all user`s SOs
 <%ArrayList<LocalServiceOrder> serviceOrders = new ArrayList<LocalServiceOrder>();
   serviceOrders.add((LocalServiceOrder) EJBFunctions.findServiceOrder(1));%>
 
