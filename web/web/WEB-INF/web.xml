@@ -188,5 +188,12 @@
         <local>com.sunflower.ejb.usergroup.LocalUserGroup</local>
         <ejb-link>UserGroupEJB</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ejb/ProviderLocation</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome</local-home>
+        <local>com.sunflower.ejb.ProviderLocation.LocalProviderLocation</local>
+        <ejb-link>ProviderLocationEJB</ejb-link>
+    </ejb-local-ref>
 
 </web-app>
