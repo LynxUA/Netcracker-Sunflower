@@ -1,5 +1,6 @@
 package com.sunflower.ejb.ServiceOrder;
 
+import com.sunflower.ejb.DataSource;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
@@ -59,14 +60,7 @@ public class ServiceOrderBean implements EntityBean {
 
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
-        try {
-            dataSource = new OracleDataSource();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
-        dataSource.setUser("sunflower");
-        dataSource.setPassword("sunflower14");
+        dataSource = DataSource.getDataSource();
     }
 
     public void unsetEntityContext() throws EJBException {
