@@ -33,7 +33,7 @@
     </servlet>
     <servlet>
         <servlet-name>RequestServlet</servlet-name>
-        <servlet-class>com.sunflower.web.RequestServlet</servlet-class>
+        <servlet-class>com.sunflower.web.OrderServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LocationServlet</servlet-name>
@@ -57,7 +57,19 @@
     </servlet>
     <servlet>
         <servlet-name>ExitServlet</servlet-name>
-        <servlet-class>com.sunflower.web.ExitServlet</servlet-class>
+        <servlet-class>com.sunflower.system.ExitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GeneratePriceServlet</servlet-name>
+        <servlet-class>com.sunflower.system.GeneratePricesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveLocationServlet</servlet-name>
+        <servlet-class>com.sunflower.system.SaveLocationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.sunflower.web.OrderServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UserSO</servlet-name>
@@ -123,6 +135,18 @@
         <url-pattern>/exit</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>GeneratePriceServlet</servlet-name>
+        <url-pattern>/generateprices</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveLocationServlet</servlet-name>
+        <url-pattern>/savelocation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>UserSO</servlet-name>
         <url-pattern>/user_so</url-pattern>
     </servlet-mapping>
@@ -163,6 +187,13 @@
         <local-home>com.sunflower.ejb.usergroup.LocalUserGroupHome</local-home>
         <local>com.sunflower.ejb.usergroup.LocalUserGroup</local>
         <ejb-link>UserGroupEJB</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ejb/ProviderLocation</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.ProviderLocation.ProviderLocationHome</local-home>
+        <local>com.sunflower.ejb.ProviderLocation.LocalProviderLocation</local>
+        <ejb-link>ProviderLocationEJB</ejb-link>
     </ejb-local-ref>
 
 </web-app>

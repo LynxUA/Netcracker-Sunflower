@@ -70,6 +70,22 @@
       </ejb-local-ref>
     </entity>
 
+    <entity>
+      <ejb-name>ProviderLocationEJB</ejb-name>
+      <local-home>com.sunflower.ejb.ProviderLocation.ProviderLocationHome</local-home>
+      <local>com.sunflower.ejb.ProviderLocation.LocalProviderLocation</local>
+      <ejb-class>com.sunflower.ejb.ProviderLocation.ProviderLocationBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/ProviderLocation</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.ProviderLocation.ProviderLocationHome</local-home>
+        <local>com.sunflower.ejb.ProviderLocation.LocalProviderLocation</local>
+        <ejb-link>ProviderLocationEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
 
 
 
@@ -114,6 +130,14 @@
     <container-transaction>
       <method>
         <ejb-name>ServiceLocationEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+
+    <container-transaction>
+      <method>
+        <ejb-name>ProviderLocationEJB</ejb-name>
         <method-name>*</method-name>
       </method>
       <trans-attribute>Required</trans-attribute>

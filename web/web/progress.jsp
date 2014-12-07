@@ -14,6 +14,6 @@
 <body>
 <%@include file="header.jsp"%>
 <h1></h1>
-<img src="URL" alt="smth">
+<%@include file="footer.jsp"%>
 </body>
 </html>

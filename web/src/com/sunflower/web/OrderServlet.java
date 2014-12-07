@@ -11,12 +11,12 @@ import java.io.IOException;
  * Created by denysburlakov on 29.11.14.
  */
 @WebServlet(name = "RequestServlet")
-public class RequestServlet extends HttpServlet {
+public class OrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("request.jsp").forward(request, response);
+        request.getRequestDispatcher("order.jsp").forward(request, response);
     }
 }

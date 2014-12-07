@@ -170,7 +170,7 @@ public class TaskBean implements EntityBean {
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO TASK"
-                    + "(DESCRIPTION, STATUS, ID_GROUP_USER, ID_ORDER) VALUES(?, ?, ?, ?)");
+                    + "(DESCRIPTION, STATUS, ID_GROUP_USER, ID_ORDER) VALUES(?, ?, ?, ?)", new String[]{"ID_SERV_LOCATION"});
             statement.setString(1, description);
             statement.setString(2, status);
             statement.setInt(3, id_group_user);

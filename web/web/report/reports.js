@@ -35,7 +35,8 @@ function doCompletion() {
         var url2=location.href+""+url;
         var url3=url2.replace("/report","")
 
-    window.location.href = url3;
+
+    window.location.href = url;
        //window.location.href ="http://localhost:8084/sirep/"+url
 // req = initRequest();
        // req.open("GET", url, false);
@@ -61,18 +62,14 @@ function doProf(){
 
 */
 
- if(a==1) {
-        return
-    }
+            var url = "xmlxprt?action=prof&month=" + escape(month.value) + "&year=" + escape(year.value);
+            var url2 = location.href + "" + url;
+            var url3 = url2.replace("/report", "");
 
 
+    if(year.length!=0)window.location.href = url;
 
 
-
- var url = "xmlxprt?action=prof&month=" + escape(month.value)+"&year="+ escape(year.value);
-        var url2=location.href+""+url;
-    var url3=url2.replace("/report","")
-    window.location.href = url3;
 }
 function doRI(){
 
@@ -80,7 +77,7 @@ function doRI(){
   var url = "xmlxprt?action=ri";
         var url2=location.href+""+url;
     var url3=url2.replace("/report","")
-    window.location.href = url3;
+    window.location.href = url;
 }
 function isrighty(obj)
 
