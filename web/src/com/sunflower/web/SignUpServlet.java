@@ -6,7 +6,6 @@ import com.sunflower.ejb.user.LocalUserHome;
 import com.sunflower.ejb.user.UserBean;
 
 import javax.ejb.CreateException;
-import javax.ejb.DuplicateKeyException;
 import javax.ejb.FinderException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -32,7 +31,7 @@ public class SignUpServlet extends HttpServlet {
         if(request.getSession().getAttribute("current_user") != null){
             response.sendRedirect("welcome");
         }
-        String login = request.getParameter("login").toLowerCase();
+        String login = request.getParameter("login");
         String email = request.getParameter("email");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
@@ -98,31 +97,23 @@ public class SignUpServlet extends HttpServlet {
         //addNewUser(login, email,name,StaticFunctions.getHashCode(password));
         //addNewUser(login, email,name, password);
         try {
-            LocalUser user = EJBFunctions.createUser(login, email, name, surname, password);
-        }catch(DuplicateKeyException e) {
-            request.setAttribute("login_error", "User with this login is already exist");
-            request.getRequestDispatcher("signup.jsp").forward(request, response);
-        } catch (CreateException e1) {
-            request.setAttribute("login_error", "Server error");
-            request.getRequestDispatcher("signup.jsp").forward(request, response);
+            if (EJBFunctions.createUser(login.toLowerCase(), email, name, surname, password) == null) {
+                request.setAttribute("login_error", "User with this login is already exist");
+                request.getRequestDispatcher("signup.jsp").forward(request, response);
+            } else {
+                request.getSession().setAttribute("login", login);
+                request.getSession().setAttribute("status", 1);
+                /** Прибрати*/
+                System.out.println(login);
+            }
         }
-        request.getSession().setAttribute("login", login);
-        request.getSession().setAttribute("status", 1);
-//        if(EJBFunctions.createUser(login.toLowerCase(), email, name, surname, password)==null){
-//                request.setAttribute("login_error", "User with this login is already exist");
-//                request.getRequestDispatcher("signup.jsp").forward(request, response);
-//            }else{
-//                request.getSession().setAttribute("login", login);
-//                request.getSession().setAttribute("status", 1);
-//                /** Прибрати*/
-//                System.out.println(login);
-//            }
-//        } catch (CreateException e) {
-//            e.printStackTrace();
-//        }
-        //MailServer.messageAfterRegistration(name,password,email,login);
+        catch (CreateException ex)
+        {
+            ex.printStackTrace();
+        }
+        MailServer.messageAfterRegistration(name,password,email,login);
 
-        response.sendRedirect("/webWeb");
+        response.sendRedirect("welcome");
 
     }
 
