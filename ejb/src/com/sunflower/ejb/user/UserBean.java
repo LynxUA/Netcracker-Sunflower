@@ -2,6 +2,7 @@ package com.sunflower.ejb.user;
 
 
 
+import com.sunflower.ejb.DataSource;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
@@ -26,7 +27,6 @@ public class UserBean implements EntityBean {
     private int group;
 
     private EntityContext entityContext;
-    private OracleDataSource dataSource;
     public UserBean() {
     }
 
@@ -35,7 +35,7 @@ public class UserBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             try {
-                connection = dataSource.getConnection();
+                connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
                 System.out.println(e.getErrorCode());
@@ -65,14 +65,9 @@ public class UserBean implements EntityBean {
 
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
-        try {
-            dataSource = new OracleDataSource();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(DataSource.getDataSource()==null){
+            DataSource.setDataSource();
         }
-        dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
-        dataSource.setUser("sunflower");
-        dataSource.setPassword("sunflower14");
 
     }
 
@@ -84,7 +79,7 @@ public class UserBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = dataSource.getConnection();
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("DELETE FROM SUN_USER WHERE LOGIN LIKE ?");
             statement.setString(1, login);
             if (statement.executeUpdate() < 1) {
@@ -116,7 +111,7 @@ public class UserBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = dataSource.getConnection();
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT EMAIL, NAME, SURNAME, PASSWORD, ID_GROUP_USER FROM SUN_USER WHERE LOGIN LIKE ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
@@ -154,7 +149,7 @@ public class UserBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = dataSource.getConnection();
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("UPDATE SUN_USER SET EMAIL = ?, NAME = ?, SURNAME = ?, PASSWORD = ?, ID_GROUP_USER = ? WHERE LOGIN LIKE ?");
 
             statement.setString(1, email);
@@ -205,7 +200,7 @@ public class UserBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             try{
-                connection = dataSource.getConnection();
+                connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
                 throw new EJBException("Ошибка dataSource");
             }
@@ -246,7 +241,7 @@ public class UserBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             try {
-                connection = dataSource.getConnection();
+                connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
                 System.out.println(e.getErrorCode());

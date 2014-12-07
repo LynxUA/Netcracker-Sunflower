@@ -164,7 +164,7 @@ public class ServiceLocationBean implements EntityBean {
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_LOCATION"
-                    + "(LOCATION, ID_PROV_LOCATION, ID_ORDER) VALUES(?, ?, ?)");
+                    + "(LOCATION, ID_PROV_LOCATION, ID_ORDER) VALUES(?, ?, ?)", new String[]{"ID_SERV_LOCATION"});
             statement.setString(1, location);
             statement.setInt(2, id_prov_location);
             statement.setInt(3, id_order);
