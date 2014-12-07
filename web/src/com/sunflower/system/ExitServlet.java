@@ -1,4 +1,4 @@
-package com.sunflower.web;
+package com.sunflower.system;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

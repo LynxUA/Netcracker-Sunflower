@@ -57,7 +57,7 @@
     </servlet>
     <servlet>
         <servlet-name>ExitServlet</servlet-name>
-        <servlet-class>com.sunflower.web.ExitServlet</servlet-class>
+        <servlet-class>com.sunflower.system.ExitServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GeneratePriceServlet</servlet-name>

@@ -6,6 +6,7 @@ package com.sunflower.ejb.ProviderLocation;
 
 
 
+import com.sunflower.ejb.DataSource;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
@@ -19,9 +20,10 @@ public class ProviderLocationBean implements EntityBean {
     private String Location;
     private int Num_of_services;
     private int Id_order;
+    private float longtitude;
+    private float latitude;
 
     private EntityContext entityContext;
-    private OracleDataSource dataSource;
     public ProviderLocationBean() {
     }
 
@@ -30,7 +32,7 @@ public class ProviderLocationBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             try {
-                connection = dataSource.getConnection();
+                connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
                 System.out.println(e.getErrorCode());
@@ -60,15 +62,9 @@ public class ProviderLocationBean implements EntityBean {
 
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
-        try {
-            dataSource = new OracleDataSource();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(DataSource.getDataSource()==null){
+            DataSource.setDataSource();
         }
-        dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
-        dataSource.setUser("sunflower");
-        dataSource.setPassword("sunflower14");
-
     }
 
     public void unsetEntityContext() throws EJBException {
@@ -79,7 +75,7 @@ public class ProviderLocationBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = dataSource.getConnection();
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("DELETE FROM SUN_USER WHERE ID_PROV_LOCATON =?");
             statement.setInt(1, Id_Prov_Location);
             if (statement.executeUpdate() < 1) {
@@ -110,8 +106,8 @@ public class ProviderLocationBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement("SELECT LOCATION, NUM_OF_SERVICES, ID_ORDER FROM PROVIDER_LOCATION WHERE ID_PROV_LOCATION = ?");
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT LOCATION, NUM_OF_SERVICES, ID_ORDER, LONGTITUDE, LATITUDE FROM PROVIDER_LOCATION WHERE ID_PROV_LOCATION = ?");
             statement.setInt(1, Id_Prov_Location);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -120,6 +116,8 @@ public class ProviderLocationBean implements EntityBean {
             Location = resultSet.getString(1);
             Num_of_services = resultSet.getInt(2);
             Id_order = resultSet.getInt(3);
+            longtitude = resultSet.getFloat(4);
+            latitude = resultSet.getFloat(5);
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
@@ -138,16 +136,17 @@ public class ProviderLocationBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement("UPDATE PROVIDER_LOCATION SET LOCATION  = ?, NUM_OF_SERVICES = ?, ID_ORDER = ? WHERE ID_PROV_LOCATION=?");
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("UPDATE PROVIDER_LOCATION SET LOCATION  = ?, NUM_OF_SERVICES = ?, LONGTITUDE = ?, LATITUDE = ? WHERE ID_PROV_LOCATION=?");
 
             statement.setString(1, Location);
 
             statement.setInt(2, Num_of_services);
 
-            statement.setInt(3, Id_order);
+            statement.setInt(3, Id_Prov_Location);
 
-            statement.setInt(4, Id_Prov_Location);
+            statement.setFloat(4, longtitude);
+            statement.setFloat(5, latitude);
 
            
             if (statement.executeUpdate() < 1) {
@@ -167,7 +166,7 @@ public class ProviderLocationBean implements EntityBean {
         }
     }
 
-    public Integer ejbCreate( String Location, int Num_of_services, int Id_order) throws CreateException{
+    public Integer ejbCreate( String Location, int Num_of_services, int Id_order, float longtitude, float latitude) throws CreateException{
         try {
             ejbFindByPrimaryKey(Id_Prov_Location);
             throw new DuplicateKeyException("...");
@@ -185,16 +184,19 @@ public class ProviderLocationBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             try{
-                connection = dataSource.getConnection();
+                connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO PROVIDER_LOCATION"
-                    + "( LOCATION, NUM_OF_SERVICES, ID_ORDER) VALUES(?, ?, ?)");
+                    + "( LOCATION, NUM_OF_SERVICES, ID_ORDER, LONGTITUDE, LATITUDE) VALUES(?, ?, ?, ?, ?)", new String[]{"ID_SERV_LOCATION"});
 
             statement.setString(1, Location);
             statement.setInt(2, Num_of_services);
             statement.setInt(3, Id_order);
+            statement.setFloat(4, longtitude);
+            statement.setFloat(5, latitude);
+
 
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
@@ -233,7 +235,7 @@ public class ProviderLocationBean implements EntityBean {
     public int getNum_of_services() {
         return Num_of_services;
     }
-    public void setNum_of_services(){
+    public void setNum_of_services(int Num_of_services){
         this.Num_of_services=Num_of_services;
     }
     public int getId_order(){return  Id_order;}
