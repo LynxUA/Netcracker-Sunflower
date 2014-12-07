@@ -9,7 +9,6 @@ import java.sql.SQLException;
  */
 public class DataSource {
     private static OracleDataSource dataSource;
-
     public static void setDataSource(){
         try {
             dataSource = new OracleDataSource();

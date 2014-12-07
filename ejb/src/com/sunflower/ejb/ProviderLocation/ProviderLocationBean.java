@@ -1,6 +1,11 @@
-package com.sunflower.ejb.ServiceOrder;
+package com.sunflower.ejb.ProviderLocation;
 
-import com.sunflower.ejb.DataSource;
+/**
+ * Created by Алексей on 12/6/2014.
+ */
+
+
+
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
@@ -9,21 +14,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by Andriy on 12/3/2014.
- */
-public class ServiceOrderBean implements EntityBean {
-    private String status;
-    private String scenario;
-    private String login;
-    private int id;
+public class ProviderLocationBean implements EntityBean {
+    private int Id_Prov_Location;
+    private String Location;
+    private int Num_of_services;
+    private int Id_order;
 
     private EntityContext entityContext;
     private OracleDataSource dataSource;
-
-
-    public ServiceOrderBean() {
-
+    public ProviderLocationBean() {
     }
 
     public Integer ejbFindByPrimaryKey(Integer key) throws FinderException {
@@ -38,13 +37,13 @@ public class ServiceOrderBean implements EntityBean {
                 System.out.println("something wrong with connection");
 
             }
-            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
+            statement = connection.prepareStatement("SELECT ID_PROV_LOCATON FROM PROVIDER_LOCATION WHERE ID_PROV_LOCATON =?");
             statement.setInt(1, key);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 throw new ObjectNotFoundException("...");
             }
-            return Integer.valueOf(key);
+            return key;
         } catch (SQLException e) {
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
@@ -56,11 +55,20 @@ public class ServiceOrderBean implements EntityBean {
                 e.printStackTrace();
             }
         }
+
     }
 
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
-        dataSource = DataSource.getDataSource();
+        try {
+            dataSource = new OracleDataSource();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
+        dataSource.setUser("sunflower");
+        dataSource.setPassword("sunflower14");
+
     }
 
     public void unsetEntityContext() throws EJBException {
@@ -72,8 +80,8 @@ public class ServiceOrderBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
-            statement.setInt(1, id);
+            statement = connection.prepareStatement("DELETE FROM SUN_USER WHERE ID_PROV_LOCATON =?");
+            statement.setInt(1, Id_Prov_Location);
             if (statement.executeUpdate() < 1) {
                 throw new RemoveException("Exception while deleting");
             }
@@ -89,7 +97,6 @@ public class ServiceOrderBean implements EntityBean {
             }
         }
     }
-
     public void ejbActivate() throws EJBException {
         //Do not fill
     }
@@ -99,20 +106,20 @@ public class ServiceOrderBean implements EntityBean {
     }
 
     public void ejbLoad() throws EJBException {
-        id = (Integer) entityContext.getPrimaryKey();
+        Id_Prov_Location = (Integer) entityContext.getPrimaryKey();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("SELECT STATUS, SCENARIO,LOGIN FROM SERVICE_ORDER WHERE ID_ORDER = ?");
-            statement.setInt(1, id);
+            statement = connection.prepareStatement("SELECT LOCATION, NUM_OF_SERVICES, ID_ORDER FROM PROVIDER_LOCATION WHERE ID_PROV_LOCATION = ?");
+            statement.setInt(1, Id_Prov_Location);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 throw new NoSuchEntityException("...");
             }
-            status = resultSet.getString(1);
-            scenario = resultSet.getString(2);
-            login = resultSet.getString(3);
+            Location = resultSet.getString(1);
+            Num_of_services = resultSet.getInt(2);
+            Id_order = resultSet.getInt(3);
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
@@ -132,14 +139,19 @@ public class ServiceOrderBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
+            statement = connection.prepareStatement("UPDATE PROVIDER_LOCATION SET LOCATION  = ?, NUM_OF_SERVICES = ?, ID_ORDER = ? WHERE ID_PROV_LOCATION=?");
 
-            statement = connection.prepareStatement(
-                    "UPDATE SERVICE_ORDER SET STATUS = ?, SCENARIO = ?, LOGIN = ? WHERE ID_ORDER = ?");
-            statement.setString(1, status);
-            statement.setString(2, scenario);
-            statement.setString(3, login);
-            statement.setInt(4, id);
+            statement.setString(1, Location);
+
+            statement.setInt(2, Num_of_services);
+
+            statement.setInt(3, Id_order);
+
+            statement.setInt(4, Id_Prov_Location);
+
+           
             if (statement.executeUpdate() < 1) {
+                System.out.println("bad statement");
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
@@ -155,45 +167,20 @@ public class ServiceOrderBean implements EntityBean {
         }
     }
 
-
-    public void ejbPostCreate(String status, String scenario, int group_id, int id) throws CreateException {
-
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getScenario() {
-        return scenario;
-    }
-
-    public String getUserLogin() {
-        return login;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public Integer ejbCreate(String status, String scenario, String login, int id) throws CreateException {
+    public Integer ejbCreate( String Location, int Num_of_services, int Id_order) throws CreateException{
         try {
-            ejbFindByPrimaryKey(id);
+            ejbFindByPrimaryKey(Id_Prov_Location);
             throw new DuplicateKeyException("...");
         } catch (FinderException e) { /*
         Как это ни странно, именно возникновение исключения
         дает нам повод и возможность выполнять дальнейшие
         действия. Поэтому здесь ничего не происходит.
       */}
-        this.id = id;
-        this.status = status;
-        this.scenario = scenario;
-        this.login = login;
+
+        this.Location = Location;
+        this.Num_of_services = Num_of_services;
+        this.Id_order = Id_order;
+
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -202,16 +189,18 @@ public class ServiceOrderBean implements EntityBean {
             } catch (SQLException e) {
                 throw new EJBException("Ошибка dataSource");
             }
-            statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER"
-                    + "(ID_ORDER,STATUS,SCENARIO,LOGIN) VALUES(?, ?, ?, ?)");
-            statement.setInt(1, id);
-            statement.setString(2, status);
-            statement.setString(3, scenario);
-            statement.setString(4, login);
+            statement = connection.prepareStatement("INSERT INTO PROVIDER_LOCATION"
+                    + "( LOCATION, NUM_OF_SERVICES, ID_ORDER) VALUES(?, ?, ?)");
+
+            statement.setString(1, Location);
+            statement.setInt(2, Num_of_services);
+            statement.setInt(3, Id_order);
+
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
             }
-            return id;
+            Id_Prov_Location=statement.getGeneratedKeys().getInt(1);
+            return Id_Prov_Location;
         } catch (SQLException e) {
             //throw new EJBException("Ошибка INSERT");
             System.out.println(e.getMessage());
@@ -227,7 +216,27 @@ public class ServiceOrderBean implements EntityBean {
         return null;
     }
 
-    public void ejbPostCreate(String status, String scenario, String login, int id) throws CreateException {
+    public void ejbPostCreate(String Location, int Num_of_services, int Id_order) throws CreateException {
 
     }
+
+
+    public int getId_Prov_Location() {
+        return Id_Prov_Location;
+    }
+
+    public String getLocation() {
+        return Location;
+    }
+    public void setLocation(){this.Location=Location;}
+
+    public int getNum_of_services() {
+        return Num_of_services;
+    }
+    public void setNum_of_services(){
+        this.Num_of_services=Num_of_services;
+    }
+    public int getId_order(){return  Id_order;}
+
+
 }

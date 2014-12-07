@@ -44,6 +44,10 @@
         <servlet-class>com.sunflower.web.UserInstanceServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>UserGroupServlet</servlet-name>
+        <servlet-class>com.sunflower.web.UserGroupServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ContactUsServlet</servlet-name>
         <servlet-class>com.sunflower.web.ContactUsServlet</servlet-class>
     </servlet>
@@ -66,6 +70,10 @@
     <servlet>
         <servlet-name>OrderServlet</servlet-name>
         <servlet-class>com.sunflower.web.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserSO</servlet-name>
+        <jsp-file>userSO.jsp</jsp-file>
     </servlet>
 
 
@@ -103,6 +111,10 @@
         <url-pattern>/user_si</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>UserGroupServlet</servlet-name>
+        <url-pattern>/usergroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>RequestServlet</servlet-name>
         <url-pattern>/request</url-pattern>
     </servlet-mapping>
@@ -133,6 +145,10 @@
     <servlet-mapping>
         <servlet-name>OrderServlet</servlet-name>
         <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserSO</servlet-name>
+        <url-pattern>/user_so</url-pattern>
     </servlet-mapping>
 
     <ejb-local-ref>
@@ -165,4 +181,12 @@
         <local>com.sunflower.ejb.ServiceOrder.LocalServiceOrder</local>
         <ejb-link>ServiceOrderEJB</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ejb/UserGroup</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.usergroup.LocalUserGroupHome</local-home>
+        <local>com.sunflower.ejb.usergroup.LocalUserGroup</local>
+        <ejb-link>UserGroupEJB</ejb-link>
+    </ejb-local-ref>
+
 </web-app>

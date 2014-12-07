@@ -9,6 +9,6 @@ public interface LocalServiceOrder extends EJBLocalObject {
     public String getStatus();
     public void setStatus(String status);
     public String getScenario();
-    public int getUserGroup();
+    public String getUserLogin();
     int getId();
 }

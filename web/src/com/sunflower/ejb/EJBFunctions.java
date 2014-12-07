@@ -1,5 +1,7 @@
 package com.sunflower.ejb;
 
+import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
+import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
 import com.sunflower.ejb.user.BadPasswordException;
@@ -87,4 +89,48 @@ public class EJBFunctions {
         return null;
     }
 
+    public static LocalServiceOrder createServiceOrder(Integer id, String status, String scenarion, String login){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrder service_order = null;
+        try {
+            service_order = home.create(status, scenarion, login, id);
+            return service_order;
+        } catch (CreateException e) {
+            return null;
+        }
+    }
+
+    public static LocalServiceOrder findServiceOrder(int id) {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrder service_order = null;
+        try {
+            service_order = home.findByPrimaryKey(id);
+            return service_order;
+        } catch (FinderException e) {
+            return null;
+        }
+
+    }
 }
