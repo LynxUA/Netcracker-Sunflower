@@ -32,25 +32,42 @@ and open the template in the editor.
 
     <%@include file="header.jsp"%>
     <aside>
+        <%@ page import="com.sunflower.ejb.EJBFunctions"%>
+        <%@ page import="com.sunflower.ejb.ProviderLocation.LocalProviderLocation"%>
         <ul class="nav nav-list bs-docs-sidenav affix">
+            <%
+                LocalProviderLocation localProviderLocation;
+            for(int i=1;true;i++)
+            {
+                localProviderLocation=EJBFunctions.findProviderLocationById(i);
+                if(localProviderLocation==null)break;
+            %>
 
             <li>
 
-                <input  type="checkbox" value="borshaga" name="borshaga"  id="borshaga"><font color="#296293">Borshaga</font>
+                <input  type="checkbox" value="<%=localProviderLocation.getLocation()%>" name="<%=localProviderLocation.getLocation()%>"  id="loc<%=localProviderLocation.getId_Prov_Location()%>"><font color="#296293"><%=localProviderLocation.getLocation()%></font>
 
             </li>
+            <%
+                }
+            %>
+            <!-- <li>
 
-            <li>
+                 <input  type="checkbox" value="borshaga" name="borshaga"  id="borshaga"><font color="#296293">Borshaga</font>
 
-                <input  type="checkbox" value="troya" name="troya" id="troya"/><font color="#296293">Troya</font>
+             </li>
 
-            </li>
+             <li>
 
-            <li>
+                 <input  type="checkbox" value="troya" name="troya" id="troya"/><font color="#296293">Troya</font>
 
-                <input  type="checkbox" value="goloseevo" name="goloseevo" id="goloseevo"/><font color="#296293">Goloseevo</font>
+             </li>
 
-            </li>
+             <li>
+
+                 <input  type="checkbox" value="goloseevo" name="goloseevo" id="goloseevo"/><font color="#296293">Goloseevo</font>
+
+             </li>-->
         </ul>
     </aside>
     <form accept-charset="UTF-8" role="form"  action="xmlxprt" method="get">
