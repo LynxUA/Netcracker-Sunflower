@@ -1,5 +1,7 @@
 package com.sunflower.ejb;
 
+import com.sunflower.ejb.ProviderLocation.LocalProviderLocation;
+import com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
 import com.sunflower.ejb.task.LocalTask;
@@ -132,5 +134,48 @@ public class EJBFunctions {
             return null;
         }
 
+    }
+    public static LocalProviderLocation findProviderLocation(float longtitude, float latitude){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalProviderLocationHome home = null;
+        try {
+            home = (LocalProviderLocationHome)ic.lookup("java:comp/env/ejb/ProviderLocation");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalProviderLocation location = null;
+        try {
+            location = home.findClosest(longtitude, latitude);
+            return location;
+        } catch (FinderException e) {
+            return null;
+        }
+    }
+
+    public static LocalProviderLocation findProviderLocationById(int id){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalProviderLocationHome home = null;
+        try {
+            home = (LocalProviderLocationHome)ic.lookup("java:comp/env/ejb/ProviderLocation");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalProviderLocation location = null;
+        try {
+            location = home.findByPrimaryKey(id);
+            return location;
+        } catch (FinderException e) {
+            return null;
+        }
     }
 }

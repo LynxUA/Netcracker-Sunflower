@@ -1,5 +1,7 @@
 package com.sunflower.system;
 
+import com.sunflower.ejb.EJBFunctions;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,11 +21,13 @@ public class GeneratePricesServlet extends HttpServlet {
 //            name="Hello User";
 //        }
 
-        float x = Float.valueOf((String)(request.getParameter("y")));
-        float y = Float.valueOf((String)(request.getParameter("y")));
+        float longtitude = Float.valueOf((String)(request.getParameter("y")));
+        float latitude = Float.valueOf((String)(request.getParameter("x")));
+
+        //System.out.println(EJBFunctions.findProviderLocationById(1).getLocation());
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-       // response.getWriter().write(name);
+        response.getWriter().write("Nearest provider location: Netflower " + EJBFunctions.findProviderLocation(longtitude,latitude).getLocation());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -60,35 +60,35 @@
             %>
                   <li><a href="/webWeb/">Home</a></li>
                   <li><a href="catalog.jsp">Services</a></li>
-                  <li><a href="catalog.jsp">Make an order</a></li>
+                  <li><a href="order">Make an order</a></li>
             <%
                 break;
               case ADMIN:
 
             %>
                   <li><a href="/webWeb/">Home</a></li>
-                  <li><a href="/users">Users</a></li>
-                  <li><a href="/groups">Groups</a></li>
+                  <li><a href="users">Users</a></li>
+                  <li><a href="groups">Groups</a></li>
             <%
                 break;
               case CSE:
 
             %>
                   <li><a href="/webWeb/">Home</a></li>
-                  <li><a href="/instances">Users</a></li>
-                  <li><a href="/groups">Groups</a></li>
+                  <li><a href="instances">Users</a></li>
+                  <li><a href="groups">Groups</a></li>
             <%
                 break;
               case PE:
             %>
                 <li><a href="/webWeb/">Home</a></li>
-                <li><a href="/tasks">Tasks</a></li>
+                <li><a href="tasks">Tasks</a></li>
             <%
                 break;
               case IE:
             %>
                 <li><a href="/webWeb/">Home</a></li>
-                <li><a href="/tasks">Tasks</a></li>
+                <li><a href="tasks">Tasks</a></li>
                 <%--<li><a href="/groups">Groups</a></li>--%>
             <%
                   break;

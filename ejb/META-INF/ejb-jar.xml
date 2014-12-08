@@ -72,7 +72,7 @@
 
     <entity>
       <ejb-name>ProviderLocationEJB</ejb-name>
-      <local-home>com.sunflower.ejb.ProviderLocation.ProviderLocationHome</local-home>
+      <local-home>com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome</local-home>
       <local>com.sunflower.ejb.ProviderLocation.LocalProviderLocation</local>
       <ejb-class>com.sunflower.ejb.ProviderLocation.ProviderLocationBean</ejb-class>
       <persistence-type>Bean</persistence-type>
@@ -81,7 +81,7 @@
       <ejb-local-ref>
         <ejb-ref-name>ejb/ProviderLocation</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
-        <local-home>com.sunflower.ejb.ProviderLocation.ProviderLocationHome</local-home>
+        <local-home>com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome</local-home>
         <local>com.sunflower.ejb.ProviderLocation.LocalProviderLocation</local>
         <ejb-link>ProviderLocationEJB</ejb-link>
       </ejb-local-ref>
@@ -123,9 +123,67 @@
         <ejb-link>UserGroupEJB</ejb-link>
       </ejb-local-ref>
     </entity>
+    <entity>
+      <ejb-name>PriceEJB</ejb-name>
+      <local-home>com.sunflower.ejb.price.LocalPriceHome</local-home>
+      <local>com.sunflower.ejb.price.LocalPrice</local>
+      <ejb-class>com.sunflower.ejb.price.PriceBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/Price</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.price.LocalPriceHome</local-home>
+        <local>com.sunflower.ejb.price.LocalPrice</local>
+        <ejb-link>PriceEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
+    <entity>
+      <ejb-name>ServiceEJB</ejb-name>
+      <local-home>com.sunflower.ejb.service.LocalServiceHome</local-home>
+      <local>com.sunflower.ejb.service.LocalService</local>
+      <ejb-class>com.sunflower.ejb.service.ServiceBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/Service</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.service.LocalServiceHome</local-home>
+        <local>com.sunflower.ejb.service.LocalService</local>
+        <ejb-link>ServiceEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
   </enterprise-beans>
 
   <assembly-descriptor>
+
+    <container-transaction>
+      <method>
+        <ejb-name>PriceEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+
+    <container-transaction>
+      <method>
+        <ejb-name>ServiceEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+
+    <container-transaction>
+      <method>
+        <ejb-name>PriceEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
 
     <container-transaction>
       <method>
