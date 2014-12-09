@@ -58,9 +58,11 @@
           latlng = new google.maps.LatLng(position.coords.latitude,
                   position.coords.longitude);
           marker.setPosition(latlng);
-          document.getElementById('x').value = latlng.lat();
-          document.getElementById('y').value = latlng.lng();
           map.setCenter(latlng);
+          document.getElementBy('x').value = latlng.lat();
+          document.getElementById('y').value = latlng.lng();
+          $('#services').html('');
+          $('#prices').html('');
           geocodePosition(latlng);
         }, function() {
           //handleNoGeolocation(true);
@@ -79,6 +81,8 @@
           latlng = marker.position;
           document.getElementById('x').value = latlng.lat();
           document.getElementById('y').value = latlng.lng();
+          $('#services').html('');
+          $('#prices').html('');
         } else {
           document.getElementById('address').value = 'Cannot determine address at this location.';
         }
@@ -107,6 +111,8 @@
           latlng = marker.position;
           document.getElementById('x').value = latlng.lat();
           document.getElementById('y').value = latlng.lng();
+          $('#services').html('');
+          $('#prices').html('');
         } else {
           alert('Error: Invalid location');
         }
@@ -122,10 +128,21 @@
         var x=$('#x').val();
         var y=$('#y').val();
         $.post('savelocation',{x:x,y:y});
-        $.post('generateprices',{x:x, y:y},function(responseText) {
-          $('#services').text(responseText);
+        $.post('generateservices',{x:x, y:y},function(responseText) {
+          $('#services').html(responseText);
         });
       });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#servicecheck').click(function () {
+        var service = $("input[name='services']:checked").val();
+        $.post('generateprices',{service:service},function(responseText) {
+          $('#price').html(responseText);
+        });
+      });
+
     });
   </script>
 </head>
@@ -140,9 +157,9 @@
       <input id="address" class="form-control input-lg form-group" type="textbox" name="address" value="Kyiv">
       <input type="button" class="btn btn-success btn-block" value="Find location" onclick="codeAddress()">
       <input type="button" id="submit" class="btn btn-success btn-block" value="Save" style="margin-top: 20px">
-      <div id="services">
+      <div id="services"></div>
+      <div id="price"></div>
 
-      </div>
     </form>
   </div>
   <div class="col-md-8" align="right">

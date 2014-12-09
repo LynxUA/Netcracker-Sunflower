@@ -14,14 +14,19 @@ import java.io.PrintWriter;
 import java.util.Collection;
 
 /**
- * Created by denysburlakov on 09.12.14.
+ * Created by denysburlakov on 06.12.14.
  */
-@WebServlet(name = "GeneratePricesServlet")
-public class GeneratePricesServlet extends HttpServlet {
+@WebServlet(name = "GenerateServicesServlet")
+public class GenerateServicesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        String name=null;
+//        name = "Hello "+request.getParameter("user");
+//        if(request.getParameter("user").toString().equals("")){
+//            name="Hello User";
+//        }
+
         float longtitude = Float.valueOf((String)(request.getParameter("y")));
         float latitude = Float.valueOf((String)(request.getParameter("x")));
-        int service = Integer.valueOf(request.getParameter("service"));
 
         //System.out.println(EJBFunctions.findProviderLocationById(1).getLocation());
         response.setContentType("text/html");
