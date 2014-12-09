@@ -48,6 +48,8 @@
       });
       google.maps.event.addListener(marker,'drag',function() {
         geocodePosition(marker.getPosition());
+        $('#services').html('');
+        $('#prices').html('');
       });
 //      google.maps.event.addListener(marker,'dragend',function() {
 //        geocodePosition(marker.getPosition());
@@ -59,11 +61,11 @@
                   position.coords.longitude);
           marker.setPosition(latlng);
           map.setCenter(latlng);
-          document.getElementBy('x').value = latlng.lat();
+          document.getElementById('x').value = latlng.lat();
           document.getElementById('y').value = latlng.lng();
+          geocodePosition(latlng);
           $('#services').html('');
           $('#prices').html('');
-          geocodePosition(latlng);
         }, function() {
           //handleNoGeolocation(true);
         });
