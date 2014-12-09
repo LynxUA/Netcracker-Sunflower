@@ -83,6 +83,10 @@
         <servlet-name>TaskServlet</servlet-name>
         <servlet-class>com.sunflower.web.TaskServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UsersListServlet</servlet-name>
+        <servlet-class>com.sunflower.web.UsersListServlet</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -164,6 +168,10 @@
     <servlet-mapping>
         <servlet-name>TaskServlet</servlet-name>
         <url-pattern>/task</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsersListServlet</servlet-name>
+        <url-pattern>/userslist</url-pattern>
     </servlet-mapping>
     
     <ejb-local-ref>
