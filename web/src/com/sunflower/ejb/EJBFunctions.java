@@ -202,4 +202,51 @@ public class EJBFunctions {
             return null;
         }
     }
+    
+      public static LocalTask findIncompleteTask() {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTask localTask = null;
+        try {
+        ;
+            localTask = home.findIncompleteTask();
+            return localTask;
+        } catch (FinderException e) {
+            return null;
+        }
+
+    }
+    
+    public static LocalTask findLocalTaskById(int id){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome)ic.lookup("java:comp/env/ejb/task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTask task = null;
+        try {
+            task = home.findByPrimaryKey(id);
+            return task;
+        } catch (FinderException e) {
+            return null;
+        }
+    }
+
 }
