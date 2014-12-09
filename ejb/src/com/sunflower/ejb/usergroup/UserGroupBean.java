@@ -3,11 +3,9 @@ package com.sunflower.ejb.usergroup;
 import com.sunflower.ejb.DataSource;
 
 import javax.ejb.*;
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Den on 02.12.2014.
@@ -114,6 +112,7 @@ public class UserGroupBean implements EntityBean {
                 position = rs.getString(1);
                 groupName = rs.getString(2);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -204,6 +203,28 @@ public class UserGroupBean implements EntityBean {
 
     public void setGroupName() {
 
+    }
+
+
+    public List getColumnName() {
+
+        ResultSet rsColumns = null;
+        ArrayList<String> colNames = new ArrayList<String>();
+        try {
+            DatabaseMetaData meta = connection.getMetaData();
+            rsColumns = meta.getColumns(null, null, "USER_GROUP", null);
+            ResultSetMetaData rsmd = rsColumns.getMetaData();
+            rsColumns.next();
+
+            while(rsColumns.next()){
+                String columnName = rsColumns.getString("COLUMN_NAME");
+                colNames.add(columnName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return colNames;
     }
 
 

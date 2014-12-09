@@ -1,6 +1,7 @@
 package com.sunflower.ejb.usergroup;
 
 import javax.ejb.EJBLocalObject;
+import java.util.List;
 
 /**
  * Created by Den on 02.12.2014.
@@ -13,4 +14,5 @@ public interface LocalUserGroup extends EJBLocalObject {
     public void setPosition(String position);
     public String getGroupName();
     public void setGroupName();
+    public List getColumnName();
 }

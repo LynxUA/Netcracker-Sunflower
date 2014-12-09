@@ -79,7 +79,14 @@
         <servlet-name>UserSO</servlet-name>
         <jsp-file>userSO.jsp</jsp-file>
     </servlet>
-
+    <servlet>
+        <servlet-name>TaskServlet</servlet-name>
+        <servlet-class>com.sunflower.web.TaskServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersListServlet</servlet-name>
+        <servlet-class>com.sunflower.web.UsersListServlet</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -158,7 +165,15 @@
         <servlet-name>UserSO</servlet-name>
         <url-pattern>/user_so</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>TaskServlet</servlet-name>
+        <url-pattern>/task</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsersListServlet</servlet-name>
+        <url-pattern>/userslist</url-pattern>
+    </servlet-mapping>
+    
     <ejb-local-ref>
         <ejb-ref-name>ejb/User</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
