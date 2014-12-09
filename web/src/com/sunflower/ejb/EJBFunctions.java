@@ -212,7 +212,7 @@ public class EJBFunctions {
         }
         LocalTaskHome home = null;
         try {
-            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/task");
         } catch (NamingException e) {
             e.printStackTrace();
         }
