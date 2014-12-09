@@ -87,6 +87,11 @@
         <servlet-name>UsersListServlet</servlet-name>
         <servlet-class>com.sunflower.web.UsersListServlet</servlet-class>
     </servlet>
+     <servlet>
+        <servlet-name>CurrentTaskServlet</servlet-name>
+        <servlet-class>com.sunflower.web.CurrentTaskServlet</servlet-class>
+    </servlet>
+    
 
 
     <servlet-mapping>
@@ -172,6 +177,10 @@
     <servlet-mapping>
         <servlet-name>UsersListServlet</servlet-name>
         <url-pattern>/userslist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CurrentTaskServlet</servlet-name>
+        <url-pattern>/currenttask</url-pattern>
     </servlet-mapping>
     
     <ejb-local-ref>
