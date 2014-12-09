@@ -1,6 +1,7 @@
 package com.sunflower.ejb.task;
 
 import javax.ejb.EJBLocalObject;
+import javax.ejb.FinderException;
 
 /**
  * Created by denysburlakov on 03.12.14.
@@ -19,4 +20,6 @@ public interface LocalTask extends EJBLocalObject {
     public void setStatus(String status);
 
     public int getId_order();
+
+    public void changeStatus(Integer key,String status) throws FinderException;
 }

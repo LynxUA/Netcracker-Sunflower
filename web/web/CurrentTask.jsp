@@ -23,7 +23,8 @@
 </head>
 <body>
 <%@include file="header.jsp"%>
-
+<%@ page import="com.sunflower.ejb.EJBFunctions"%>
+<%@ page import="com.sunflower.ejb.task.LocalTask"%>
 
 <aside>
     <ul class="nav nav-list bs-docs-sidenav affix">
@@ -43,24 +44,37 @@
     <table class="table  table-bordered table-striped" height="90">
         <thead>
         <tr>
-            <th>USER_ID</th>
+
             <th>Order</th>
-            <th>Provider_Location</th>
+
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+
+            <ul class="nav nav-list bs-docs-sidenav affix">
+                    <%
+                LocalTask localTask;
+                localTask=EJBFunctions.findIncompleteTask();
+                if(localTask!=null) {
+            %>
+
+                <td><%=localTask.getDescription()%></td>
+                <% }else {%>
+                        <td>No tasks</td>
+                            <% } %>
         </tr>
         </tbody>
     </table>
 </div>
 <p>
-    <button class="btn btn-primary">Complete</button>
-    <button class="btn btn-primary">Suspend</button>
-</p>
+<form method="get" action="currenttask?action=complete&key=<%=localTask.getId_task()%>">
+    <button type="submit" class="btn btn-primary" value="Complete">Complete</button>
+</form>
+<form method="get" action="currenttask?action=suspend&key=<%=localTask.getId_task()%>">
+    <button type="submit" class="btn btn-primary" value="Suspend">Suspend</button>
+    </form>
+    </p>
 
 <%@include file="footer.jsp"%>
 </body>

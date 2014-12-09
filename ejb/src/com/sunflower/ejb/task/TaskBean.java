@@ -56,12 +56,46 @@ public class TaskBean implements EntityBean {
         }
     }
 
+    public void changeStatus(Integer key,String status) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            statement = connection.prepareStatement("UPDATE TASK  SET STATUS=? WHERE ID_TASK = ?");
+            statement.setString(1,status);
+            statement.setInt(2, key);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new ObjectNotFoundException("...");
+            }
+
+        } catch (SQLException e) {
+            throw new EJBException("SELECT exception in ejbCompleteTask");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
         if(DataSource.getDataSource()==null){
             DataSource.setDataSource();
         }
     }
+
+
 
     public void unsetEntityContext() throws EJBException {
         this.entityContext = null;
@@ -197,6 +231,39 @@ public class TaskBean implements EntityBean {
 
     public void ejbPostCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
 
+    }
+    public Integer ejbFindIncompleteTask() throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String status="Incomplete";
+        int key=0;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            statement = connection.prepareStatement("SELECT MIN(ID_TASK) FROM TASK WHERE STATUS = ?");
+            statement.setString(1, status);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new ObjectNotFoundException("...");
+            }
+            return resultSet.getInt("MIN(ID_TASK)");
+        } catch (SQLException e) {
+            throw new EJBException("SELECT exception in ejbFindIncomplete");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public int getId_group_user() {
