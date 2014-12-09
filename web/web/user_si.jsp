@@ -15,44 +15,44 @@
     <body>
         <%@include file="header.jsp"%>
         <div id="body">
-            <div class="bs-example">
+            <div class="container">
               <h3>User's instances</h3>
-              <table class="table table-striped table-bordered table-hover table-condensed">
-              <thead style="background-color: #5f5e5d; color: white;">
+              <table class="table table-striped table-condensed">
+              <thead>
               <tr>
                 <th>Service name</th>
                 <th>Status</th>
               </tr>
               </thead>
                 <tbody>
-                    <tr class="success">
-                      <td><a href="location.jsp">Instance1</a></td>
-                      <td>Active</td>
+                    <tr>
+                      <td><a href="location.jsp">instance1</a></td>
+                      <td><span class="label label-success">active</span></td>
                     </tr>
 
                     <tr>
-                      <td><a href="location.jsp">Instance2</a></td>
-                      <td>Planned</td>
-                    </tr>
-
-                    <tr class="danger">
-                      <td><a href="location.jsp">Instance3</a></td>
-                      <td>Disconnected</td>
+                      <td><a href="location.jsp">instance2</a></td>
+                        <td><span class="label label-warning">planned</span></td>
                     </tr>
 
                     <tr>
-                      <td>Instance4</td>
-                      <td>Planned</td>
+                      <td><a href="location.jsp">instance3</a></td>
+                        <td><span class="label label-danger">disconnected</span></td>
                     </tr>
 
                     <tr>
-                      <td>Instance5</td>
-                      <td>Planned</td>
+                      <td>instance4</td>
+                        <td><span class="label label-warning">planned</span></td>
                     </tr>
 
                     <tr>
-                      <td>Instance6</td>
-                      <td>Planned</td>
+                      <td>instance5</td>
+                        <td><span class="label label-success">active</span></td>
+                    </tr>
+
+                    <tr>
+                      <td>instance6</td>
+                        <td><span class="label label-warning">planned</span></td>
                     </tr>
                 </tbody>
               </table>

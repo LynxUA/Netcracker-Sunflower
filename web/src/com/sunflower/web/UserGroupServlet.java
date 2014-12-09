@@ -30,13 +30,15 @@ public class UserGroupServlet extends HttpServlet {
             LocalUserGroupHome groupHome = (LocalUserGroupHome) ic.lookup("java:comp/env/ejb/UserGroup");
             LocalUserGroup userGroup = null;
             try {
-                userGroup = groupHome.create("BOSS","BossGROUP");
-            } catch (CreateException e) {
+                userGroup = groupHome.findByPrimaryKey(1);
+           /* } catch (CreateException e) {
+                e.printStackTrace();*/
+            } catch (FinderException e) {
                 e.printStackTrace();
             }
 
             PrintWriter pw = response.getWriter();
-            pw.println(userGroup.getPosition());
+            pw.println(userGroup.getColumnName());
 
         } catch (NamingException e) {
             e.printStackTrace();
