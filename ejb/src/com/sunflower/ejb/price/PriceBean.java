@@ -16,6 +16,7 @@ public class PriceBean implements EntityBean {
     private float price_of_service;
     private float price_of_location;
     private int id_service;
+    private int id_prov_location;
 
     private EntityContext entityContext;
     public PriceBean() {
@@ -105,7 +106,7 @@ public class PriceBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT PRICE_OF_SERVICE, PRICE_OF_LOCATION, ID_SERVICE FROM PRICE WHERE ID_PRICE = ?");
+            statement = connection.prepareStatement("SELECT PRICE_OF_SERVICE, PRICE_OF_LOCATION, ID_SERVICE, ID_PROV_LOCATION FROM PRICE WHERE ID_PRICE = ?");
             statement.setInt(1, id_price);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -114,6 +115,7 @@ public class PriceBean implements EntityBean {
             price_of_service = resultSet.getFloat(1);
             price_of_location = resultSet.getFloat(2);
             id_service = resultSet.getInt(3);
+            id_prov_location = resultSet.getInt(4);
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
@@ -133,14 +135,15 @@ public class PriceBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("UPDATE PRICE SET PRICE_OF_SERVICE  = ?, PRICE_OF_LOCATION = ?, ID_SERVICE = ? WHERE ID_PRICE=?");
+            statement = connection.prepareStatement("UPDATE PRICE SET PRICE_OF_SERVICE  = ?, PRICE_OF_LOCATION = ?, ID_SERVICE = ?, ID_PROV_LOCATION = ? WHERE ID_PRICE=?");
 
             statement.setFloat(1, price_of_service);
 
             statement.setFloat(2, price_of_location);
 
             statement.setInt(3, id_service);
-            statement.setInt(4, id_price);
+            statement.setInt(4, id_prov_location);
+            statement.setInt(5, id_price);
 
 
 
@@ -160,6 +163,7 @@ public class PriceBean implements EntityBean {
             }
         }
     }
+
 
 
 }

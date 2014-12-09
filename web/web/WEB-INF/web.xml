@@ -60,7 +60,11 @@
         <servlet-class>com.sunflower.system.ExitServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GeneratePriceServlet</servlet-name>
+        <servlet-name>GenerateServicesServlet</servlet-name>
+        <servlet-class>com.sunflower.system.GenerateServicesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GeneratePricesServlet</servlet-name>
         <servlet-class>com.sunflower.system.GeneratePricesServlet</servlet-class>
     </servlet>
     <servlet>
@@ -135,7 +139,11 @@
         <url-pattern>/exit</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GeneratePriceServlet</servlet-name>
+        <servlet-name>GenerateServicesServlet</servlet-name>
+        <url-pattern>/generateservices</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GeneratePricesServlet</servlet-name>
         <url-pattern>/generateprices</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

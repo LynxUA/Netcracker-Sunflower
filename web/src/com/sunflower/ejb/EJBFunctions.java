@@ -4,6 +4,7 @@ import com.sunflower.ejb.ProviderLocation.LocalProviderLocation;
 import com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
+import com.sunflower.ejb.service.LocalServiceHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
 import com.sunflower.ejb.user.BadPasswordException;
@@ -14,6 +15,7 @@ import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.util.Collection;
 
 /**
  * Created by denysburlakov on 02.12.14.
@@ -174,6 +176,28 @@ public class EJBFunctions {
         try {
             location = home.findByPrimaryKey(id);
             return location;
+        } catch (FinderException e) {
+            return null;
+        }
+    }
+
+    public static Collection findByProviderLocationId(int id){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceHome home = null;
+        try {
+            home = (LocalServiceHome)ic.lookup("java:comp/env/ejb/Service");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        Collection services = null;
+        try {
+            services = home.findByProviderLocationId(id);
+            return services;
         } catch (FinderException e) {
             return null;
         }
