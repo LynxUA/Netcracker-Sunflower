@@ -17,8 +17,10 @@
             width: 200px;
             float: left;
         }
-        p {padding: 1% 7% 1% 7%;
-            margin: 1% 7% 1% 7%  }
+        p{padding: 1% 7% 1% 7%;
+            margin: 1% 7% 1% 7%  ; }
+        form{display:inline;}
+
     </style>
 </head>
 <body>
@@ -43,9 +45,9 @@
      margin: 1% 7% 1% 7%" >
     <table class="table  table-bordered table-striped" height="90">
         <thead>
-        <tr>
+        <tr >
 
-            <th>Order</th>
+            <th align=CENTER >Description</th>
 
         </tr>
         </thead>
@@ -56,17 +58,21 @@
                     <%
                 LocalTask localTask;
                 localTask=EJBFunctions.findIncompleteTask();
+                System.out.println(localTask.getDescription());
+
                 if(localTask!=null) {
             %>
 
-                <td><%=localTask.getDescription()%></td>
+                <td align="Center"><%=localTask.getDescription()%></td>
                 <% }else {%>
-                        <td>No tasks</td>
+                        <td align="Center">No tasks</td>
                             <% } %>
         </tr>
         </tbody>
     </table>
 </div>
+<%if (localTask!=null)
+{%>
 <p>
 <form method="get" action="currenttask?action=complete&key=<%=localTask.getId_task()%>">
     <button type="submit" class="btn btn-primary" value="Complete">Complete</button>
@@ -74,7 +80,14 @@
 <form method="get" action="currenttask?action=suspend&key=<%=localTask.getId_task()%>">
     <button type="submit" class="btn btn-primary" value="Suspend">Suspend</button>
     </form>
-    </p>
+</p>
+<%} else{%>
+<p>
+    <button type="submit" class="btn btn-primary" value="Complete" disabled>Complete</button>
+
+    <button type="submit" class="btn btn-primary" value="Suspend" disabled>Suspend</button>
+</p>
+<%}%>
 
 <%@include file="footer.jsp"%>
 </body>

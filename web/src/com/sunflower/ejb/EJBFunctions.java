@@ -205,21 +205,26 @@ public class EJBFunctions {
     
       public static LocalTask findIncompleteTask() {
         InitialContext ic = null;
+          System.out.println("dwa1");
         try {
+            System.out.println("dwa2");
             ic = new InitialContext();
         } catch (NamingException e) {
             e.printStackTrace();
         }
         LocalTaskHome home = null;
         try {
-            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/task");
+            System.out.println("dwa3");
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
             e.printStackTrace();
         }
         LocalTask localTask = null;
         try {
-        ;
+            System.out.println("dwa4");
             localTask = home.findIncompleteTask();
+            System.out.println(localTask);
+            System.out.println("dwa5");
             return localTask;
         } catch (FinderException e) {
             return null;
@@ -236,7 +241,7 @@ public class EJBFunctions {
         }
         LocalTaskHome home = null;
         try {
-            home = (LocalTaskHome)ic.lookup("java:comp/env/ejb/task");
+            home = (LocalTaskHome)ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
             e.printStackTrace();
         }
