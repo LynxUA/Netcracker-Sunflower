@@ -142,7 +142,8 @@ public class TaskBean implements EntityBean {
             statement.setInt(1, id_task);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
-                throw new NoSuchEntityException("...");
+                //throw new NoSuchEntityException("...");
+
             }
             description = resultSet.getString(1);
             status = resultSet.getString(2);
@@ -204,7 +205,7 @@ public class TaskBean implements EntityBean {
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO TASK"
-                    + "(DESCRIPTION, STATUS, ID_GROUP_USER, ID_ORDER) VALUES(?, ?, ?, ?)", new String[]{"ID_SERV_LOCATION"});
+                    + "(DESCRIPTION, STATUS, ID_GROUP_USER, ID_ORDER) VALUES(?, ?, ?, ?)");
             statement.setString(1, description);
             statement.setString(2, status);
             statement.setInt(3, id_group_user);
@@ -212,7 +213,10 @@ public class TaskBean implements EntityBean {
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
             }
-            id_task = statement.getGeneratedKeys().getInt(1);
+            statement = connection.prepareStatement("SELECT MAX(ID_TASK) FROM TASK");
+            ResultSet rs = statement.executeQuery();
+            rs.next();
+            id_task=rs.getInt(1);
             return id_task;
         } catch (SQLException e) {
             //throw new EJBException("Ошибка INSERT");
@@ -232,7 +236,7 @@ public class TaskBean implements EntityBean {
     public void ejbPostCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
 
     }
-    public Integer ejbFindIncompleteTask() throws FinderException {
+   /* public Integer ejbFindIncompleteTask() throws FinderException {
         Connection connection = null;
         PreparedStatement statement = null;
         String status="Incomplete";
@@ -264,8 +268,46 @@ public class TaskBean implements EntityBean {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
+  public Integer ejbFindIncompleteTask() throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String status="incomplete";
+        int key=0;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+                System.out.println("zxc1");
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
 
+            }
+            statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
+            statement.setString(1, status);
+            System.out.println("zxc2");
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                System.out.println("zxc4");
+                throw new ObjectNotFoundException("...");
+            }
+            System.out.println("zxc3");
+            System.out.println("Key "+resultSet.getInt(1));
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new EJBException("SELECT exception in ejbFindIncomplete");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public int getId_group_user() {
         return id_group_user;
     }
