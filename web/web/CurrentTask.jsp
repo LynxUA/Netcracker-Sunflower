@@ -58,7 +58,7 @@
                     <%
                 LocalTask localTask;
                 localTask=EJBFunctions.findIncompleteTask();
-                System.out.println(localTask.getDescription());
+
 
                 if(localTask!=null) {
             %>

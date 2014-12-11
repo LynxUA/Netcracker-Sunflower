@@ -21,5 +21,5 @@ public interface LocalTask extends EJBLocalObject {
 
     public int getId_order();
 
-    public void changeStatus(Integer key,String status) throws FinderException;
+   // public void changeStatus(Integer key,String status) throws FinderException;
 }

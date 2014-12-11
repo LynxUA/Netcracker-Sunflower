@@ -25,14 +25,12 @@ public class CurrentTaskServlet extends HttpServlet {
 
         int key = Integer.parseInt(request.getParameter("key"));
         LocalTask localTask= EJBFunctions.findLocalTaskById(key);
-        try {
-            if (action == "complete") localTask.changeStatus(key, "completed");
-            if (action == "suspend") localTask.changeStatus(key, "suspended");
-        }
-        catch (FinderException ex)
-        {
-            ex.printStackTrace();
-        }
+
+            if (action == "complete") localTask.setStatus("completed");
+            if (action == "suspend") localTask.setStatus("suspended");
+
+
+
 
 
     }

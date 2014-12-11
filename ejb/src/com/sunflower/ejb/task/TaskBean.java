@@ -56,7 +56,7 @@ public class TaskBean implements EntityBean {
         }
     }
 
-    public void changeStatus(Integer key,String status) throws FinderException {
+   /* public void changeStatus(Integer key,String status) throws FinderException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -87,7 +87,7 @@ public class TaskBean implements EntityBean {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
         if(DataSource.getDataSource()==null){

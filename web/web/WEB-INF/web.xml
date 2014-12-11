@@ -250,5 +250,13 @@
         <local>com.sunflower.ejb.service.LocalService</local>
         <ejb-link>ServiceEJB</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ejb/Port</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.port.LocalPortHome</local-home>
+        <local>com.sunflower.ejb.port.LocalPort</local>
+        <ejb-link>PortEJB</ejb-link>
+    </ejb-local-ref>
+
 
 </web-app>
