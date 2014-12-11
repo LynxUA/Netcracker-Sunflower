@@ -139,6 +139,31 @@ public class EJBFunctions {
         }
 
     }
+
+    public static Collection findOrderByLogin(String login) {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        Collection service_order = null;
+        try {
+            service_order = home.findOrdersByLogin(login);
+            return service_order;
+        } catch (FinderException e) {
+            return null;
+        }
+
+    }
+
+
     public static LocalProviderLocation findProviderLocation(float longtitude, float latitude){
         InitialContext ic = null;
         try {
