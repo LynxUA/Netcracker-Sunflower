@@ -1,6 +1,6 @@
 <%@ page import="com.sunflower.ejb.EJBFunctions" %>
 <%@ page import="com.sunflower.ejb.ServiceOrder.LocalServiceOrder" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Collection" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andriy
@@ -15,9 +15,8 @@
   <title>User service orders</title>
 </head>
 <body>
---CHange it to getting all user`s SOs
-<%ArrayList<LocalServiceOrder> serviceOrders = new ArrayList<LocalServiceOrder>();
-  serviceOrders.add((LocalServiceOrder) EJBFunctions.findServiceOrder(1));%>
+<%----CHange it to getting all user`s SOs--%>
+<%Collection serviceOrders = EJBFunctions.findOrderByLogin((String)request.getSession().getAttribute("login"));%>
 
 <%@include file="header.jsp"%>
 
@@ -39,25 +38,25 @@
           </tr>
           </thead>
           <tbody>
-          <%for(int i = 0; i < serviceOrders.size(); i++){%>
-          <td><%=serviceOrders.get(i).getId()%></td>
-          <td><%=serviceOrders.get(i).getScenario()%></td>
-          entering, processing, completed, cancelled
+          Entering == 1, Cancelled == 2, Processing == 3, Completed ==4 fix later
+          <%for(Object order:serviceOrders){%>
+          <td><%=((LocalServiceOrder)order).getId_order()%></td>
+          <td><%=((LocalServiceOrder)order).getId_scenario()%></td>
           <td><span
             <%
-                        if(serviceOrders.get(i).getStatus().toLowerCase().compareTo("entering") == 0){
+                        if(((LocalServiceOrder)order).getId_status() == 1){
                         %>
                   class="label-primary"
             <%
-                        } else if(serviceOrders.get(i).getStatus().toLowerCase().compareTo("processing") == 0){
+                        } else if(((LocalServiceOrder)order).getId_status() == 3){
                         %>
                   class="label label-warning"
             <%
-                        } else if(serviceOrders.get(i).getStatus().toLowerCase().compareTo("completed") == 0){
+                        } else if(((LocalServiceOrder)order).getId_status() == 4){
                         %>
                   class="label label-success"
             <%
-                        }else {
+                        }else if(((LocalServiceOrder)order).getId_status() == 2){
                         %>
                   class="label label-danger"
             <%
@@ -65,10 +64,11 @@
                         %>
 
                   >
-              <%=serviceOrders.get(i).getStatus()%>
+              <%=((LocalServiceOrder)order).getId_status()%>
           </td>
           </tr>
           <%}%>
+          New == 1, Modify == 2, Disconnect == 3
           </tbody>
         </table>
       </div>

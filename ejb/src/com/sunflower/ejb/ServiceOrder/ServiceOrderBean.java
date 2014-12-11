@@ -1,5 +1,6 @@
 package com.sunflower.ejb.ServiceOrder;
 
+import com.sunflower.ejb.DataSource;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
@@ -7,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Vector;
 
 /**
  * Created by Andriy on 12/3/2014.
@@ -236,6 +239,34 @@ public class ServiceOrderBean implements EntityBean {
     }
 
     public void ejbPostCreate(int id_status, int id_scenario, String login, int id_order) throws CreateException {
+
+    }
+
+    public Collection ejbFindOrdersByLogin(String login) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE LOGIN = ?");
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            Vector keys = new Vector();
+            while (resultSet.next()) {
+                Integer id_order = resultSet.getInt(1);
+                keys.addElement(id_order);
+            }
+            return keys;
+        } catch (SQLException e) {
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }
