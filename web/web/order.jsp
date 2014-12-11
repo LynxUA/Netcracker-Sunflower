@@ -49,7 +49,7 @@
       google.maps.event.addListener(marker,'drag',function() {
         geocodePosition(marker.getPosition());
         $('#services').html('');
-        $('#prices').html('');
+        $('#price').html('');
       });
 //      google.maps.event.addListener(marker,'dragend',function() {
 //        geocodePosition(marker.getPosition());
@@ -65,7 +65,7 @@
           document.getElementById('y').value = latlng.lng();
           geocodePosition(latlng);
           $('#services').html('');
-          $('#prices').html('');
+          $('#price').html('');
         }, function() {
           //handleNoGeolocation(true);
         });
@@ -84,7 +84,7 @@
           document.getElementById('x').value = latlng.lat();
           document.getElementById('y').value = latlng.lng();
           $('#services').html('');
-          $('#prices').html('');
+          $('#price').html('');
         } else {
           document.getElementById('address').value = 'Cannot determine address at this location.';
         }
@@ -114,7 +114,7 @@
           document.getElementById('x').value = latlng.lat();
           document.getElementById('y').value = latlng.lng();
           $('#services').html('');
-          $('#prices').html('');
+          $('#price').html('');
         } else {
           alert('Error: Invalid location');
         }
@@ -126,6 +126,14 @@
   </script>
   <script>
     $(document).ready(function() {
+//      $('#services').on('click', '#servicecheck', function (){
+//        var x=document.getElementById('x').value;
+//        var y=document.getElementById('y').value;
+//        var service = $("input[name='services']:checked").val();
+//        $.post('generateprices',{x:x, y:y, service:service},function(responseText) {
+//          $('#price').html(responseText);
+//        });
+//      });
       $('#submit').click(function(event) {
         var x=$('#x').val();
         var y=$('#y').val();
@@ -136,31 +144,20 @@
       });
     });
   </script>
-  <script>
-    $(document).ready(function() {
-      $('#servicecheck').click(function () {
-        var service = $("input[name='services']:checked").val();
-        $.post('generateprices',{service:service},function(responseText) {
-          $('#price').html(responseText);
-        });
-      });
-
-    });
-  </script>
 </head>
 <body>
 <%@include file="header.jsp"%>
 
 <div class="row">
   <div class="col-md-4" style="left: 20px">
-    <form method="post">
+    <form action="proceedorder" method="post">
       <input type="hidden" id="x" name="x" value="50.402">
       <input type="hidden" id="y" name="y" value="30.532">
       <input id="address" class="form-control input-lg form-group" type="textbox" name="address" value="Kyiv">
       <input type="button" class="btn btn-success btn-block" value="Find location" onclick="codeAddress()">
       <input type="button" id="submit" class="btn btn-success btn-block" value="Save" style="margin-top: 20px">
       <div id="services"></div>
-      <div id="price"></div>
+      <%--<div class="price" id="price"></div>--%>
 
     </form>
   </div>

@@ -4,6 +4,8 @@ import com.sunflower.ejb.ProviderLocation.LocalProviderLocation;
 import com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
+import com.sunflower.ejb.price.LocalPrice;
+import com.sunflower.ejb.price.LocalPriceHome;
 import com.sunflower.ejb.service.LocalServiceHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
@@ -93,7 +95,7 @@ public class EJBFunctions {
         return null;
     }
 
-    public static LocalServiceOrder createServiceOrder(Integer id, String status, String scenarion, String login){
+    public static LocalServiceOrder createServiceOrder(int id_status, int id_scenario, String login, int id_price){
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -108,7 +110,7 @@ public class EJBFunctions {
         }
         LocalServiceOrder service_order = null;
         try {
-            service_order = home.create(status, scenarion, login, id);
+            service_order = home.create(id_status, id_scenario, login, id_price);
             return service_order;
         } catch (CreateException e) {
             return null;
@@ -249,4 +251,45 @@ public class EJBFunctions {
         }
     }
 
+    public static float getDestinationToProvider(float longtitude, float latitude){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalProviderLocationHome home = null;
+        try {
+            home = (LocalProviderLocationHome)ic.lookup("java:comp/env/ejb/ProviderLocation");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        float distance;
+        try {
+            distance = home.getDistanceToProvider(longtitude, latitude);
+            return distance;
+        } catch (FinderException e) {
+            return -1f;
+        }
+    }
+
+    public static LocalPrice findPrice(int service, int providerLocation){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalPriceHome home = null;
+        try {
+            home = (LocalPriceHome)ic.lookup("java:comp/env/ejb/Price");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        try {
+            return home.findByLocationAndService(service, providerLocation);
+        } catch (FinderException e) {
+            return null;
+        }
+    }
 }

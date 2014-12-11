@@ -164,6 +164,62 @@ public class PriceBean implements EntityBean {
         }
     }
 
+    public Integer ejbFindByLocationAndService(int id_service, int id_prov_location) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            statement = connection.prepareStatement("SELECT ID_PRICE FROM PRICE WHERE ID_SERVICE = ? AND ID_PROV_LOCATION = ?");
+            statement.setInt(1, id_service);
+            statement.setInt(2, id_prov_location);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new ObjectNotFoundException("...");
+            }
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            System.out.println("тут");
+            e.printStackTrace();
+            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public int getId_price() {
+        return id_price;
+    }
+
+    public float getPrice_of_service() {
+        return price_of_service;
+    }
 
 
+    public float getPrice_of_location() {
+        return price_of_location;
+    }
+
+
+    public int getId_service() {
+        return id_service;
+    }
+
+
+    public int getId_prov_location() {
+        return id_prov_location;
+    }
 }

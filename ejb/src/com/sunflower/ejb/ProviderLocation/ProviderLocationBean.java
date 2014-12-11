@@ -313,4 +313,48 @@ public class ProviderLocationBean implements EntityBean {
         this.Num_of_services=Num_of_services;
     }
 
+    public float ejbHomeGetDistanceToProvider(float longtitude, float latitude) throws ObjectNotFoundException {
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            //statement.setFloat(1, latitude);
+            //statement.setFloat(2, latitude);
+            //statement.setFloat(3, longtitude);
+            statement = connection.createStatement();
+            ResultSet resultSet = null;
+            if (statement != null) {
+                resultSet = statement.executeQuery("SELECT LOC FROM (SELECT (ACOS(SIN("+latitude
+                        +"*3.1415926/180)* SIN(LATITUDE*3.1415926/180) + COS(" + latitude
+                        +" * 3.1415926/180)* COS(LATITUDE*3.1415926/180)*COS(LONGTITUDE*3.1415926/180-" + longtitude
+                        +"*3.1415926/180)) * 6371) AS LOC FROM PROVIDER_LOCATION ORDER BY LOC ASC) WHERE ROWNUM = 1");
+            }
+            if (!resultSet.next()) {
+                throw new ObjectNotFoundException("...");
+            }
+            return resultSet.getFloat(1);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            System.out.println("тут");
+            e.printStackTrace();
+            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }

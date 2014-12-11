@@ -2,6 +2,7 @@ package com.sunflower.system;
 
 import com.sunflower.ejb.EJBFunctions;
 import com.sunflower.ejb.ProviderLocation.LocalProviderLocation;
+import com.sunflower.ejb.price.LocalPrice;
 import com.sunflower.ejb.service.LocalService;
 
 import javax.servlet.ServletException;
@@ -35,20 +36,27 @@ public class GenerateServicesServlet extends HttpServlet {
         Collection services = EJBFunctions.findByProviderLocationId(prov_location.getId_Prov_Location());
 
         PrintWriter writer = response.getWriter();
-        writer.println("<form method=\"post\">");
+        writer.println("<form action=\"proceedorder\" method=\"post\">");
         writer.println("Nearest provider location: Netflower " + prov_location.getLocation() + "<br>");
         for(Object local:services)
         {
+            LocalService service = (LocalService)local;
+            LocalPrice price = EJBFunctions.findPrice(service.getId_service(), prov_location.getId_Prov_Location());
+            float distance = EJBFunctions.getDestinationToProvider(longtitude, latitude);
+
+            //writer.println(price.getPrice_of_service()+distance*price.getPrice_of_location());
             writer.println("<div class=\"radio\">\n" +
                     "            <label>\n" +
-                    "            <input type=\"radio\" name=\"services\" value=\""+ ((LocalService)local).getId_service()+"\">\n" +
-                    ( (LocalService) local).getName()  +
+                    "            <input type=\"radio\" name=\"prices\" value=\""+ price.getId_price()+"\">\n" +
+                    ( (LocalService) local).getName() +" for "+ (price.getPrice_of_service()+distance*price.getPrice_of_location())+
                     "                </label>\n" +
                     "            </div>\n");
 
             //writer.println(((LocalService) local).getName() + "<br>");
         }
-        writer.println("<input id=\"servicecheck\" type=\"button\" name=\"servicecheck\" value=\"Get price\"></input>");
+       // writer.println("<form action=\"proceedorder?price="++"\" method = \"post\"></form>");
+        writer.println("<input type=\"submit\" class=\"btn btn-success btn-block\" value=\"Confirm\">");
+        //writer.println("<input type=\"button\" id=\"servicecheck\" class=\"btn btn-success btn-block\" value=\"Save\" style=\"margin-top: 20px\">");
         writer.println("</form>");
     }
 

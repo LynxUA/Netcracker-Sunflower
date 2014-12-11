@@ -91,7 +91,10 @@
         <servlet-name>CurrentTaskServlet</servlet-name>
         <servlet-class>com.sunflower.web.CurrentTaskServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>ProceedOrderServlet</servlet-name>
+        <servlet-class>com.sunflower.system.ProceedOrderServlet</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -181,6 +184,10 @@
     <servlet-mapping>
         <servlet-name>CurrentTaskServlet</servlet-name>
         <url-pattern>/currenttask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProceedOrderServlet</servlet-name>
+        <url-pattern>/proceedorder</url-pattern>
     </servlet-mapping>
     
     <ejb-local-ref>

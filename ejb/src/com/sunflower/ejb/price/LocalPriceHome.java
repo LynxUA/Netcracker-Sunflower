@@ -8,4 +8,5 @@ import javax.ejb.FinderException;
  */
 public interface LocalPriceHome extends EJBLocalHome {
     com.sunflower.ejb.price.LocalPrice findByPrimaryKey(Integer key) throws FinderException;
+    LocalPrice findByLocationAndService(int id_service, int id_prov_location) throws FinderException;
 }
