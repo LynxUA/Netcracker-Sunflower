@@ -26,7 +26,7 @@ public class EJBFunctions {
     private EJBFunctions(){
 
     }
-    public static LocalUser createUser(String login, String email, String name, String surname, String password) throws CreateException {
+    public static LocalUser createUser(String login, String email, String name, String surname, String password, int group) throws CreateException {
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -41,7 +41,7 @@ public class EJBFunctions {
         }
         LocalUser user = null;
         if (home != null) {
-            user = home.create(login, email, name, surname, password, 1);
+            user = home.create(login, email, name, surname, password, group);
             return user;
         }
         return null;

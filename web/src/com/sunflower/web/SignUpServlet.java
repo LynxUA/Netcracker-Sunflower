@@ -98,7 +98,7 @@ public class SignUpServlet extends HttpServlet {
         //addNewUser(login, email,name,StaticFunctions.getHashCode(password));
         //addNewUser(login, email,name, password);
         try {
-            LocalUser user = EJBFunctions.createUser(login, email, name, surname, password);
+            LocalUser user = EJBFunctions.createUser(login, email, name, surname, password, 1);
         }catch(DuplicateKeyException e) {
             request.setAttribute("login_error", "User with this login is already exist");
             request.getRequestDispatcher("signup.jsp").forward(request, response);
