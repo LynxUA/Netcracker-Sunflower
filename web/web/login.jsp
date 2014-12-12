@@ -47,10 +47,6 @@
 
                 <input  type="hidden" name="check" value="">
               </fieldset>
-              <br/>
-              <div>
-                <p>Forgot your password? <a href="reset">Click here to reset it</a>.</p>
-              </div>
             </form>
           </div>
         </div>

@@ -28,15 +28,21 @@
             <div class="panel-body">
 
               <form accept-charset="UTF-8" role="form" class="form-signin" action="reset" method="post">
-                <%if(request.getAttribute("login_error") != null && !((String) request.getAttribute("login_error")).isEmpty()){%>
-                <div class="alert alert-danger" role="alert">${requestScope.login_error}</div>
+                <h1>Reset password for <%=request.getParameter("login")%></h1>
+                <%if(request.getAttribute("password_error") != null && !((String) request.getAttribute("password_error")).isEmpty()){%>
+                <div class="alert alert-danger" role="alert">${requestScope.password_error}</div>
                 <%}%>
                 <div class="form-group">
-                  <input type="email" name="login" id="login" class="form-control input-lg" placeholder="Email Address" value="${requestScope.login}" tabindex="4">
+                  <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="4">
+                </div>
+
+                <div class="form-group">
+                  <input type="password" name="repeat_password" id="repeat_password" class="form-control input-lg" placeholder="Repeat password" tabindex="4">
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-offset-3">
                   <input type="submit" class="btn btn-lg btn-success btn-block" value="Reset">
                 </div>
+                <input type="hidden" name="login" value="<%=request.getParameter("login")%>">
               </form>
 
             </div>

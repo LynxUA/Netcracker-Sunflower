@@ -1,5 +1,9 @@
 package com.sunflower.web;
 
+import com.sunflower.ejb.EJBFunctions;
+import com.sunflower.ejb.user.LocalUser;
+
+import javax.ejb.FinderException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,33 +18,36 @@ import java.io.IOException;
 public class ResetPasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("login_error", "");
-        String check = request.getParameter("check");
-        if(check != null && !check.equals("")){
-            response.sendRedirect("www.google.com");
-            return;
-        }
-
-        String login = request.getParameter("login").toLowerCase();
-
-        if(login.isEmpty()){
-            request.setAttribute("login_error", "Email can`t be empty");
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        String repeat_password = request.getParameter("repeat_password");
+        if(password == null || repeat_password == null ||
+                (password.compareTo("") == 0) || (repeat_password.compareTo("") == 0)) {
+            request.setAttribute("password_error", "Type the passwords");
             request.getRequestDispatcher("reset.jsp").forward(request, response);
             return;
         }
-        if(StaticFunctions.isValidEmail(login)){
-            if(!StaticFunctions.isEmailExist(login)){
-                request.setAttribute("login_error", "Sorry, but there is no user with such email");
-                request.setAttribute("login", login);
-                request.getRequestDispatcher("reset.jsp").forward(request,response);
-            } else{
-                MailServer.messagePasswordReminder(login);
-                response.sendRedirect("complete");
-            }
-        } else{
-            request.setAttribute("login", login);
-            request.setAttribute("login_error", "Wrong email format");
-            request.getRequestDispatcher("reset.jsp").forward(request,response);
+
+        if(password.compareTo(repeat_password) != 0) {
+            request.setAttribute("password_error", "Passwords should be equal");
+            request.getRequestDispatcher("reset.jsp").forward(request, response);
+            return;
         }
+
+        if(!StaticFunctions.isValidPassword(password))
+        {
+            request.setAttribute("password_error", "Wrong password format");
+            request.getRequestDispatcher("reset.jsp").forward(request, response);
+            return;
+        }
+        LocalUser user;
+        try {
+            user = (LocalUser) EJBFunctions.findUser(login);
+        }catch (FinderException e){
+            request.setAttribute("password_error", "User not found. Maybe someone deleted him earlier");
+            return;
+        }
+        user.setPassword(password);
     }
 
 

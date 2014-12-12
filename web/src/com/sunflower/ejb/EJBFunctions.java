@@ -46,8 +46,25 @@ public class EJBFunctions {
         }
         return null;
     }
-    public static void findUser(String login){
-
+    public static LocalUser findUser(String login) throws FinderException{
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalUserHome home = null;
+        try {
+            home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalUser user = null;
+        if (home != null) {
+            user = home.findUser(login);
+            return user;
+        }
+        return null;
     }
     public static LocalUser login(String login, String password) throws Exception, BadPasswordException, FinderException {
         InitialContext ic = null;

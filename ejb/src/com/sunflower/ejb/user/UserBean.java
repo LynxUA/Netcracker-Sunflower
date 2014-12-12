@@ -275,6 +275,45 @@ public class UserBean implements EntityBean {
         }
     }
 
+    public String ejbFindUser(String login) throws FinderException, BadPasswordException {
+        ejbFindByPrimaryKey(login);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN LIKE ?)");
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new FinderException();
+            }
+            return login;
+        }/*catch(BadPasswordException e){
+            System.out.println("????????????????????????");
+            throw e;
+        }*/
+        catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public String getLogin() {
         return login;
     }
