@@ -4,10 +4,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <servlet>
-        <servlet-name>HelloWorldServlet</servlet-name>
-        <servlet-class>com.sunflower.web.HelloWorldServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CheckLoginServlet</servlet-name>
         <servlet-class>com.sunflower.web.CheckLoginServlet</servlet-class>
     </servlet>
@@ -63,10 +59,7 @@
         <servlet-name>GenerateServicesServlet</servlet-name>
         <servlet-class>com.sunflower.system.GenerateServicesServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>GeneratePricesServlet</servlet-name>
-        <servlet-class>com.sunflower.system.GeneratePricesServlet</servlet-class>
-    </servlet>
+
     <servlet>
         <servlet-name>SaveLocationServlet</servlet-name>
         <servlet-class>com.sunflower.system.SaveLocationServlet</servlet-class>
@@ -96,11 +89,6 @@
         <servlet-class>com.sunflower.system.ProceedOrderServlet</servlet-class>
     </servlet>
 
-
-    <servlet-mapping>
-        <servlet-name>HelloWorldServlet</servlet-name>
-        <url-pattern>/helloworld</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CheckLoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -156,10 +144,6 @@
     <servlet-mapping>
         <servlet-name>GenerateServicesServlet</servlet-name>
         <url-pattern>/generateservices</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GeneratePricesServlet</servlet-name>
-        <url-pattern>/generateprices</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SaveLocationServlet</servlet-name>
