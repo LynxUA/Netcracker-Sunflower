@@ -14,6 +14,9 @@ import java.util.Vector;
 /**
  * Created by Andriy on 12/3/2014.
  */
+
+
+
 public class ServiceOrderBean implements EntityBean {
     private int id_status;
     private int id_scenario;
@@ -242,20 +245,50 @@ public class ServiceOrderBean implements EntityBean {
 
     }
 
-    public Collection ejbFindOrdersByLogin(String login) throws FinderException {
+//    public Collection ejbFindOrdersByLogin(String login) throws FinderException {
+//        Connection connection = null;
+//        PreparedStatement statement = null;
+//        try {
+//            connection = DataSource.getDataSource().getConnection();
+//            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE LOGIN = ?");
+//            statement.setString(1, login);
+//            ResultSet resultSet = statement.executeQuery();
+//            Vector keys = new Vector();
+//            while (resultSet.next()) {
+//                Integer id_order = resultSet.getInt(1);
+//                keys.addElement(id_order);
+//            }
+//            return keys;
+//        } catch (SQLException e) {
+//            throw new EJBException("Ошибка SELECT");
+//        } finally {
+//            try {
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
+
+    public Collection ejbHomeGetOrdersByLogin(String login) throws FinderException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE LOGIN = ?");
+            statement = connection.prepareStatement("SELECT ID_ORDER, SO_STATUS.NAME, SCENARIO.NAME\n" +
+                    "FROM (SERVICE_ORDER JOIN SO_STATUS ON SERVICE_ORDER.ID_STATUS = SO_STATUS.ID_STATUS) " +
+                    "JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
+                    "WHERE LOGIN = ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
-            Vector keys = new Vector();
+            Vector<SOWrapper> orders = new Vector<SOWrapper>();
             while (resultSet.next()) {
-                Integer id_order = resultSet.getInt(1);
-                keys.addElement(id_order);
+                orders.addElement(new SOWrapper(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3)));
             }
-            return keys;
+            return orders;
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
         } finally {
@@ -267,6 +300,5 @@ public class ServiceOrderBean implements EntityBean {
                 e.printStackTrace();
             }
         }
-
     }
 }

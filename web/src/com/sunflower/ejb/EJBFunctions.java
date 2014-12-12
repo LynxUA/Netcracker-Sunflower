@@ -172,7 +172,7 @@ public class EJBFunctions {
         }
         Collection service_order = null;
         try {
-            service_order = home.findOrdersByLogin(login);
+            service_order = home.getOrdersByLogin(login);
             return service_order;
         } catch (FinderException e) {
             return null;

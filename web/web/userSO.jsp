@@ -1,6 +1,7 @@
 <%@ page import="com.sunflower.ejb.EJBFunctions" %>
 <%@ page import="com.sunflower.ejb.ServiceOrder.LocalServiceOrder" %>
 <%@ page import="java.util.Collection" %>
+<%@ page import="com.sunflower.ejb.ServiceOrder.SOWrapper" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andriy
@@ -40,23 +41,23 @@
           <tbody>
           Entering == 1, Cancelled == 2, Processing == 3, Completed ==4 fix later
           <%for(Object order:serviceOrders){%>
-          <td><%=((LocalServiceOrder)order).getId_order()%></td>
-          <td><%=((LocalServiceOrder)order).getId_scenario()%></td>
+          <td><%=((SOWrapper)order).getId_order()%></td>
+          <td><%=((SOWrapper)order).getScenario_name()%></td>
           <td><span
             <%
-                        if(((LocalServiceOrder)order).getId_status() == 1){
+                        if(((SOWrapper)order).getStatus_name().equals("Entering")){
                         %>
                   class="label-primary"
             <%
-                        } else if(((LocalServiceOrder)order).getId_status() == 3){
+                        } else if(((SOWrapper)order).getStatus_name().equals("Processing")){
                         %>
                   class="label label-warning"
             <%
-                        } else if(((LocalServiceOrder)order).getId_status() == 4){
+                        } else if(((SOWrapper)order).getStatus_name().equals("Completed")){
                         %>
                   class="label label-success"
             <%
-                        }else if(((LocalServiceOrder)order).getId_status() == 2){
+                        }else if(((SOWrapper)order).getStatus_name().equals("Cancelled")){
                         %>
                   class="label label-danger"
             <%
@@ -64,7 +65,7 @@
                         %>
 
                   >
-              <%=((LocalServiceOrder)order).getId_status()%>
+              <%=((SOWrapper)order).getStatus_name()%>
           </td>
           </tr>
           <%}%>

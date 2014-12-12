@@ -17,6 +17,6 @@ public class SOInfoServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("soinfo.jsp").forward(request,response);
+        request.getRequestDispatcher("userSO.jsp").forward(request,response);
     }
 }
