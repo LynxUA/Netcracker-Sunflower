@@ -3,6 +3,7 @@ package com.sunflower.ejb.user;
 
 
 import com.sunflower.ejb.DataSource;
+import com.sunflower.ejb.ServiceOrder.SOWrapper;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
@@ -11,7 +12,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * Created by denysburlakov on 30.11.14.
@@ -295,10 +299,7 @@ public class UserBean implements EntityBean {
                 throw new FinderException();
             }
             return login;
-        }/*catch(BadPasswordException e){
-            System.out.println("????????????????????????");
-            throw e;
-        }*/
+        }
         catch (SQLException e) {
             System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
@@ -313,6 +314,7 @@ public class UserBean implements EntityBean {
             }
         }
     }
+
 
     public String getLogin() {
         return login;
@@ -342,4 +344,91 @@ public class UserBean implements EntityBean {
         return group;
     }
 
+    public Collection ejbFindСustomers() throws FinderException {
+        //    public Collection ejbFindOrdersByLogin(String login) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE ID_GROUP_USER = 1");
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList keys = new ArrayList();
+            while (resultSet.next()) {
+                String id_order = resultSet.getString(1);
+                keys.add(id_order);
+            }
+            return keys;
+        } catch (SQLException e) {
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+//
+//    }
+    }
+
+    public int ejbHomeGetNumberOfCustomers() throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT COUNT(LOGIN)\n" +
+                    "FROM SUN_USER\n" +
+                    "WHERE ID_GROUP_USER = 1");
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new FinderException();
+            }
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Collection ejbHomeGetCustomers(int from, int to) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT A,B,C,D\n" +
+                    "FROM (SELECT LOGIN AS A, EMAIL AS B, NAME AS C, SURNAME AS D, ROWNUM R FROM SUN_USER WHERE ID_GROUP_USER = 1 )\n" +
+                    "WHERE R >= ? AND R <=?");
+            statement.setInt(1, from);
+            statement.setInt(2, to);
+            ResultSet resultSet = statement.executeQuery();
+            Vector<CustomerWrapper> customers = new Vector<CustomerWrapper>();
+            while (resultSet.next()) {
+                customers.addElement(new CustomerWrapper(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3),resultSet.getString(4)));
+            }
+            return customers;
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

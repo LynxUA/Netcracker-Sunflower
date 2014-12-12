@@ -10,6 +10,7 @@ import com.sunflower.ejb.service.LocalServiceHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
 import com.sunflower.ejb.user.BadPasswordException;
+import com.sunflower.ejb.user.CustomerWrapper;
 import com.sunflower.ejb.user.LocalUser;
 import com.sunflower.ejb.user.LocalUserHome;
 
@@ -18,6 +19,7 @@ import javax.ejb.FinderException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.util.Collection;
+import java.util.Vector;
 
 /**
  * Created by denysburlakov on 02.12.14.
@@ -86,6 +88,50 @@ public class EJBFunctions {
             throw new Exception("Error with EJBs");
         }
     }
+
+    public static Vector<CustomerWrapper> getCustomers(int from, int to) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalUserHome home = null;
+        try {
+            home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return (Vector<CustomerWrapper>)home.getCustomers(from, to);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+
+    }
+
+    public static int getNumberOfCustomers() {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalUserHome home = null;
+        try {
+            home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        try {
+            return home.getNumberOfCustomers();
+        } catch (FinderException e) {
+            return 0;
+        }
+
+    }
+
     public static LocalTask createTask(String description, String status, int id_group_user, int id_order) throws Exception {
         InitialContext ic = null;
         try {

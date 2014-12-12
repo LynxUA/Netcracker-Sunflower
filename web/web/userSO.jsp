@@ -34,7 +34,8 @@
 <%@include file="header.jsp"%>
 
 
-  <div class="container">
+  <div class="container" style="padding-bottom: 30px">
+      <h3>Service orders</h3>
     <%if(serviceOrders.size() == 0){%>
 
     <h1>Sorry, but you don`t have any service orders.</h1>
@@ -55,11 +56,13 @@
           <td><%=order.getScenario_name()%></td>
           <td><span
               <%
-                        if(order.getStatus_name().equals("Entering")){
+                System.out.println(order.getStatus_name());
+                        System.out.println(order.getStatus_name().compareTo("Entering"));
+                        if(order.getStatus_name().contains("Entering")){
                         %>
-                  class="label-primary"
+                  class="label label-primary"
             <%
-                        } else if(order.getStatus_name().equals("Processing")){
+                        } else if(order.getStatus_name().compareTo("Processing")==0){
                         %>
                   class="label label-warning"
             <%
@@ -73,9 +76,8 @@
             <%
                         }
                         %>
-
                   >
-              <%=order.getStatus_name()%>
+              <%=order.getStatus_name()%></span>
           </td>
           </tr>
           <%}%>
@@ -83,19 +85,19 @@
         </table>
       </div>
     </div>
-  </div>
   <%}%>
-    <%if(numberOfRecords >10){%>
-    <div class="pagination pagination-centered">
-        <ul class="pagination pagination-centered">
-            <li class="<%if(to/10==1){%>disabled<%}else{%>active<%}%>"><a href="user_so?from=1&to=10">&laquo;</a></li>
-            <%if(!(to/10 == 1)){%><li class="active"><a href="user_so?from=<%=from-10%>&to=<%=to-10%>"><%=(to-10)/10%></a></li><%}%>
-            <li class="disabled"><a href="#"><%=to/10%></a></li>
-            <%if(!(from+10 > numberOfRecords )){%><li class="active"><a href="user_so?from=<%=from+10%>&to=<%=to+10%>"><%=(to+10)/10%></a></li><%}%>
-            <%if(!(from+20 > numberOfRecords )){%><li class="active"><a href="user_so?from=<%=numberOfRecords - (numberOfRecords%10)%>&to=<%=numberOfRecords/10%>">&raquo;</a></li><%}%>
-        </ul>
-    </div>
-    <%}%>
+      <%if(numberOfRecords >10){%>
+      <div class="pagination pagination-centered">
+          <ul class="pagination pagination-centered">
+              <li class="<%if(to/10==1){%>disabled<%}else{%>active<%}%>"><a href="user_so?from=1&to=10">&laquo;</a></li>
+              <%if(!(to/10 == 1)){%><li class="active"><a href="user_so?from=<%=from-10%>&to=<%=to-10%>"><%=(to-10)/10%></a></li><%}%>
+              <li class="disabled"><a href="#"><%=to/10%></a></li>
+              <%if(!(from+10 > numberOfRecords )){%><li class="active"><a href="user_so?from=<%=from+10%>&to=<%=to+10%>"><%=(to+10)/10%></a></li><%}%>
+              <%if(!(from+20 > numberOfRecords )){%><li class="active"><a href="user_so?from=<%=numberOfRecords - (numberOfRecords%10)%>&to=<%=numberOfRecords/10%>">&raquo;</a></li><%}%>
+          </ul>
+      </div>
+      <%}%>
+  </div>
 <%@include file="footer.jsp"%>
 </body>
 </html>
