@@ -157,7 +157,7 @@ public class EJBFunctions {
 
     }
 
-    public static Collection findOrderByLogin(String login) {
+    public static Collection findOrderByLogin(String login, int from , int to) {
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -172,7 +172,7 @@ public class EJBFunctions {
         }
         Collection service_order = null;
         try {
-            service_order = home.getOrdersByLogin(login);
+            service_order = home.getOrdersByLogin(login, from, to);
             return service_order;
         } catch (FinderException e) {
             return null;
@@ -180,6 +180,28 @@ public class EJBFunctions {
 
     }
 
+    public static int getNumberOfOrdersByLogin(String login) {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        int number;
+        try {
+            number = home.getNumberOfOrdersByLogin(login);
+            return number;
+        } catch (FinderException e) {
+            return 0;
+        }
+
+    }
 
     public static LocalProviderLocation findProviderLocation(float longtitude, float latitude){
         InitialContext ic = null;

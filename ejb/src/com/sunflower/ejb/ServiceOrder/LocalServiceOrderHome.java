@@ -11,5 +11,6 @@ import java.util.Collection;
 public interface LocalServiceOrderHome extends EJBLocalHome {
     public LocalServiceOrder create(int id_status, int id_scenario, String login, int id_price) throws CreateException;
     public LocalServiceOrder findByPrimaryKey(Integer key) throws FinderException;
-    public Collection getOrdersByLogin(String login) throws FinderException;
+    public Collection getOrdersByLogin(String login, int from, int to) throws FinderException;
+    public int getNumberOfOrdersByLogin(String login) throws FinderException;
 }

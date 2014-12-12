@@ -273,16 +273,19 @@ public class ServiceOrderBean implements EntityBean {
 //
 //    }
 
-    public Collection ejbHomeGetOrdersByLogin(String login) throws FinderException {
+    public Collection ejbHomeGetOrdersByLogin(String login, int from, int to) throws FinderException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT ID_ORDER, SO_STATUS.NAME, SCENARIO.NAME\n" +
-                    "FROM (SERVICE_ORDER JOIN SO_STATUS ON SERVICE_ORDER.ID_STATUS = SO_STATUS.ID_STATUS) " +
-                    "JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
-                    "WHERE LOGIN = ?");
+            statement = connection.prepareStatement("SELECT A,B,C\n" +
+                    "FROM (SELECT ID_ORDER AS A, SO_STATUS.NAME AS B, SCENARIO.NAME AS C, ROWNUM R\n" +
+                    "FROM (SERVICE_ORDER JOIN SO_STATUS ON SERVICE_ORDER.ID_STATUS = SO_STATUS.ID_STATUS) JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
+                    "WHERE LOGIN like ? )\n" +
+                    "WHERE R >= ? AND R <=?");
             statement.setString(1, login);
+            statement.setInt(2, from);
+            statement.setInt(3, to);
             ResultSet resultSet = statement.executeQuery();
             Vector<SOWrapper> orders = new Vector<SOWrapper>();
             while (resultSet.next()) {
@@ -290,6 +293,35 @@ public class ServiceOrderBean implements EntityBean {
             }
             return orders;
         } catch (SQLException e) {
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int ejbHomeGetNumberOfOrdersByLogin(String login) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT COUNT(ID_ORDER)\n" +
+                    "FROM SERVICE_ORDER\n" +
+                    "WHERE LOGIN LIKE ?");
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new FinderException();
+            }
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
