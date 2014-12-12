@@ -2,6 +2,7 @@
 <%@ page import="com.sunflower.ejb.ServiceOrder.LocalServiceOrder" %>
 <%@ page import="java.util.Collection" %>
 <%@ page import="com.sunflower.ejb.ServiceOrder.SOWrapper" %>
+<%@ page import="java.util.Vector" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andriy
@@ -17,7 +18,7 @@
 </head>
 <body>
 <%----CHange it to getting all user`s SOs--%>
-<%Collection serviceOrders = EJBFunctions.findOrderByLogin((String)request.getSession().getAttribute("login"));%>
+<%Vector<SOWrapper> serviceOrders = (Vector<SOWrapper>)(EJBFunctions.findOrderByLogin((String)request.getSession().getAttribute("login")));%>
 
 <%@include file="header.jsp"%>
 
@@ -40,24 +41,24 @@
           </thead>
           <tbody>
           Entering == 1, Cancelled == 2, Processing == 3, Completed ==4 fix later
-          <%for(Object order:serviceOrders){%>
-          <td><%=((SOWrapper)order).getId_order()%></td>
-          <td><%=((SOWrapper)order).getScenario_name()%></td>
+          <%for(SOWrapper order:serviceOrders){%>
+          <td><%=order.getId_order()%></td>
+          <td><%=order.getScenario_name()%></td>
           <td><span
             <%
-                        if(((SOWrapper)order).getStatus_name().equals("Entering")){
+                        if(order.getStatus_name().equals("Entering")){
                         %>
                   class="label-primary"
             <%
-                        } else if(((SOWrapper)order).getStatus_name().equals("Processing")){
+                        } else if(order.getStatus_name().equals("Processing")){
                         %>
                   class="label label-warning"
             <%
-                        } else if(((SOWrapper)order).getStatus_name().equals("Completed")){
+                        } else if(order.getStatus_name().equals("Completed")){
                         %>
                   class="label label-success"
             <%
-                        }else if(((SOWrapper)order).getStatus_name().equals("Cancelled")){
+                        }else if(order.getStatus_name().equals("Cancelled")){
                         %>
                   class="label label-danger"
             <%
@@ -65,7 +66,7 @@
                         %>
 
                   >
-              <%=((SOWrapper)order).getStatus_name()%>
+              <%=order.getStatus_name()%>
           </td>
           </tr>
           <%}%>
