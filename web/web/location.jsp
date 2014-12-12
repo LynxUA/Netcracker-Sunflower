@@ -144,6 +144,6 @@
     <div id="map-canvas"/>
   </div>
 </div>
-
+<%@include file="footer.jsp"%>
 </body>
 </html>
