@@ -88,6 +88,19 @@
         <servlet-name>ProceedOrderServlet</servlet-name>
         <servlet-class>com.sunflower.system.ProceedOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SOInfoServlet</servlet-name>
+        <servlet-class>com.sunflower.web.SOInfoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SIInfoServlet</servlet-name>
+        <servlet-class>com.sunflower.web.SIInfoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserInfoServlet</servlet-name>
+        <servlet-class>com.sunflower.web.UserInfoServlet</servlet-class>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>CheckLoginServlet</servlet-name>
@@ -115,7 +128,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserInstanceServlet</servlet-name>
-        <url-pattern>/user_si</url-pattern>
+        <url-pattern>/instances</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserGroupServlet</servlet-name>
@@ -155,7 +168,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserSO</servlet-name>
-        <url-pattern>/user_so</url-pattern>
+        <url-pattern>/orders</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>TaskServlet</servlet-name>
@@ -163,7 +176,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UsersListServlet</servlet-name>
-        <url-pattern>/userslist</url-pattern>
+        <url-pattern>/users</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CurrentTaskServlet</servlet-name>
@@ -173,6 +186,19 @@
         <servlet-name>ProceedOrderServlet</servlet-name>
         <url-pattern>/proceedorder</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SOInfoServlet</servlet-name>
+        <url-pattern>/user_so</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SIInfoServlet</servlet-name>
+        <url-pattern>/user_si</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserInfoServlet</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+
     
     <ejb-local-ref>
         <ejb-ref-name>ejb/User</ejb-ref-name>

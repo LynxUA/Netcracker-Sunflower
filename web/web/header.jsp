@@ -68,15 +68,13 @@
             %>
                   <li><a href="/webWeb/">Home</a></li>
                   <li><a href="users">Users</a></li>
-                  <li><a href="groups">Groups</a></li>
             <%
                 break;
               case CSE:
 
             %>
                   <li><a href="/webWeb/">Home</a></li>
-                  <li><a href="instances">Users</a></li>
-                  <li><a href="groups">Groups</a></li>
+                  <li><a href="users">Users</a></li>
             <%
                 break;
               case PE:
@@ -141,9 +139,9 @@
                     break;
                   case CSE:
                 %>
-                    <li><a href="reg_emp">Register employee</a></li>
+                    <%--<li><a href="reg_emp">Register employee</a></li>--%>
                     <%--<li><a href="location">My location</a></li>--%>
-                    <li class="divider"></li>
+                    <%--<li class="divider"></li>--%>
                     <li><a href="exit">Exit</a></li>
                 <%
                     break;
@@ -151,7 +149,7 @@
                 %>
                     <%--<li><a href="reg_emp">Register employee</a></li>--%>
                     <%--<li><a href="location">My location</a></li>--%>
-                    <li class="divider"></li>
+                    <%--<li class="divider"></li>--%>
                     <li><a href="exit">Exit</a></li>
                 <%
                     break;
