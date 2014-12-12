@@ -49,7 +49,7 @@ public class MailServer {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.port", "587");
-        Session session = Session.getDefaultInstance(props,
+        Session session = Session.getInstance(props,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication("nc.sunflower.2014@gmail.com", "moonflower2014");//server e-mail and password
