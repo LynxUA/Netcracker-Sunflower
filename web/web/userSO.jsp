@@ -11,7 +11,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%
-    String order_login = (String)(request.getSession().getAttribute("login"));
+    int user_status = (Integer)(request.getSession().getAttribute("status"));
+    String order_login;
+    if(user_status == 1) {
+        order_login = (String) (request.getSession().getAttribute("login"));
+    }else if (user_status == 3){
+        order_login = request.getParameter("login");
+    }else{
+        response.sendRedirect("/webWeb/");
+        return;
+    }
     int from = 1;
     int to = 10;
     if(request.getParameter("to")!=null&&request.getParameter("from")!=null){

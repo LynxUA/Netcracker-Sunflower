@@ -9,7 +9,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%
-  String order_login = (String)(request.getSession().getAttribute("login"));
+  String order_login = (String) (request.getSession().getAttribute("login"));
+
   int from = 1;
   int to = 10;
   if(request.getParameter("to")!=null&&request.getParameter("from")!=null){
@@ -48,7 +49,7 @@
       <tbody>
       <%for(CustomerWrapper customer:customers) {%>
       <tr>
-        <td><%=customer.getLogin()%></td>
+        <td><a href="profile?login=<%=customer.getLogin()%>"><%=customer.getLogin()%></a></td>
         <td><%=customer.getEmail()%></td>
         <td><%=customer.getName()%></td>
         <td><%=customer.getSurname()%></td>
