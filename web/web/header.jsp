@@ -67,7 +67,7 @@
 
             %>
                   <li><a href="/webWeb/">Home</a></li>
-                  <li><a href="users">Users</a></li>
+                  <%--<li><a href="users">Users</a></li>--%>
             <%
                 break;
               case CSE:
