@@ -7,10 +7,12 @@ import com.sunflower.constants.Scenarios;
 import com.sunflower.constants.UserGroups;
 import com.sunflower.ejb.ProviderLocation.LocalProviderLocation;
 import com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome;
+import com.sunflower.ejb.ProviderLocation.ProviderLocWrapper;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
 import com.sunflower.ejb.price.LocalPrice;
 import com.sunflower.ejb.price.LocalPriceHome;
+import com.sunflower.ejb.price.PriceCatalog;
 import com.sunflower.ejb.service.LocalServiceHome;
 import com.sunflower.ejb.serviceinstance.LocalServiceInstance;
 import com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome;
@@ -25,6 +27,7 @@ import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -510,6 +513,7 @@ public class EJBFunctions {
         }
     }
 
+
     public static LocalServiceInstance createServiceInstance(int status){
         InitialContext ic = null;
         try {
@@ -531,6 +535,54 @@ public class EJBFunctions {
         } catch (CreateException e) {
             return null;
         }
+    }
+
+    public static ArrayList<ProviderLocWrapper> getAllLocations(){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalProviderLocationHome home = null;
+        try {
+            home = (LocalProviderLocationHome) ic.lookup("java:comp/env/ejb/ProviderLocation");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        ArrayList<ProviderLocWrapper> locations = null;
+
+        if(home != null) {
+            locations = (ArrayList<ProviderLocWrapper>) home.getAllLocations();
+        }
+
+        return locations;
+    }
+
+    public static ArrayList<PriceCatalog> getServicePriceByLoc(String location){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalPriceHome home = null;
+        try {
+            home = (LocalPriceHome) ic.lookup("java:comp/env/ejb/Price");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        ArrayList<PriceCatalog> catalogs = null;
+
+        if(home != null) {
+            try {
+                catalogs = (ArrayList<PriceCatalog>) home.getServicePriceByLoc(location);
+            } catch (FinderException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return catalogs;
     }
 
 }

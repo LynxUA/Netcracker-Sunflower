@@ -7,10 +7,14 @@ package com.sunflower.ejb.ProviderLocation;
 
 
 import com.sunflower.ejb.DataSource;
+import com.sunflower.ejb.price.PriceCatalog;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class ProviderLocationBean implements EntityBean {
     private int Id_Prov_Location;
@@ -364,20 +368,20 @@ public class ProviderLocationBean implements EntityBean {
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT SUM(FREE_PORTS) FROM DEVICE WHERE ID_PROV_LOCATION = ?");
-                statement.setInt(1, id_prov_location);
-                ResultSet resultSet = statement.executeQuery();
-                if (!resultSet.next()) {
-                    throw new NoSuchEntityException("...");
-                }
-                if(resultSet.getInt(1)!=0)
-                    return true;
-                else
-                    return false;
+            statement.setInt(1, id_prov_location);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new NoSuchEntityException("...");
+            }
+            if(resultSet.getInt(1)!=0)
+                return true;
+            else
+                return false;
 
-            }catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                throw new EJBException("Ошибка SELECT");
-            } finally {
+        }catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            throw new EJBException("Ошибка SELECT");
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -386,5 +390,48 @@ public class ProviderLocationBean implements EntityBean {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Collection ejbHomeGetAllLocations() {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        List<ProviderLocWrapper> locationList = new ArrayList<ProviderLocWrapper>();
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            } catch (SQLException e) {
+                System.out.println(e.getErrorCode());
+                System.out.println("Something wrong with connection");
+
+            }
+
+            statement = connection.prepareStatement("SELECT LOCATION FROM PROVIDER_LOCATION");
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                ProviderLocWrapper pl = new ProviderLocWrapper(rs);
+                locationList.add(pl);
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            throw new EJBException("SELECT exception");
+
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return locationList;
     }
 }

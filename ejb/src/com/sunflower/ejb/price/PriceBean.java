@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by denysburlakov on 08.12.14.
@@ -19,6 +22,7 @@ public class PriceBean implements EntityBean {
     private int id_prov_location;
 
     private EntityContext entityContext;
+
     public PriceBean() {
     }
 
@@ -28,8 +32,7 @@ public class PriceBean implements EntityBean {
         try {
             try {
                 connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
+            } catch (SQLException e) {
                 System.out.println(e.getErrorCode());
                 System.out.println("something wrong with connection");
 
@@ -60,7 +63,7 @@ public class PriceBean implements EntityBean {
 
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
-        if(DataSource.getDataSource()==null){
+        if (DataSource.getDataSource() == null) {
             DataSource.setDataSource();
         }
     }
@@ -146,7 +149,6 @@ public class PriceBean implements EntityBean {
             statement.setInt(5, id_price);
 
 
-
             if (statement.executeUpdate() < 1) {
                 System.out.println("bad statement");
                 throw new NoSuchEntityException("...");
@@ -170,8 +172,7 @@ public class PriceBean implements EntityBean {
         try {
             try {
                 connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
+            } catch (SQLException e) {
                 System.out.println(e.getErrorCode());
                 System.out.println("something wrong with connection");
 
@@ -200,6 +201,7 @@ public class PriceBean implements EntityBean {
             }
         }
     }
+
     public int getId_price() {
         return id_price;
     }
@@ -257,5 +259,52 @@ public class PriceBean implements EntityBean {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Collection ejbHomeGetServicePriceByLoc(String location) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        List<PriceCatalog> catalogList = new ArrayList<PriceCatalog>();
+
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            } catch (SQLException e) {
+                System.out.println(e.getErrorCode());
+                System.out.println("Something wrong with connection");
+
+            }
+
+            statement = connection.prepareStatement("SELECT NAME, PRICE_OF_SERVICE, PRICE_OF_LOCATION " +
+                    "FROM PRICE INNER JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE WHERE ID_PROV_LOCATION = " +
+                    "(SELECT ID_PROV_LOCATION FROM PROVIDER_LOCATION WHERE LOCATION = ?)");
+            statement.setString(1, location);
+            rs = statement.executeQuery();
+
+            while(rs.next()){
+                PriceCatalog pc = new PriceCatalog(rs);
+                catalogList.add(pc);
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            throw new EJBException("SELECT exception");
+
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return catalogList;
     }
 }
