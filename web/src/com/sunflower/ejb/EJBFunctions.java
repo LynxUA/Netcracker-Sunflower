@@ -1,5 +1,10 @@
 package com.sunflower.ejb;
 
+import com.sunflower.UserGroup;
+import com.sunflower.constants.SIStatuses;
+import com.sunflower.constants.SOStatuses;
+import com.sunflower.constants.Scenarios;
+import com.sunflower.constants.UserGroups;
 import com.sunflower.ejb.ProviderLocation.LocalProviderLocation;
 import com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
@@ -7,6 +12,8 @@ import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
 import com.sunflower.ejb.price.LocalPrice;
 import com.sunflower.ejb.price.LocalPriceHome;
 import com.sunflower.ejb.service.LocalServiceHome;
+import com.sunflower.ejb.serviceinstance.LocalServiceInstance;
+import com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
 import com.sunflower.ejb.user.BadPasswordException;
@@ -132,7 +139,7 @@ public class EJBFunctions {
 
     }
 
-    public static LocalTask createTask(String description, String status, int id_group_user, int id_order) throws Exception {
+    public static LocalTask createTask(String description, int id_group_user, int id_order) throws Exception {
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -148,7 +155,7 @@ public class EJBFunctions {
 
         if (home != null) {
             try {
-                return home.create(description, status, id_group_user, id_order);
+                return home.create(description, id_group_user, id_order, null);
             } catch (CreateException e) {
                 e.printStackTrace();
             }
@@ -158,7 +165,101 @@ public class EJBFunctions {
         return null;
     }
 
-    public static LocalServiceOrder createServiceOrder(int id_status, int id_scenario, String login, int id_price){
+    public static LocalServiceOrder createServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price){
+        LocalServiceOrder order;
+        //status == entering && scenario == new
+        if(id_service_inst == null && id_scenario == Scenarios.NEW){
+
+            LocalServiceInstance instance = createServiceInstance(SIStatuses.PLANNED);
+            int inner_id_service_inst = instance.getId_service_inst();
+            order= plainCreateServiceOrder(inner_id_service_inst, id_scenario, login, id_price);
+            if(isLocationHasFreePorts(getProviderLocationByPrice(order.getId_price()))){
+                try {
+                    createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                try {
+                    createTask("Add new router for new instances", UserGroups.IE, order.getId_order());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+        }else if(id_service_inst != null && id_scenario == Scenarios.MODIFY){
+            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price);
+            if(isLocationHasFreePorts(getProviderLocationByPrice(order.getId_price()))){
+                try {
+                    createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                try {
+                    createTask("Add new router for new instances", UserGroups.IE, order.getId_order());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            //createTask(order.getId_order());
+        }else if(id_service_inst !=null && id_scenario == Scenarios.DISCONNECT){
+            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price);
+            try {
+                createTask("Disconnect ports for "+login+"'s instance", UserGroups.IE, order.getId_order());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            throw new UnsupportedOperationException();
+        }
+        return order;
+    }
+
+    private static boolean isLocationHasFreePorts(int id_prov_location) {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalProviderLocationHome home = null;
+        try {
+            home = (LocalProviderLocationHome)ic.lookup("java:comp/env/ejb/ProviderLocation");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return home.isLocationHasFreePorts(id_prov_location);
+
+    }
+    private static int getProviderLocationByPrice(int id_price){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalPriceHome home = null;
+        try {
+            home = (LocalPriceHome) ic.lookup("java:comp/env/ejb/Price");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        try {
+            return home.getLocationByPrice(id_price);
+        } catch (FinderException e) {
+            //Critical exception
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    private static LocalServiceOrder plainCreateServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price){
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -173,7 +274,7 @@ public class EJBFunctions {
         }
         LocalServiceOrder service_order = null;
         try {
-            service_order = home.create(id_status, id_scenario, login, id_price);
+            service_order = home.create(id_scenario, login, id_price, id_service_inst);
             return service_order;
         } catch (CreateException e) {
             return null;
@@ -314,7 +415,7 @@ public class EJBFunctions {
             return null;
         }
     }
-    
+    /*
       public static LocalTask findIncompleteTask() {
         InitialContext ic = null;
           System.out.println("dwa1");
@@ -343,6 +444,7 @@ public class EJBFunctions {
         }
 
     }
+    */
     
     public static LocalTask findLocalTaskById(int id){
         InitialContext ic = null;
@@ -407,4 +509,28 @@ public class EJBFunctions {
             return null;
         }
     }
+
+    public static LocalServiceInstance createServiceInstance(int status){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstance service_order = null;
+
+        try {
+            service_order = home.create(status);
+            return service_order;
+        } catch (CreateException e) {
+            return null;
+        }
+    }
+
 }

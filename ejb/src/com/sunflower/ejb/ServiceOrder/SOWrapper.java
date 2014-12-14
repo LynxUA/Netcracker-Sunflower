@@ -1,5 +1,7 @@
 package com.sunflower.ejb.ServiceOrder;
 
+import java.sql.Date;
+
 /**
  * Created by denysburlakov on 12.12.14.
  */
@@ -8,8 +10,9 @@ public class SOWrapper {
     private int id_order;
     private String status_name;
     private String scenario_name;
+    private Date so_date;
 
-    public SOWrapper(int id_order, String status_name, String scenario_name) {
+    public SOWrapper(int id_order, String status_name, String scenario_name, Date so_date) {
         this.id_order = id_order;
         this.status_name = status_name;
         this.scenario_name = scenario_name;
@@ -25,5 +28,9 @@ public class SOWrapper {
 
     public String getScenario_name() {
         return scenario_name;
+    }
+
+    public Date getSo_date() {
+        return so_date;
     }
 }

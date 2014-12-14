@@ -32,6 +32,7 @@
     var map;
     var latlng;
     var marker;
+    //var serviceLocation;
     function initialize() {
       geocoder = new google.maps.Geocoder();
       latlng = new google.maps.LatLng(<%=x%>,<%=y%>);

@@ -175,6 +175,24 @@
         <ejb-link>ServiceEJB</ejb-link>
       </ejb-local-ref>
     </entity>
+
+    <entity>
+      <ejb-name>ServiceInstanceEJB</ejb-name>
+      <local-home>com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome</local-home>
+      <local>com.sunflower.ejb.serviceinstance.LocalServiceInstance</local>
+      <ejb-class>com.sunflower.ejb.serviceinstance.ServiceInstanceBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>True</reentrant>
+
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/ServiceInstance</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome</local-home>
+        <local>com.sunflower.ejb.serviceinstance.LocalServiceInstance</local>
+        <ejb-link>ServiceInstanceEJB</ejb-link>
+      </ejb-local-ref>
+    </entity>
   </enterprise-beans>
 
   <assembly-descriptor>
@@ -254,6 +272,14 @@
     <container-transaction>
       <method>
         <ejb-name>ServiceOrderEJB</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+
+    <container-transaction>
+      <method>
+        <ejb-name>ServiceInstanceEJB</ejb-name>
         <method-name>*</method-name>
       </method>
       <trans-attribute>Required</trans-attribute>

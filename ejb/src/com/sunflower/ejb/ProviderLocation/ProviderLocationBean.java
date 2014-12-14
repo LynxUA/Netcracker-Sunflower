@@ -357,4 +357,34 @@ public class ProviderLocationBean implements EntityBean {
         }
 
     }
+
+    public boolean ejbHomeIsLocationHasFreePorts(int id_prov_location) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT SUM(FREE_PORTS) FROM DEVICE WHERE ID_PROV_LOCATION = ?");
+                statement.setInt(1, id_prov_location);
+                ResultSet resultSet = statement.executeQuery();
+                if (!resultSet.next()) {
+                    throw new NoSuchEntityException("...");
+                }
+                if(resultSet.getInt(1)!=0)
+                    return true;
+                else
+                    return false;
+
+            }catch (SQLException e) {
+                System.out.println(e.getErrorCode());
+                throw new EJBException("Ошибка SELECT");
+            } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

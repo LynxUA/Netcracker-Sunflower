@@ -15,12 +15,11 @@ import java.io.IOException;
 @WebServlet(name = "ProceedOrderServlet")
 public class ProceedOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int status = 1;
         int scenario = 1;
         String login =(String)request.getSession().getAttribute("login");
         int price = Integer.valueOf(request.getParameter("prices"));
-
-        EJBFunctions.createServiceOrder(status, scenario, login, price);
+        //It hasn't preInstance to send, so we send null
+        EJBFunctions.createServiceOrder(null, scenario, login, price);
         response.sendRedirect("/webWeb");
     }
 

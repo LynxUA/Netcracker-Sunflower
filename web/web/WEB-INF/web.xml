@@ -268,5 +268,13 @@
         <ejb-link>PortEJB</ejb-link>
     </ejb-local-ref>
 
+    <ejb-local-ref>
+        <ejb-ref-name>ejb/ServiceInstance</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome</local-home>
+        <local>com.sunflower.ejb.serviceinstance.LocalServiceInstance</local>
+        <ejb-link>ServiceInstanceEJB</ejb-link>
+    </ejb-local-ref>
+
 
 </web-app>
