@@ -15,5 +15,6 @@ public interface LocalProviderLocationHome extends EJBLocalHome {
     public LocalProviderLocation findByPrimaryKey(Integer key) throws FinderException;
     public LocalProviderLocation findClosest(float longtitude, float latitude) throws FinderException;
     public float getDistanceToProvider(float longtitude, float latitude) throws ObjectNotFoundException;
+    public boolean isLocationHasFreePorts(int id_prov_location);
     Collection getAllLocations();
 }

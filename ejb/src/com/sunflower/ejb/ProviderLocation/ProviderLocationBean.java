@@ -362,13 +362,41 @@ public class ProviderLocationBean implements EntityBean {
 
     }
 
+    public boolean ejbHomeIsLocationHasFreePorts(int id_prov_location) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT SUM(FREE_PORTS) FROM DEVICE WHERE ID_PROV_LOCATION = ?");
+            statement.setInt(1, id_prov_location);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new NoSuchEntityException("...");
+            }
+            if(resultSet.getInt(1)!=0)
+                return true;
+            else
+                return false;
+
+        }catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public Collection ejbHomeGetAllLocations() {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         List<ProviderLocWrapper> locationList = new ArrayList<ProviderLocWrapper>();
-
         try {
             try {
                 connection = DataSource.getDataSource().getConnection();
@@ -381,7 +409,7 @@ public class ProviderLocationBean implements EntityBean {
             statement = connection.prepareStatement("SELECT LOCATION FROM PROVIDER_LOCATION");
             rs = statement.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 ProviderLocWrapper pl = new ProviderLocWrapper(rs);
                 locationList.add(pl);
             }

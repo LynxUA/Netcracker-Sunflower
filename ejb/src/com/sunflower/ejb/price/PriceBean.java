@@ -225,6 +225,41 @@ public class PriceBean implements EntityBean {
         return id_prov_location;
     }
 
+    public int ejbHomeGetLocationByPrice(int id_price) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            statement = connection.prepareStatement("SELECT ID_PROV_LOCATION FROM PRICE WHERE ID_PRICE = ?");
+            statement.setInt(1, id_price);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new ObjectNotFoundException("...");
+            }
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            System.out.println("тут");
+            e.printStackTrace();
+            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public Collection ejbHomeGetServicePriceByLoc(String location) throws FinderException {
         Connection connection = null;

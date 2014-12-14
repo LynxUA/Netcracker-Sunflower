@@ -3,10 +3,7 @@ package com.sunflower.ejb.task;
 import com.sunflower.ejb.DataSource;
 
 import javax.ejb.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by denysburlakov on 03.12.14.
@@ -15,9 +12,9 @@ import java.sql.SQLException;
 public class TaskBean implements EntityBean {
     private int id_task;
     private String description;
-    private String status;
     private int id_group_user;
     private int id_order;
+    private String login;
 
     private EntityContext entityContext;
     public TaskBean() {
@@ -138,7 +135,7 @@ public class TaskBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT DESCRIPTION, STATUS, ID_GROUP_USER, ID_ORDER FROM TASK WHERE ID_TASK = ?");
+            statement = connection.prepareStatement("SELECT DESCRIPTION, ID_GROUP_USER, ID_ORDER, LOGIN FROM TASK WHERE ID_TASK = ?");
             statement.setInt(1, id_task);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -146,9 +143,9 @@ public class TaskBean implements EntityBean {
 
             }
             description = resultSet.getString(1);
-            status = resultSet.getString(2);
-            id_group_user = resultSet.getInt(3);
-            id_order = resultSet.getInt(4);
+            id_group_user = resultSet.getInt(2);
+            id_order = resultSet.getInt(3);
+            login = resultSet.getString(4);
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
@@ -169,12 +166,13 @@ public class TaskBean implements EntityBean {
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement(
-                    "UPDATE TASK SET DESCRIPTION = ?, STATUS = ?, ID_GROUP_USER = ?, ID_ORDER = ? WHERE ID_TASK = ?");
+                    "UPDATE TASK SET DESCRIPTION = ?, ID_GROUP_USER = ?, ID_ORDER = ?, LOGIN = ? WHERE ID_TASK = ?");
             statement.setString(1, description);
-            statement.setString(2, status);
-            statement.setInt(3, id_group_user);
-            statement.setInt(4, id_order);
+            statement.setInt(2, id_group_user);
+            statement.setInt(3, id_order);
+            statement.setString(4, login);
             statement.setInt(5, id_task);
+
             if (statement.executeUpdate() < 1) {
                 throw new NoSuchEntityException("...");
             }
@@ -191,11 +189,11 @@ public class TaskBean implements EntityBean {
         }
     }
 
-    public Integer ejbCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
+    public Integer ejbCreate(String description, int id_group_user, int id_order, String login) throws CreateException {
         this.description = description;
-        this.status = status;
         this.id_group_user = id_group_user;
         this.id_order = id_order;
+        this.login = login;
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -205,11 +203,11 @@ public class TaskBean implements EntityBean {
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO TASK"
-                    + "(DESCRIPTION, STATUS, ID_GROUP_USER, ID_ORDER) VALUES(?, ?, ?, ?)");
+                    + "(DESCRIPTION, ID_GROUP_USER, ID_ORDER, LOGIN) VALUES(?, ?, ?, ?)");
             statement.setString(1, description);
-            statement.setString(2, status);
-            statement.setInt(3, id_group_user);
-            statement.setInt(4, id_order);
+            statement.setInt(2, id_group_user);
+            statement.setInt(3, id_order);
+            statement.setString(4, login);
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
             }
@@ -233,7 +231,7 @@ public class TaskBean implements EntityBean {
         return null;
     }
 
-    public void ejbPostCreate(String description, String status, int id_group_user, int id_order) throws CreateException {
+    public void ejbPostCreate(String description, int id_group_user, int id_order, String login) throws CreateException {
 
     }
    /* public Integer ejbFindIncompleteTask() throws FinderException {
@@ -268,46 +266,48 @@ public class TaskBean implements EntityBean {
                 e.printStackTrace();
             }
         }
-    }*/
-  public Integer ejbFindIncompleteTask() throws FinderException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        String status="incomplete";
-        int key=0;
-        try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-                System.out.println("zxc1");
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+//    }*/
+//  public Integer ejbFindIncompleteTask() throws FinderException {
+//        Connection connection = null;
+//        PreparedStatement statement = null;
+//        String status="incomplete";
+//        int key=0;
+//        try {
+//            try {
+//                connection = DataSource.getDataSource().getConnection();
+//                System.out.println("zxc1");
+//            }catch(SQLException e)
+//            {
+//                System.out.println(e.getErrorCode());
+//                System.out.println("something wrong with connection");
+//
+//            }
+//            statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
+//            statement.setString(1, status);
+//            System.out.println("zxc2");
+//            ResultSet resultSet = statement.executeQuery();
+//
+//            if (!resultSet.next()) {
+//                System.out.println("zxc4");
+//                throw new ObjectNotFoundException("...");
+//            }
+//            System.out.println("zxc3");
+//            System.out.println("Key "+resultSet.getInt(1));
+//            return resultSet.getInt(1);
+//        } catch (SQLException e) {
+//            throw new EJBException("SELECT exception in ejbFindIncomplete");
+//        } finally {
+//            try {
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
-            }
-            statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-            statement.setString(1, status);
-            System.out.println("zxc2");
-            ResultSet resultSet = statement.executeQuery();
 
-            if (!resultSet.next()) {
-                System.out.println("zxc4");
-                throw new ObjectNotFoundException("...");
-            }
-            System.out.println("zxc3");
-            System.out.println("Key "+resultSet.getInt(1));
-            return resultSet.getInt(1);
-        } catch (SQLException e) {
-            throw new EJBException("SELECT exception in ejbFindIncomplete");
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
     public int getId_group_user() {
         return id_group_user;
     }
@@ -324,15 +324,11 @@ public class TaskBean implements EntityBean {
         this.description = description;
     }
 
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public int getId_order() {
         return id_order;
+    }
+    public String getLogin() {
+        return login;
     }
 
 
