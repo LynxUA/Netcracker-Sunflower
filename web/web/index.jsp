@@ -17,7 +17,7 @@
 
 <div id="body">
   <div class="bs-example">
-    <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
+    <%--<div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
       <!-- Overlay -->
       <div class="overlay"></div>
 
@@ -72,7 +72,18 @@
             </a>
           </div>
         </div>
+      </div>--%>
+
+      <div align="center">
+        <h1>Sunflower OSS</h1>
+        <img id="logo" src="resources/sunflower_logo.png" />
+        <p>
+          <form action="location" method="get">
+            <input class="btn btn-lg btn-primary" type="submit" value="&nbsp;&nbsp;Start using&nbsp;&nbsp;">
+          </form>
+        </p>
       </div>
+
     </div>
   </div>
 
