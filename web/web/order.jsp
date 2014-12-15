@@ -136,6 +136,7 @@
 //        });
 //      });
       $('#submit').click(function(event) {
+        $('#services').html('<img src="img/loading-blue.gif" alt="loading" width="25%" height="25%" style="display: block; margin-left: auto; margin-right: auto;">');
         var x=$('#x').val();
         var y=$('#y').val();
         $.post('savelocation',{x:x,y:y});
@@ -157,7 +158,7 @@
       <input id="address" class="form-control input-lg form-group" type="textbox" name="address" value="Kyiv">
       <input type="button" class="btn btn-success btn-block" value="Find location" onclick="codeAddress()">
       <input type="button" id="submit" class="btn btn-success btn-block" value="Save" style="margin-top: 20px">
-      <div id="services"></div>
+      <div id="services" style="margin-top: 20px"></div>
       <%--<div class="price" id="price"></div>--%>
 
     </form>

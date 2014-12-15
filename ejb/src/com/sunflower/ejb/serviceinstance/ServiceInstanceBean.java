@@ -1,9 +1,12 @@
 package com.sunflower.ejb.serviceinstance;
 
 import com.sunflower.ejb.DataSource;
+import com.sunflower.ejb.ServiceOrder.SOWrapper;
 
 import javax.ejb.*;
 import java.sql.*;
+import java.util.Collection;
+import java.util.Vector;
 
 /**
  * Created by denysburlakov on 13.12.14.
@@ -226,5 +229,66 @@ public class ServiceInstanceBean implements EntityBean {
 
     public int getId_circuit() {
         return id_circuit;
+    }
+
+    public Collection ejbHomeGetServiceInstances(String login, int from, int to) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT A,B,C, D, E, F\n" +
+                    "FROM (SELECT SERVICE_ORDER.ID_SERVICE_INST AS A, SI_STATUS.NAME AS B, SERVICE.NAME AS C, PROVIDER_LOCATION.LONGTITUDE AS D, PROVIDER_LOCATION.LATITUDE AS E, PROVIDER_LOCATION.LOCATION AS F, ROWNUM R\n" +
+                    "FROM ((((SERVICE_ORDER JOIN SERVICE_INSTANCE ON SERVICE_ORDER.ID_SERVICE_INST = SERVICE_INSTANCE.ID_SERVICE_INST) JOIN SI_STATUS ON SERVICE_INSTANCE.STATUS = SI_STATUS.ID_STATUS) JOIN PRICE ON SERVICE_ORDER.ID_PRICE = PRICE.ID_PRICE) JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE) JOIN PROVIDER_LOCATION ON PRICE.ID_PROV_LOCATION = PROVIDER_LOCATION.ID_PROV_LOCATION\n" +
+                    "WHERE LOGIN LIKE ? )\n" +
+                    "WHERE R >= ? AND R <=?");
+            statement.setString(1, login);
+            statement.setInt(2, from);
+            statement.setInt(3, to);
+            ResultSet resultSet = statement.executeQuery();
+            Vector<SIWrapper> instances = new Vector<SIWrapper>();
+            while (resultSet.next()) {
+                instances.addElement(new SIWrapper(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getFloat(4), resultSet.getFloat(5), resultSet.getString(6)));
+            }
+            return instances;
+        } catch (SQLException e) {
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int ejbHomeGetNumberOfInstancesByLogin(String login) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT COUNT(DISTINCT ID_SERVICE_INST)\n" +
+                    "FROM (SERVICE_ORDER)\n" +
+                    "WHERE LOGIN LIKE ?");
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new FinderException();
+            }
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

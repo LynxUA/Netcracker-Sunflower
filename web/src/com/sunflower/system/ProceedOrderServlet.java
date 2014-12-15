@@ -18,8 +18,10 @@ public class ProceedOrderServlet extends HttpServlet {
         int scenario = 1;
         String login =(String)request.getSession().getAttribute("login");
         int price = Integer.valueOf(request.getParameter("prices"));
+        float longtitude = Float.valueOf(request.getParameter("y"));
+        float latitude = Float.valueOf(request.getParameter("x"));
         //It hasn't preInstance to send, so we send null
-        EJBFunctions.createServiceOrder(null, scenario, login, price);
+        EJBFunctions.createServiceOrder(null, scenario, login, price, longtitude, latitude);
         response.sendRedirect("/webWeb");
     }
 

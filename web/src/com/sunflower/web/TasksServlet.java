@@ -6,14 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-
-public class UserInstanceServlet extends HttpServlet {
+/**
+ * Created by Den on 09.12.2014.
+ */
+public class TasksServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("user_si.jsp").forward(request,response);
+        request.getRequestDispatcher("tasks.jsp").forward(request,response);
     }
 }

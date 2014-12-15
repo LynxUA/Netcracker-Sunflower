@@ -18,6 +18,7 @@ import com.sunflower.ejb.serviceinstance.LocalServiceInstance;
 import com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
+import com.sunflower.ejb.task.TaskWrapper;
 import com.sunflower.ejb.user.BadPasswordException;
 import com.sunflower.ejb.user.CustomerWrapper;
 import com.sunflower.ejb.user.LocalUser;
@@ -168,14 +169,13 @@ public class EJBFunctions {
         return null;
     }
 
-    public static LocalServiceOrder createServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price){
+    public static LocalServiceOrder createServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price, float longtitude, float latitude){
         LocalServiceOrder order;
-        //status == entering && scenario == new
         if(id_service_inst == null && id_scenario == Scenarios.NEW){
 
             LocalServiceInstance instance = createServiceInstance(SIStatuses.PLANNED);
             int inner_id_service_inst = instance.getId_service_inst();
-            order= plainCreateServiceOrder(inner_id_service_inst, id_scenario, login, id_price);
+            order= plainCreateServiceOrder(inner_id_service_inst, id_scenario, login, id_price, longtitude, latitude);
             if(isLocationHasFreePorts(getProviderLocationByPrice(order.getId_price()))){
                 try {
                     createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
@@ -193,7 +193,7 @@ public class EJBFunctions {
             }
 
         }else if(id_service_inst != null && id_scenario == Scenarios.MODIFY){
-            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price);
+            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price, longtitude, latitude);
             if(isLocationHasFreePorts(getProviderLocationByPrice(order.getId_price()))){
                 try {
                     createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
@@ -211,7 +211,7 @@ public class EJBFunctions {
             }
             //createTask(order.getId_order());
         }else if(id_service_inst !=null && id_scenario == Scenarios.DISCONNECT){
-            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price);
+            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price, longtitude, latitude);
             try {
                 createTask("Disconnect ports for "+login+"'s instance", UserGroups.IE, order.getId_order());
             } catch (Exception e) {
@@ -262,7 +262,7 @@ public class EJBFunctions {
         }
     }
 
-    private static LocalServiceOrder plainCreateServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price){
+    private static LocalServiceOrder plainCreateServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price, float longtitude, float latitude){
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -277,7 +277,7 @@ public class EJBFunctions {
         }
         LocalServiceOrder service_order = null;
         try {
-            service_order = home.create(id_scenario, login, id_price, id_service_inst);
+            service_order = home.create(id_scenario, login, id_price, id_service_inst, longtitude, latitude);
             return service_order;
         } catch (CreateException e) {
             return null;
@@ -585,4 +585,107 @@ public class EJBFunctions {
         return catalogs;
     }
 
+    public static Vector<TaskWrapper> getTasksByEngineer(int id_group_user, int from, int to) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return (Vector<TaskWrapper>)home.getTasksByEngineer(id_group_user, from, to);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+
+    public static int getNumberOfTasksByEngineer(int id_group_user) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.getNumberOfTasksByEngineer(id_group_user);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+    public static void assignTask(int id_task, String login) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            home.assignTask(id_task, login);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+
+    public Collection getServiceInstances(String login, int from, int to) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.getServiceInstances(login, from, to);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+
+    public static int getNumberOfInstancesByLogin(String login) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.getNumberOfInstancesByLogin(login);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
 }

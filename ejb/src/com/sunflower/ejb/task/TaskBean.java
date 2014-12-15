@@ -4,6 +4,8 @@ import com.sunflower.ejb.DataSource;
 
 import javax.ejb.*;
 import java.sql.*;
+import java.util.Collection;
+import java.util.Vector;
 
 /**
  * Created by denysburlakov on 03.12.14.
@@ -234,6 +236,8 @@ public class TaskBean implements EntityBean {
     public void ejbPostCreate(String description, int id_group_user, int id_order, String login) throws CreateException {
 
     }
+
+
    /* public Integer ejbFindIncompleteTask() throws FinderException {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -306,6 +310,43 @@ public class TaskBean implements EntityBean {
 //            }
 //        }
 //    }
+//
+
+   public Collection ejbHomeGetTasksByEngineer(int id_group_user, int from, int to) {
+       Connection connection = null;
+       PreparedStatement statement = null;
+       try {
+           connection = DataSource.getDataSource().getConnection();
+           statement = connection.prepareStatement("SELECT M, A,B, C, D, E, F, I, J \n" +
+                   "FROM (SELECT TASK.ID_TASK AS M, SERVICE_ORDER.ID_ORDER AS A, SCENARIO.NAME AS B, SERVICE_ORDER.LOGIN AS C, SERVICE_ORDER.LATITUDE AS D, SERVICE_ORDER.LONGTITUDE AS E, SERVICE.NAME AS F, PROVIDER_LOCATION.LOCATION AS I, TASK.DESCRIPTION AS J, ROWNUM R\n" +
+                   "FROM ((((TASK JOIN SERVICE_ORDER ON TASK.ID_ORDER = SERVICE_ORDER.ID_ORDER) JOIN PRICE ON SERVICE_ORDER.ID_PRICE=PRICE.ID_PRICE) JOIN PROVIDER_LOCATION ON PRICE.ID_PROV_LOCATION = PROVIDER_LOCATION.ID_PROV_LOCATION) JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE) JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
+                   "WHERE ID_GROUP_USER = ?) \n" +
+                   "WHERE R >= ? AND R <=?");
+           statement.setInt(1, id_group_user);
+           statement.setInt(2, from);
+           statement.setInt(3, to);
+           ResultSet resultSet = statement.executeQuery();
+           Vector<TaskWrapper> tasks = new Vector<TaskWrapper>();
+           while (resultSet.next()) {
+               tasks.addElement(new TaskWrapper(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3), resultSet.getString(4),resultSet.getFloat(5), resultSet.getFloat(6), resultSet.getString(7), resultSet.getString(8), resultSet.getString(9)));
+           }
+           return tasks;
+       } catch (SQLException e) {
+           System.out.println(e.getErrorCode());
+           System.out.println(e.getMessage());
+           throw new EJBException("Ошибка SELECT");
+       } finally {
+           try {
+               if (connection != null) {
+                   connection.close();
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+       }
+   }
+
+
 
 
     public int getId_group_user() {
@@ -324,6 +365,7 @@ public class TaskBean implements EntityBean {
         this.description = description;
     }
 
+
     public int getId_order() {
         return id_order;
     }
@@ -331,5 +373,79 @@ public class TaskBean implements EntityBean {
         return login;
     }
 
+    public int ejbHomeGetNumberOfTasksByEngineer(int id_group_user) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT COUNT(ID_TASK)\n" +
+                    "FROM TASK\n" +
+                    "WHERE ID_GROUP_USER = ?");
+            statement.setInt(1, id_group_user);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new FinderException();
+            }
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+    public void ejbHomeAssignTask(int id_task, String login) throws UserWasAssignedException, UserHaveAssignedTaskException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT LOGIN FROM TASK WHERE ID_TASK = ?");
+            statement.setInt(1, id_task);
+            ResultSet result = statement.executeQuery();
+            result.next();
+            result.getString(1);
+            if(!result.wasNull()){
+                throw new UserWasAssignedException();
+            }
+
+
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE LOGIN LIKE ?");
+            statement.setString(1, login);
+            ResultSet result2 = statement.executeQuery();
+            if (result2.next()){
+                throw new UserHaveAssignedTaskException();
+            }
+
+            statement = connection.prepareStatement("UPDATE ORDERS SET ID_STATUS = 3 WHERE ID_ORDER = (SELECT ID_ORDER FROM TASK WHERE ID_TASK = ?)");
+            statement.setInt(1,id_task);
+            statement.executeUpdate();
+            statement = connection.prepareStatement(
+                    "UPDATE TASK SET LOGIN = ? WHERE ID_TASK = ?");
+            statement.setString(1, login);
+            statement.setInt(2, id_task);
+
+            if (statement.executeUpdate() < 1) {
+                throw new NoSuchEntityException("...");
+            }
+        } catch (SQLException e) {
+            throw new EJBException("Ошибка UPDATE");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

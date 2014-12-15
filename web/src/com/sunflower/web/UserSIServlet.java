@@ -1,20 +1,22 @@
 package com.sunflower.web;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Den on 09.12.2014.
+ * Created by denysburlakov on 15.12.14.
  */
-public class TaskServlet extends HttpServlet {
+@WebServlet(name = "UserSIServlet")
+public class UserSIServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("task.jsp").forward(request,response);
+        request.getRequestDispatcher("userSI.jsp").forward(request, response);
     }
 }

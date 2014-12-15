@@ -22,6 +22,8 @@ public class ServiceOrderBean implements EntityBean {
     private int id_price;
     private int id_service_inst;
     private Date so_date;
+    float longtitude;
+    float latitude;
 
     private EntityContext entityContext;
     private OracleDataSource dataSource;
@@ -116,7 +118,7 @@ public class ServiceOrderBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("SELECT ID_STATUS, ID_SCENARIO,LOGIN, ID_PRICE, ID_SERVICE_INST, SO_DATE FROM SERVICE_ORDER WHERE ID_ORDER = ?");
+            statement = connection.prepareStatement("SELECT ID_STATUS, ID_SCENARIO,LOGIN, ID_PRICE, ID_SERVICE_INST, SO_DATE, LONGTITUDE, LATITUDE FROM SERVICE_ORDER WHERE ID_ORDER = ?");
             statement.setInt(1, id_order);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -128,6 +130,8 @@ public class ServiceOrderBean implements EntityBean {
             id_price = resultSet.getInt(4);
             id_service_inst = resultSet.getInt(5);
             so_date = resultSet.getDate(6);
+            longtitude = resultSet.getFloat(7);
+            latitude = resultSet.getFloat(8);
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
@@ -149,14 +153,16 @@ public class ServiceOrderBean implements EntityBean {
             connection = dataSource.getConnection();
 
             statement = connection.prepareStatement(
-                    "UPDATE SERVICE_ORDER SET ID_STATUS = ?, ID_SCENARIO = ?, LOGIN = ?, ID_PRICE = ?, ID_SERVICE_INST = ?, SO_DATE = ? WHERE ID_ORDER = ?");
+                    "UPDATE SERVICE_ORDER SET ID_STATUS = ?, ID_SCENARIO = ?, LOGIN = ?, ID_PRICE = ?, ID_SERVICE_INST = ?, SO_DATE = ?, LONGTITUDE = ?, LATITUDE = ? WHERE ID_ORDER = ?");
             statement.setInt(1, id_status);
             statement.setInt(2, id_scenario);
             statement.setString(3, login);
             statement.setInt(4, id_price);
             statement.setInt(5, id_service_inst);
             statement.setDate(6, so_date);
-            statement.setInt(7, id_order);
+            statement.setFloat(7, longtitude);
+            statement.setFloat(8, latitude);
+            statement.setInt(9, id_order);
             if (statement.executeUpdate() < 1) {
                 throw new NoSuchEntityException("...");
             }
@@ -197,13 +203,15 @@ public class ServiceOrderBean implements EntityBean {
     }
     public int getId_price() {return  id_price; }
 
-    public Integer ejbCreate(int id_scenario, String login, int id_price, int id_service_inst) throws CreateException {
+    public Integer ejbCreate(int id_scenario, String login, int id_price, int id_service_inst, float longtitude, float latitude) throws CreateException {
         this.id_status = 1; //SOStatuses.Entering
         this.id_scenario = id_scenario;
         this.login = login;
         this.id_price = id_price;
         this.id_service_inst = id_service_inst;
         this.so_date = new Date((new java.util.Date()).getTime());
+        this.longtitude = longtitude;
+        this.latitude = latitude;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -214,13 +222,15 @@ public class ServiceOrderBean implements EntityBean {
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER"
-                    + "(ID_STATUS, ID_SCENARIO,LOGIN, ID_PRICE, ID_SERVICE_INST, SO_DATE) VALUES(?, ?, ?, ?, ?, ?)", new String[]{"ID_ORDER"});
+                    + "(ID_STATUS, ID_SCENARIO,LOGIN, ID_PRICE, ID_SERVICE_INST, SO_DATE, LONGTITUDE, LATITUDE) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", new String[]{"ID_ORDER"});
             statement.setInt(1, id_status);
             statement.setInt(2, id_scenario);
             statement.setString(3, login);
             statement.setInt(4, id_price);
             statement.setInt(5, id_service_inst);
             statement.setDate(6, so_date);
+            statement.setFloat(7, longtitude);
+            statement.setFloat(8, latitude);
 
             if (statement.executeUpdate() != 1) {
                 System.out.println("Fail");
@@ -248,7 +258,7 @@ public class ServiceOrderBean implements EntityBean {
         return null;
     }
 
-    public void ejbPostCreate(int id_scenario, String login, int id_order, int id_service_inst) throws CreateException {
+    public void ejbPostCreate(int id_scenario, String login, int id_order, int id_service_inst, float longtitude, float latitude) throws CreateException {
 
     }
 
@@ -285,10 +295,10 @@ public class ServiceOrderBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT A,B,C, D\n" +
-                    "FROM (SELECT ID_ORDER AS A, SO_STATUS.NAME AS B, SCENARIO.NAME AS C, SO_DATE AS D, ROWNUM R\n" +
+            statement = connection.prepareStatement("SELECT A,B,C, D, E, F\n" +
+                    "FROM (SELECT ID_ORDER AS A, SO_STATUS.NAME AS B, SCENARIO.NAME AS C, SO_DATE AS D, LONGTITUDE AS E, LATITUDE AS F, ROWNUM R\n" +
                     "FROM (SERVICE_ORDER JOIN SO_STATUS ON SERVICE_ORDER.ID_STATUS = SO_STATUS.ID_STATUS) JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
-                    "WHERE LOGIN like ? )\n" +
+                    "WHERE LOGIN LIKE ? )\n" +
                     "WHERE R >= ? AND R <=?");
             statement.setString(1, login);
             statement.setInt(2, from);
@@ -296,7 +306,7 @@ public class ServiceOrderBean implements EntityBean {
             ResultSet resultSet = statement.executeQuery();
             Vector<SOWrapper> orders = new Vector<SOWrapper>();
             while (resultSet.next()) {
-                orders.addElement(new SOWrapper(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4)));
+                orders.addElement(new SOWrapper(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4), resultSet.getFloat(5), resultSet.getFloat(6)));
             }
             return orders;
         } catch (SQLException e) {
