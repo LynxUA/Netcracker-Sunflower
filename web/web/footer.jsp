@@ -15,6 +15,6 @@
         <li><a href="contuctus">Contact us</a></li>
       </ul>
     </nav>
+    </div>
   </div>
-</div>
 </div>

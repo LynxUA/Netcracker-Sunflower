@@ -78,7 +78,7 @@
         <h1>Sunflower OSS</h1>
         <img id="logo" src="resources/sunflower_logo.png" />
         <p>
-          <form action="location" method="get">
+          <form action="signup" method="get">
             <input class="btn btn-lg btn-primary" type="submit" value="&nbsp;&nbsp;Start using&nbsp;&nbsp;">
           </form>
         </p>

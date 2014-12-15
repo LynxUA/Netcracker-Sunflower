@@ -39,10 +39,10 @@
                 <br/>
 
                 <div class="col-xs-6 col-sm-6 col-md-6">
-                  <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
+                  <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign in">
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6">
-                  <a href="signup" class="btn btn-lg btn-primary btn-block">Sign Up</a>
+                  <a href="signup" class="btn btn-lg btn-primary btn-block">Sign up</a>
                 </div>
 
                 <input  type="hidden" name="check" value="">
@@ -51,7 +51,8 @@
           </div>
         </div>
       </div>
-
+    </div>
+  </div>
 
 
   <%@include file="footer.jsp"%>

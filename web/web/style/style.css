@@ -6,7 +6,7 @@
 
 #map-canvas {
 	width: 90%;
-	height: 350px;
+	height: 450px;
 	margin: 15px auto;
 }
 
@@ -23,7 +23,6 @@
 	margin-top: 100px;
 }
 
-
 html,
 body {
 	margin:0;
@@ -33,7 +32,7 @@ body {
 }
 #wrap {
 	min-height:100%;
-	position:relative;
+	height: auto;
 	background-color: #f5f5f5
 }
 #header {
@@ -44,10 +43,9 @@ body {
 }
 #footer {
 	width:100%;
-	bottom: 0;
-	position: absolute;
+	position: relative;
+	clear:both;
 }
-
 
 /*
 Fade content bs-carousel with hero headers
@@ -178,6 +176,6 @@ Image credits: unsplash.com
 }
 
 #logo{
-	width: 25%;
+	width: 30%;
 	height: auto;
 }

@@ -55,13 +55,13 @@
                 case GUEST:
             %>
                   <li><a href="/webWeb/">Home</a></li>
-                  <li><a href="catalog.jsp">Services</a></li>
+                  <li><a href="catalog">Services</a></li>
             <%
                 break;
               case CUSTOMER:
             %>
                   <li><a href="/webWeb/">Home</a></li>
-                  <li><a href="catalog.jsp">Services</a></li>
+                  <li><a href="catalog">Services</a></li>
                   <li><a href="order">Make an order</a></li>
             <%
                 break;
