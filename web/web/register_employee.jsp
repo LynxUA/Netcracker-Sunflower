@@ -55,7 +55,7 @@
                             <input type="password" name="repeat_password" id="repeat_password" class="form-control input-lg" placeholder="Repeat password" tabindex="4">
                         </div>
 
-                        <div>
+                        <div class="form-group">
                             <select size="3" multiple name="group">
                                 <option disabled>Choose user group</option>
                                 <option selected value="1">Customer</option>

@@ -1,3 +1,6 @@
+<%@ page import="com.sunflower.ejb.ProviderLocation.ProviderLocWrapper" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.sunflower.ejb.EJBFunctions" %>
 <%--
   Created by IntelliJ IDEA.
   User: denysburlakov
@@ -18,6 +21,7 @@
     x = Float.valueOf(xy[0]);
     y = Float.valueOf(xy[1]);
   }
+  ArrayList<ProviderLocWrapper> providerLocWrapper = EJBFunctions.getAllLocations();
 %>
 <!DOCTYPE html>
 <html>
@@ -31,33 +35,56 @@
     var geocoder;
     var map;
     var latlng;
-    var marker;
+    var marker_main;
+
+
+    var image = 'img/chart.png';
+    var locations = [
+              <% int i = 1;
+              for(ProviderLocWrapper location1 : providerLocWrapper){ %>
+              ['<%=location1.getLocation()%>', <%=location1.getLatitude()%>, <%=location1.getLongtitude()%>, <%=i%>]
+            <%
+            if(providerLocWrapper.iterator().hasNext()){
+            i++;
+            %>,
+            <%
+            }
+            }%>
+            ];
+
     function initialize() {
       geocoder = new google.maps.Geocoder();
       latlng = new google.maps.LatLng(<%=x%>,<%=y%>);
       var mapOptions = {
-        zoom: 16,
+        zoom: 11,
         center: latlng
-      }
+      };
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-      marker = new google.maps.Marker({
+      marker_main = new google.maps.Marker({
         position: latlng,
         map: map,
         draggable: true,
         title: 'Your location'
       });
-      google.maps.event.addListener(marker,'drag',function() {
-        geocodePosition(marker.getPosition());
+      var market, i;
+      for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          map: map,
+          icon: image
+
+        });
+      }
+
+      google.maps.event.addListener(marker_main,'drag',function() {
+        geocodePosition(marker_main.getPosition());
       });
-//      google.maps.event.addListener(marker,'dragend',function() {
-//        geocodePosition(marker.getPosition());
-//      });
       // Try HTML5 geolocation
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
           latlng = new google.maps.LatLng(position.coords.latitude,
                   position.coords.longitude);
-          marker.setPosition(latlng);
+          marker_main.setPosition(latlng);
           document.getElementById('x').value = latlng.lat();
           document.getElementById('y').value = latlng.lng();
           map.setCenter(latlng);
@@ -76,7 +103,7 @@
       }, function(responses) {
         if (responses && responses.length > 0) {
           document.getElementById('address').value = responses[0].formatted_address;
-          latlng = marker.position;
+          latlng = marker_main.position;
           document.getElementById('x').value = latlng.lat();
           document.getElementById('y').value = latlng.lng();
         } else {
@@ -103,11 +130,10 @@
       geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
-          marker.setPosition(results[0].geometry.location);
-          latlng = marker.position;
+          marker_main.setPosition(results[0].geometry.location);
+          latlng = marker_main.position;
           document.getElementById('x').value = latlng.lat();
           document.getElementById('y').value = latlng.lng();
-
         } else {
           alert('Error: Invalid location');
         }
