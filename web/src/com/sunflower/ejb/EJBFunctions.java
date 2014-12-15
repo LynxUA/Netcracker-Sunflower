@@ -18,6 +18,7 @@ import com.sunflower.ejb.serviceinstance.LocalServiceInstance;
 import com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
+import com.sunflower.ejb.task.TaskWrapper;
 import com.sunflower.ejb.user.BadPasswordException;
 import com.sunflower.ejb.user.CustomerWrapper;
 import com.sunflower.ejb.user.LocalUser;
@@ -585,4 +586,65 @@ public class EJBFunctions {
         return catalogs;
     }
 
+    public static Vector<TaskWrapper> getTasksByEngineer(int id_group_user, int from, int to) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return (Vector<TaskWrapper>)home.getTasksByEngineer(id_group_user, from, to);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+
+    public static int getNumberOfTasksByEngineer(int id_group_user) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.getNumberOfTasksByEngineer(id_group_user);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+    public static void assignTask(int id_task, String login) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            home.assignTask(id_task, login);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
 }

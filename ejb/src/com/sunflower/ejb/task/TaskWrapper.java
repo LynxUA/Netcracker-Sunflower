@@ -4,6 +4,7 @@ package com.sunflower.ejb.task;
  * Created by denysburlakov on 15.12.14.
  */
 public class TaskWrapper {
+    private int id_task;
     private int id_order;
     private String scenarioName;
     private String login; //user's login
@@ -13,7 +14,8 @@ public class TaskWrapper {
     private String serviceName;
     private String description;
 
-    public TaskWrapper(int id_order, String scenarioName, String login, float lat, float lng, String officeName, String serviceName, String description) {
+    public TaskWrapper(int id_task, int id_order, String scenarioName, String login, float lat, float lng, String officeName, String serviceName, String description) {
+        this.id_task = id_task;
         this.id_order = id_order;
         this.scenarioName = scenarioName;
         this.login = login;
@@ -23,6 +25,8 @@ public class TaskWrapper {
         this.serviceName = serviceName;
         this.description = description;
     }
+
+    public int getId_task() {return id_task; }
 
     public int getId_order() {
         return id_order;

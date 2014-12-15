@@ -73,8 +73,8 @@
         <jsp-file>userSO.jsp</jsp-file>
     </servlet>
     <servlet>
-        <servlet-name>TaskServlet</servlet-name>
-        <servlet-class>com.sunflower.web.TaskServlet</servlet-class>
+        <servlet-name>TasksServlet</servlet-name>
+        <servlet-class>com.sunflower.web.TasksServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UsersListServlet</servlet-name>
@@ -103,6 +103,10 @@
     <servlet>
         <servlet-name>CatalogServlet</servlet-name>
         <servlet-class>com.sunflower.web.CatalogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetTaskServlet</servlet-name>
+        <servlet-class>com.sunflower.system.GetTaskServlet</servlet-class>
     </servlet>
 
 
@@ -179,8 +183,8 @@
         <url-pattern>/orders</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>TaskServlet</servlet-name>
-        <url-pattern>/task</url-pattern>
+        <servlet-name>TasksServlet</servlet-name>
+        <url-pattern>/tasks</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UsersListServlet</servlet-name>
@@ -206,7 +210,10 @@
         <servlet-name>UserInfoServlet</servlet-name>
         <url-pattern>/profile</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>GetTaskServlet</servlet-name>
+        <url-pattern>/getTask</url-pattern>
+    </servlet-mapping>
     
     <ejb-local-ref>
         <ejb-ref-name>ejb/User</ejb-ref-name>
