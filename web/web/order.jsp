@@ -141,7 +141,9 @@
         var y=$('#y').val();
         $.post('savelocation',{x:x,y:y});
         $.post('generateservices',{x:x, y:y},function(responseText) {
+
           $('#services').html(responseText);
+          $('#services').append(reqest)
         });
       });
     });
@@ -157,7 +159,7 @@
       <input type="hidden" id="y" name="y" value="30.532">
       <input id="address" class="form-control input-lg form-group" type="textbox" name="address" value="Kyiv">
       <input type="button" class="btn btn-success btn-block" value="Find location" onclick="codeAddress()">
-      <input type="button" id="submit" class="btn btn-success btn-block" value="Save" style="margin-top: 20px">
+      <input type="button" id="submit" class="btn btn-success btn-block" value="Next" style="margin-top: 20px">
       <div id="services" style="margin-top: 20px"></div>
       <%--<div class="price" id="price"></div>--%>
 

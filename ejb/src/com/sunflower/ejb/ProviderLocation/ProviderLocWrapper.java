@@ -9,23 +9,28 @@ import java.sql.SQLException;
 public class ProviderLocWrapper {
 
     private String location;
-
-    public ProviderLocWrapper(){}
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
+    private float longtitude;
+    private float latitude;
 
     public ProviderLocWrapper(ResultSet rs){
         try {
             location = rs.getString(1);
+            longtitude = rs.getFloat(2);
+            latitude = rs.getFloat(3);
         } catch (SQLException e) {
             e.printStackTrace();
 
         }
+    }
+    public String getLocation() {
+        return location;
+    }
+
+    public float getLongtitude() {
+        return longtitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
     }
 }

@@ -34,7 +34,8 @@ public class GenerateServicesServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         LocalProviderLocation prov_location = EJBFunctions.findProviderLocation(longtitude, latitude);
         Collection services = EJBFunctions.findByProviderLocationId(prov_location.getId_Prov_Location());
-
+        request.setAttribute("lng", prov_location.getLongtitude());
+        request.setAttribute("lat", prov_location.getLatitude());
         PrintWriter writer = response.getWriter();
         writer.println("<form action=\"proceedorder\" method=\"post\">");
         writer.println("Nearest provider location: Netflower " + prov_location.getLocation() + "<br>");

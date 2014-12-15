@@ -406,7 +406,7 @@ public class ProviderLocationBean implements EntityBean {
 
             }
 
-            statement = connection.prepareStatement("SELECT LOCATION FROM PROVIDER_LOCATION");
+            statement = connection.prepareStatement("SELECT LOCATION, LONGTITUDE, LATITUDE FROM PROVIDER_LOCATION");
             rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -433,5 +433,13 @@ public class ProviderLocationBean implements EntityBean {
         }
 
         return locationList;
+    }
+
+    public float getLongtitude() {
+        return longtitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
     }
 }
