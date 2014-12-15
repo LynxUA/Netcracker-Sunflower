@@ -116,9 +116,9 @@
                   switch (status){
                     case GUEST:
                 %>
-                    <li><a href="login">Login</a></li>
-                    <li><a href="signup">Signup</a></li>
-                    <li><a href="location">Your location</a></li>
+                    <li><a href="login">Log in</a></li>
+                    <li><a href="signup">Sign up</a></li>
+                    <li><a href="location">My location</a></li>
                 <%
                     break;
                     case CUSTOMER:
