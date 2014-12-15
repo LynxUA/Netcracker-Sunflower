@@ -130,19 +130,17 @@
 <body>
 <%@include file="header.jsp"%>
 
-<div class="row">
-  <div class="col-md-4" style="left: 20px">
+<div class="container">
+  <div>
     <form>
       <input type="hidden" id="x" name="x" value="50.402">
       <input type="hidden" id="y" name="y" value="30.532">
       <input id="address" class="form-control input-lg form-group" type="textbox" name="address" value="Kyiv">
       <input type="button" class="btn btn-success btn-block" value="Find location" onclick="codeAddress()">
-      <input type="button" id="submit" class="btn btn-success btn-block" value="Save" style="margin-top: 20px">
+      <input type="button" id="submit" class="btn btn-success btn-block" value="Save" style="margin-top: 10px">
     </form>
   </div>
-  <div class="col-md-8" align="right">
-    <div id="map-canvas"/>
-  </div>
+  <div id="map-canvas"></div>
 </div>
 <%@include file="footer.jsp"%>
 </body>
