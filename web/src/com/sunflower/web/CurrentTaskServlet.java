@@ -26,8 +26,8 @@ public class CurrentTaskServlet extends HttpServlet {
         int key = Integer.parseInt(request.getParameter("key"));
         LocalTask localTask= EJBFunctions.findLocalTaskById(key);
 
-            if (action == "complete") localTask.setStatus("completed");
-            if (action == "suspend") localTask.setStatus("suspended");
+            //if (action == "complete") localTask.setStatus("completed");
+            //if (action == "suspend") localTask.setStatus("suspended");
 
 
 

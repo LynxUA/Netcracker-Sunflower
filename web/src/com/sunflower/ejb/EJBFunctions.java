@@ -168,14 +168,14 @@ public class EJBFunctions {
         return null;
     }
 
-    public static LocalServiceOrder createServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price){
+    public static LocalServiceOrder createServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price, float longtitude, float latitude){
         LocalServiceOrder order;
         //status == entering && scenario == new
         if(id_service_inst == null && id_scenario == Scenarios.NEW){
 
             LocalServiceInstance instance = createServiceInstance(SIStatuses.PLANNED);
             int inner_id_service_inst = instance.getId_service_inst();
-            order= plainCreateServiceOrder(inner_id_service_inst, id_scenario, login, id_price);
+            order= plainCreateServiceOrder(inner_id_service_inst, id_scenario, login, id_price, longtitude, latitude);
             if(isLocationHasFreePorts(getProviderLocationByPrice(order.getId_price()))){
                 try {
                     createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
@@ -193,7 +193,7 @@ public class EJBFunctions {
             }
 
         }else if(id_service_inst != null && id_scenario == Scenarios.MODIFY){
-            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price);
+            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price, longtitude, latitude);
             if(isLocationHasFreePorts(getProviderLocationByPrice(order.getId_price()))){
                 try {
                     createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
@@ -211,7 +211,7 @@ public class EJBFunctions {
             }
             //createTask(order.getId_order());
         }else if(id_service_inst !=null && id_scenario == Scenarios.DISCONNECT){
-            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price);
+            order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price, longtitude, latitude);
             try {
                 createTask("Disconnect ports for "+login+"'s instance", UserGroups.IE, order.getId_order());
             } catch (Exception e) {
@@ -262,7 +262,7 @@ public class EJBFunctions {
         }
     }
 
-    private static LocalServiceOrder plainCreateServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price){
+    private static LocalServiceOrder plainCreateServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price, float longtitude, float latitude){
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -277,7 +277,7 @@ public class EJBFunctions {
         }
         LocalServiceOrder service_order = null;
         try {
-            service_order = home.create(id_scenario, login, id_price, id_service_inst);
+            service_order = home.create(id_scenario, login, id_price, id_service_inst, longtitude, latitude);
             return service_order;
         } catch (CreateException e) {
             return null;

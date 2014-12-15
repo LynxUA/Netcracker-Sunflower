@@ -15,10 +15,6 @@ public interface LocalTask extends EJBLocalObject {
 
     public void setDescription(String status);
 
-    public String getStatus();
-
-    public void setStatus(String status);
-
     public int getId_order();
 
     public String getLogin();

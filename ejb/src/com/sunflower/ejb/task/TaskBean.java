@@ -1,9 +1,12 @@
 package com.sunflower.ejb.task;
 
 import com.sunflower.ejb.DataSource;
+import com.sunflower.ejb.user.CustomerWrapper;
 
 import javax.ejb.*;
 import java.sql.*;
+import java.util.Collection;
+import java.util.Vector;
 
 /**
  * Created by denysburlakov on 03.12.14.
@@ -234,6 +237,8 @@ public class TaskBean implements EntityBean {
     public void ejbPostCreate(String description, int id_group_user, int id_order, String login) throws CreateException {
 
     }
+
+
    /* public Integer ejbFindIncompleteTask() throws FinderException {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -306,6 +311,37 @@ public class TaskBean implements EntityBean {
 //            }
 //        }
 //    }
+//
+
+   public Collection ejbHomeGetTasksByEngineer(int id_group_user) {
+       Connection connection = null;
+       PreparedStatement statement = null;
+       try {
+           connection = DataSource.getDataSource().getConnection();
+           statement = connection.prepareStatement("SELECT SERVICE_ORDER.ID_ORDER, SCENARIO.NAME, SERVICE_ORDER.LOGIN, SERVICE_ORDER.LATITUDE, SERVICE_ORDER.LONGTITUDE, SERVICE.NAME, PROVIDER_LOCATION.LOCATION , TASK.DESCRIPTION\n" +
+                   "FROM ((((TASK JOIN SERVICE_ORDER ON TASK.ID_ORDER = SERVICE_ORDER.ID_ORDER) JOIN PRICE ON SERVICE_ORDER.ID_PRICE=PRICE.ID_PRICE) JOIN PROVIDER_LOCATION ON PRICE.ID_PROV_LOCATION = PROVIDER_LOCATION.ID_PROV_LOCATION) JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE) JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
+                   "WHERE ID_GROUP_USER = ?");
+           statement.setInt(1, id_group_user);
+           ResultSet resultSet = statement.executeQuery();
+           Vector<TaskWrapper> tasks = new Vector<TaskWrapper>();
+           while (resultSet.next()) {
+               tasks.addElement(new TaskWrapper(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),resultSet.getFloat(4), resultSet.getFloat(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8)));
+           }
+           return tasks;
+       } catch (SQLException e) {
+           System.out.println(e.getErrorCode());
+           System.out.println(e.getMessage());
+           throw new EJBException("Ошибка SELECT");
+       } finally {
+           try {
+               if (connection != null) {
+                   connection.close();
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+       }
+   }
 
 
     public int getId_group_user() {
@@ -323,6 +359,7 @@ public class TaskBean implements EntityBean {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     public int getId_order() {
         return id_order;
