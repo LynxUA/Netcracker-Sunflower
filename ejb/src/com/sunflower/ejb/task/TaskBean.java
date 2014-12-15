@@ -425,7 +425,9 @@ public class TaskBean implements EntityBean {
                 throw new UserHaveAssignedTaskException();
             }
 
-
+            statement = connection.prepareStatement("UPDATE ORDERS SET ID_STATUS = 3 WHERE ID_ORDER = (SELECT ID_ORDER FROM TASK WHERE ID_TASK = ?)");
+            statement.setInt(1,id_task);
+            statement.executeUpdate();
             statement = connection.prepareStatement(
                     "UPDATE TASK SET LOGIN = ? WHERE ID_TASK = ?");
             statement.setString(1, login);
