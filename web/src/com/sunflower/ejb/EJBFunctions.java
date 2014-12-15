@@ -171,7 +171,6 @@ public class EJBFunctions {
 
     public static LocalServiceOrder createServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price, float longtitude, float latitude){
         LocalServiceOrder order;
-        //status == entering && scenario == new
         if(id_service_inst == null && id_scenario == Scenarios.NEW){
 
             LocalServiceInstance instance = createServiceInstance(SIStatuses.PLANNED);
@@ -643,6 +642,48 @@ public class EJBFunctions {
 
         if (home != null) {
             home.assignTask(id_task, login);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+
+    public Collection getServiceInstances(String login, int from, int to) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.getServiceInstances(login, from, to);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+
+    public static int getNumberOfInstancesByLogin(String login) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.getNumberOfInstancesByLogin(login);
         }else{
             throw new Exception("Error with EJBs");
         }

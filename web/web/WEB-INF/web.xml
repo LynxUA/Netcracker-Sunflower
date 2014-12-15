@@ -36,10 +36,6 @@
         <servlet-class>com.sunflower.web.LocationServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UserInstanceServlet</servlet-name>
-        <servlet-class>com.sunflower.web.UserInstanceServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>UserGroupServlet</servlet-name>
         <servlet-class>com.sunflower.web.UserGroupServlet</servlet-class>
     </servlet>
@@ -93,10 +89,6 @@
         <servlet-class>com.sunflower.web.SOInfoServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SIInfoServlet</servlet-name>
-        <servlet-class>com.sunflower.web.SIInfoServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>UserInfoServlet</servlet-name>
         <servlet-class>com.sunflower.web.UserInfoServlet</servlet-class>
     </servlet>
@@ -107,6 +99,10 @@
     <servlet>
         <servlet-name>GetTaskServlet</servlet-name>
         <servlet-class>com.sunflower.system.GetTaskServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserSI</servlet-name>
+        <servlet-class>com.sunflower.web.UserSIServlet</servlet-class>
     </servlet>
 
 
@@ -137,10 +133,6 @@
     <servlet-mapping>
         <servlet-name>XmlServlet</servlet-name>
         <url-pattern>/xmlxprt</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UserInstanceServlet</servlet-name>
-        <url-pattern>/instances</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserGroupServlet</servlet-name>
@@ -203,7 +195,7 @@
         <url-pattern>/user_so</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SIInfoServlet</servlet-name>
+        <servlet-name>UserSI</servlet-name>
         <url-pattern>/user_si</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
