@@ -230,6 +230,10 @@ public class ServiceInstanceBean implements EntityBean {
     public int getId_circuit() {
         return id_circuit;
     }
+    public void setStatus(int status)
+    {
+        this.status=status;
+    }
 
     public Collection ejbHomeGetServiceInstances(String login, int from, int to) {
         Connection connection = null;
