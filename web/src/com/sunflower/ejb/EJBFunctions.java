@@ -223,6 +223,28 @@ public class EJBFunctions {
         }
         return order;
     }
+    
+     public static LocalCircuit createCircuit(int Id_Port, int Id_Cable){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalCircuitHome home = null;
+        try {
+            home = (LocalCircuitHome) ic.lookup("java:comp/env/ejb/Circuit");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalCircuit service_order;
+        try {
+            service_order = home.create(Id_Port, Id_Cable);
+            return service_order;
+        } catch (CreateException e) {
+            return null;
+        }
+    }
 
     private static boolean isLocationHasFreePorts(int id_prov_location) {
         InitialContext ic = null;
@@ -644,6 +666,72 @@ public class EJBFunctions {
             home.assignTask(id_task, login);
         }else{
             throw new Exception("Error with EJBs");
+        }
+    }
+    
+    public static LocalServiceInstance findServiceInstance(int id) {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstance service_instance = null;
+        try {
+            service_instance = home.findByPrimaryKey(id);
+            return service_instance;
+        } catch (FinderException e) {
+            return null;
+        }
+
+    }
+    
+    public static LocalPort findLocalPortById(int id){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalPortHome home = null;
+        try {
+            home = (LocalPortHome)ic.lookup("java:comp/env/ejb/Port");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalPort port = null;
+        try {
+            port = home.findByPrimaryKey(id);
+            return port;
+        } catch (FinderException e) {
+            return null;
+        }
+    }
+    public static LocalCircuit findLocalCircuitById(int id){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalCircuitHome home = null;
+        try {
+            home = (LocalCircuitHome)ic.lookup("java:comp/env/ejb/Circuit");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalCircuit circuit = null;
+        try {
+            circuit = home.findByPrimaryKey(id);
+            return circuit;
+        } catch (FinderException e) {
+            return null;
         }
     }
 
