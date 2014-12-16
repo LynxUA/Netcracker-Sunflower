@@ -352,6 +352,10 @@ public class TaskBean implements EntityBean {
     public int getId_group_user() {
         return id_group_user;
     }
+    public void setId_group_user(int id_group_user)
+    {
+        this.id_group_user=id_group_user;
+    }
 
     public int getId_task() {
         return id_task;
