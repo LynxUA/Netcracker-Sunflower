@@ -37,7 +37,7 @@ public class CurrentTaskServlet extends HttpServlet {
                 int Id_Si=Integer.parseInt(request.getParameter("Id_Si"));
                 int Id_Order=Integer.parseInt(request.getParameter("Id_Order"));
                 int Id_Scenario=Integer.parseInt(request.getParameter("Id_Scenario"));
-                localTask.setStatus("completed");
+                //localTask.setStatus("completed");
                 LocalServiceInstance localServiceInstance=EJBFunctions.findServiceInstance(Id_Si);
                 LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder(Id_Order);
                 if(Id_Scenario==1) {
@@ -56,7 +56,7 @@ public class CurrentTaskServlet extends HttpServlet {
             localTask.setLogin(null);
         }
             if (action == "suspend") {
-                LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder(Id_Order);
+                LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder(Integer.parseInt(request.getParameter("Id_Order")));
                 localServiceOrder.setId_status(2);
             }
         if (action == "unassign") localTask.setLogin(null);

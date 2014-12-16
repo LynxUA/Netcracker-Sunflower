@@ -11,7 +11,7 @@ import java.sql.*;
 
 public class PortBean implements EntityBean {
     private int Id_Port;
-    private String status;
+    private int status;
     private  int Id_Device;
 
     private EntityContext entityContext;
@@ -112,7 +112,7 @@ public class PortBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
             try {
-                status = resultSet.getString(1);
+                status = resultSet.getInt(1);
             }catch (SQLException e){
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getMessage());
@@ -146,7 +146,7 @@ public class PortBean implements EntityBean {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("UPDATE PORT SET STATUS  = ?, ID_DEVICE = ? WHERE ID_PORTT=?");
 
-            statement.setString(1, status);
+            statement.setInt(1, status);
 
             statement.setInt(2, Id_Device);
 
@@ -173,7 +173,7 @@ public class PortBean implements EntityBean {
         }
     }
 
-    public Integer ejbCreate(String status, int Id_Device) throws CreateException {
+    public Integer ejbCreate(int status, int Id_Device) throws CreateException {
 
         this.status = status;
         this.Id_Device = Id_Device;
@@ -190,7 +190,7 @@ public class PortBean implements EntityBean {
             statement = connection.prepareStatement("INSERT INTO PORT"
                     + "( STATUS,ID_DEVICE) VALUES(?, ?)", new String[]{"ID_PORT"});
 
-            statement.setString(1, status);
+            statement.setInt(1, status);
             statement.setInt(2, Id_Device);
 
 
@@ -214,14 +214,14 @@ public class PortBean implements EntityBean {
         return null;
     }
 
-    public void ejbPostCreate(String status, int Id_Port) throws CreateException {
+    public void ejbPostCreate(int status, int Id_Port) throws CreateException {
 
     }
 
 
     public int getId_Port(){return  Id_Port;}
-    public String getStatus(){return  status;}
-    public void setStatus(String status){this.status=status;}
+    public int getStatus(){return  status;}
+    public void setStatus(int status){this.status=status;}
     public int getId_Device(){return Id_Device;}
 
 

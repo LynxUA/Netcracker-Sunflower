@@ -34,6 +34,8 @@
 <%@ page import="javax.ejb.EJBException" %>
 <%@ page import="javax.ejb.CreateException" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="javax.ejb.ObjectNotFoundException" %>
+<%@ page import="javax.ejb.FinderException" %>
 
 <aside>
     <ul class="nav nav-list bs-docs-sidenav affix">
@@ -61,8 +63,10 @@
 
             <ul class="nav nav-list bs-docs-sidenav affix">
                     <%
+                    boolean state=true;
                      Connection connection = null;
         PreparedStatement statement = null;
+         ResultSet resultSet = null;
         try {
             try{
                 connection = DataSource.getDataSource().getConnection();
@@ -70,27 +74,35 @@
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("SELECT t.ID_TASK, t.DESCRIPTION, so.ID_Order" +
-             " from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login=? and so.ID_status!='4' ");
+             " from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login like ? and so.ID_status!=4 ");
 
             statement.setString(1, (String)request.getSession().getAttribute("login"));
-            ResultSet resultSet = statement.executeQuery();
-            boolean state=true;
-            if(!resultSet.next())
+            try{
+            resultSet = statement.executeQuery();
+           if(!resultSet.next())
             {
-             state=false;
+             throw new FinderException();
+            }
+            }catch (FinderException e)
+            {
+                state = false;
             }
 
-            if (statement.executeUpdate() != 1) {
+            /*if (statement.executeUpdate() != 1) {
+
                 throw new CreateException("Insert exception");
-            }
+            }*/
 
 
-                LocalTask localTask;
-                String name=(String) request.getSession().getAttribute("login");
-                localTask=EJBFunctions.findIncompleteTask(name);
+//                LocalTask localTask;
+//                String name=(String) request.getSession().getAttribute("login");
+//                try{
+//                localTask=EJBFunctions.findIncompleteTask(name);
+//                }catch(FinderException e){
+//
+//                }
 
-
-                if(localTask!=null) {
+                if(state) {
             %>
 
                 <td align="Center"><%=resultSet.getString(2)%></td>
@@ -101,7 +113,7 @@
         </tbody>
     </table>
 </div>
-<%if (state=true)
+<%if (state)
 {%>
 <p>
 <form method="get" action="currenttask?action=completeIE&key=<%=resultSet.getInt(1)%>">
@@ -128,6 +140,7 @@
 </body>
 </html>
 <%  } catch (SQLException e) {
+    System.out.println(e.getMessage());
     throw new EJBException("SELECT exception in ejbFindIncomplete");
     } finally {
     try {

@@ -62,6 +62,7 @@ public class DeviceBean implements EntityBean {
         if(DataSource.getDataSource()==null){
             DataSource.setDataSource();
         }
+
     }
 
     public void unsetEntityContext() throws EJBException {

@@ -10,7 +10,6 @@
 <head>
   <title>IE panel</title>
   <%@include file="includes.jsp"%>
-  <%@include file="header.jsp"%>
 
   <%@ page import="com.sunflower.ejb.DataSource"%>
   <%@ page import="java.sql.Connection"%>
@@ -60,29 +59,29 @@
 </aside>
 <p><pre>   Port                                  User ID</pre></p>
 <p>
-  <% Connection connection = null;
-    PreparedStatement statement;
+  <%--<% Connection connection = null;--%>
+    <%--PreparedStatement statement;--%>
 
-    try {
-      try {
-        connection = DataSource.getDataSource().getConnection();
+    <%--try {--%>
+      <%--try {--%>
+        <%--connection = DataSource.getDataSource().getConnection();--%>
 
-      }catch(SQLException e)
-      {
-        System.out.println(e.getErrorCode());
-        System.out.println("something wrong with connection");
+      <%--}catch(SQLException e)--%>
+      <%--{--%>
+        <%--System.out.println(e.getErrorCode());--%>
+        <%--System.out.println("something wrong with connection");--%>
 
-      }
-      //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-      statement = connection.prepareStatement("SELECT  d.Free_ports ,si.ID_CIRCUIT ,si.ID_Service_INST ,so.ID_SCENARIO from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login=? and so.ID_status!='4' ");
+      <%--}--%>
+      <%--//statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");--%>
+      <%--statement = connection.prepareStatement("SELECT  DEVICE.Free_ports ,si.ID_CIRCUIT ,si.ID_Service_INST ,so.ID_SCENARIO from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST JOIN CIRCUIT ON SERVICE_INSTANCE.ID_CIRCUIT = CIRCUIT.ID_CIRCUIT JOIN PORT ON CIRCUIT.ID_PORT = PORT.ID_PORT JOIN DEVICE ON PORT.ID_DEVICE = DEVICE.ID_DEVICE  where t.login like ? and so.ID_status NOT IN (4) ");--%>
 
-      statement.setString(1,(String)request.getSession().getAttribute("login"));
-      ResultSet resultSet = statement.executeQuery();
-      int Id_Si;
-      int Id_Circuit;
+      <%--statement.setString(1,(String)request.getSession().getAttribute("login"));--%>
+      <%--ResultSet resultSet = statement.executeQuery();--%>
+      <%--int Id_Si;--%>
+      <%--int Id_Circuit;--%>
 
 
-  %>
+  <%--%>--%>
 
 
 
@@ -100,17 +99,17 @@
 
 
 <p name="result"></p>
-<%  } catch (SQLException e) {
-  throw new EJBException("SELECT exception in CreateDC");
-} finally {
-  try {
-    if (connection != null) {
-      connection.close();
-    }
-  } catch (SQLException e) {
-    e.printStackTrace();
-  }
-} %>
+<%--<%  } catch (SQLException e) {--%>
+  <%--throw new EJBException("SELECT exception in CreateDC");--%>
+<%--} finally {--%>
+  <%--try {--%>
+    <%--if (connection != null) {--%>
+      <%--connection.close();--%>
+    <%--}--%>
+  <%--} catch (SQLException e) {--%>
+    <%--e.printStackTrace();--%>
+  <%--}--%>
+<%--} %>--%>
 
 <%@include file="footer.jsp"%>
 

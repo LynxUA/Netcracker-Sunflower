@@ -10,6 +10,10 @@ import com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome;
 import com.sunflower.ejb.ProviderLocation.ProviderLocWrapper;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
+import com.sunflower.ejb.circuit.LocalCircuit;
+import com.sunflower.ejb.circuit.LocalCircuitHome;
+import com.sunflower.ejb.port.LocalPort;
+import com.sunflower.ejb.port.LocalPortHome;
 import com.sunflower.ejb.price.LocalPrice;
 import com.sunflower.ejb.price.LocalPriceHome;
 import com.sunflower.ejb.price.PriceCatalog;
@@ -775,5 +779,23 @@ public class EJBFunctions {
         }else{
             throw new Exception("Error with EJBs");
         }
+    }
+
+    public static LocalTask findIncompleteTask(String name) throws FinderException {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        return home.findIncompleteTask(name);
+
     }
 }

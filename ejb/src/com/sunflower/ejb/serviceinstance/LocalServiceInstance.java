@@ -10,4 +10,6 @@ public interface LocalServiceInstance extends EJBLocalObject {
     public int getStatus();
     public int getId_circuit();
     public void setStatus(int status);
+
+    public void setId_circuit(Integer id_circuit);
 }
