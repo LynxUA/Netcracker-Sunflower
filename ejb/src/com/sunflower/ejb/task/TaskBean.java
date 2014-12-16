@@ -376,6 +376,10 @@ public class TaskBean implements EntityBean {
     public String getLogin() {
         return login;
     }
+    public void setLogin(int login)
+    {
+        this.login=login;
+    }
 
     public int ejbHomeGetNumberOfTasksByEngineer(int id_group_user) throws FinderException {
         Connection connection = null;
