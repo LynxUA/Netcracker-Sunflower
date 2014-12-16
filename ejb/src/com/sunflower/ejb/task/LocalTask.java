@@ -8,6 +8,7 @@ import javax.ejb.FinderException;
  */
 public interface LocalTask extends EJBLocalObject {
     public int getId_group_user();
+    public void setId_group_user(int Id_group_user);
 
     public int getId_task();
 
