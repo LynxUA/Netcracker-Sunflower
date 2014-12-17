@@ -11,6 +11,7 @@ import java.util.Vector;
  * Created by denysburlakov on 03.12.14.
  */
 
+
 public class TaskBean implements EntityBean {
     private int id_task;
     private String description;
@@ -320,7 +321,7 @@ public class TaskBean implements EntityBean {
            statement = connection.prepareStatement("SELECT M, A,B, C, D, E, F, I, J \n" +
                    "FROM (SELECT TASK.ID_TASK AS M, SERVICE_ORDER.ID_ORDER AS A, SCENARIO.NAME AS B, SERVICE_ORDER.LOGIN AS C, SERVICE_ORDER.LATITUDE AS D, SERVICE_ORDER.LONGTITUDE AS E, SERVICE.NAME AS F, PROVIDER_LOCATION.LOCATION AS I, TASK.DESCRIPTION AS J, ROWNUM R\n" +
                    "FROM ((((TASK JOIN SERVICE_ORDER ON TASK.ID_ORDER = SERVICE_ORDER.ID_ORDER) JOIN PRICE ON SERVICE_ORDER.ID_PRICE=PRICE.ID_PRICE) JOIN PROVIDER_LOCATION ON PRICE.ID_PROV_LOCATION = PROVIDER_LOCATION.ID_PROV_LOCATION) JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE) JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
-                   "WHERE ID_GROUP_USER = ?) \n" +
+                   "WHERE ID_GROUP_USER = ? AND TASK.LOGIN IS NULL) \n" +
                    "WHERE R >= ? AND R <=?");
            statement.setInt(1, id_group_user);
            statement.setInt(2, from);
@@ -352,6 +353,10 @@ public class TaskBean implements EntityBean {
     public int getId_group_user() {
         return id_group_user;
     }
+    public void setId_group_user(int id_group_user)
+    {
+        this.id_group_user=id_group_user;
+    }
 
     public int getId_task() {
         return id_task;
@@ -372,6 +377,10 @@ public class TaskBean implements EntityBean {
     public String getLogin() {
         return login;
     }
+    public void setLogin(String login)
+    {
+        this.login=login;
+    }
 
     public int ejbHomeGetNumberOfTasksByEngineer(int id_group_user) throws FinderException {
         Connection connection = null;
@@ -380,12 +389,13 @@ public class TaskBean implements EntityBean {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT COUNT(ID_TASK)\n" +
                     "FROM TASK\n" +
-                    "WHERE ID_GROUP_USER = ?");
+                    "WHERE ID_GROUP_USER = ? AND LOGIN IS NULL");
             statement.setInt(1, id_group_user);
             ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                throw new FinderException();
-            }
+            resultSet.next();
+//            if (resultSet.getInt(1)==0) {
+//                throw new FinderException();
+//            }
             return resultSet.getInt(1);
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
@@ -425,7 +435,7 @@ public class TaskBean implements EntityBean {
                 throw new UserHaveAssignedTaskException();
             }
 
-            statement = connection.prepareStatement("UPDATE ORDERS SET ID_STATUS = 3 WHERE ID_ORDER = (SELECT ID_ORDER FROM TASK WHERE ID_TASK = ?)");
+            statement = connection.prepareStatement("UPDATE SERVICE_ORDER SET ID_STATUS = 3 WHERE ID_ORDER = (SELECT ID_ORDER FROM TASK WHERE ID_TASK = ?)");
             statement.setInt(1,id_task);
             statement.executeUpdate();
             statement = connection.prepareStatement(
@@ -437,7 +447,40 @@ public class TaskBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new EJBException("Ошибка UPDATE");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Integer ejbFindIncompleteTask(String name) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            statement = connection.prepareStatement("SELECT TASK.ID_TASK FROM (TASK JOIN SERVICE_ORDER ON TASK.ID_ORDER = SERVICE_ORDER.ID_ORDER) WHERE TASK.LOGIN = ? AND SERVICE_ORDER.ID_STATUS NOT IN (4)");
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new ObjectNotFoundException("...");
+            }
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
                 if (connection != null) {

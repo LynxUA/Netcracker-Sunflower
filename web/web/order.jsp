@@ -1,3 +1,6 @@
+<%@ page import="com.sunflower.ejb.ProviderLocation.ProviderLocWrapper" %>
+<%@ page import="com.sunflower.ejb.EJBFunctions" %>
+<%@ page import="java.util.ArrayList" %>
 <%--
   Created by IntelliJ IDEA.
   User: denysburlakov
@@ -18,6 +21,8 @@
     x = Float.valueOf(xy[0]);
     y = Float.valueOf(xy[1]);
   }
+
+  ArrayList<ProviderLocWrapper> providerLocWrapper = EJBFunctions.getAllLocations();
 %>
 <!DOCTYPE html>
 <html>
@@ -32,12 +37,28 @@
     var map;
     var latlng;
     var marker;
+
+    var image = 'img/chart.png';
+    var locations = [
+      <% int i = 1;
+      for(ProviderLocWrapper location1 : providerLocWrapper){ %>
+      ['<%=location1.getLocation()%>', <%=location1.getLatitude()%>, <%=location1.getLongtitude()%>, <%=i%>]
+      <%
+      if(providerLocWrapper.iterator().hasNext()){
+      i++;
+      %>,
+      <%
+      }
+      }%>
+    ];
+
+
     //var serviceLocation;
     function initialize() {
       geocoder = new google.maps.Geocoder();
       latlng = new google.maps.LatLng(<%=x%>,<%=y%>);
       var mapOptions = {
-        zoom: 16,
+        zoom: 11,
         center: latlng
       }
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -52,6 +73,16 @@
         $('#services').html('');
         $('#price').html('');
       });
+
+      var market_prov, i;
+      for (i = 0; i < locations.length; i++) {
+        marker_prov = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          map: map,
+          icon: image
+
+        });
+      }
 //      google.maps.event.addListener(marker,'dragend',function() {
 //        geocodePosition(marker.getPosition());
 //      });

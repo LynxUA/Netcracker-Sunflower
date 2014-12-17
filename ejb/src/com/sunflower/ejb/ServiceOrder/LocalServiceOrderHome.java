@@ -1,5 +1,7 @@
 package com.sunflower.ejb.ServiceOrder;
 
+import com.sunflower.ejb.task.UserWasAssignedException;
+
 import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 import javax.ejb.FinderException;
@@ -14,4 +16,5 @@ public interface LocalServiceOrderHome extends EJBLocalHome {
     public LocalServiceOrder findByPrimaryKey(Integer key) throws FinderException;
     public Collection getOrdersByLogin(String login, int from, int to) throws FinderException;
     public int getNumberOfOrdersByLogin(String login) throws FinderException;
+    public void cancelOrder(int id_order) throws UserWasAssignedException;
 }

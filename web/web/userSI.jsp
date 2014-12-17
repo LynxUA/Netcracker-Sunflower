@@ -1,6 +1,7 @@
 <%@ page import="com.sunflower.ejb.serviceinstance.SIWrapper" %>
 <%@ page import="com.sunflower.ejb.EJBFunctions" %>
 <%@ page import="java.util.Vector" %>
+<%@ page import="com.sunflower.ejb.serviceinstance.ServiceLocationWrapper" %>
 <%--
   Created by IntelliJ IDEA.
   User: denysburlakov
@@ -26,13 +27,53 @@
     from = Integer.parseInt(request.getParameter("from"));
   }
   Vector<SIWrapper> serviceInstances = (Vector<SIWrapper>)
-          (EJBFunctions.findOrderByLogin(order_login, from, to));
+          (EJBFunctions.getServiceInstances(order_login, from, to));
   int numberOfRecords = EJBFunctions.getNumberOfInstancesByLogin(order_login);
+
+  Vector<ServiceLocationWrapper> SLWrapper = (Vector<ServiceLocationWrapper>) EJBFunctions.getSLByLogin(order_login);
+
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
   <%@include file="includes.jsp"%>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+  <script>
+    var map;
+    var image = 'img/chart.png';
+    var locations = [
+      <% int i = 1;
+      for(ServiceLocationWrapper location1 : SLWrapper){ %>
+      ['<%=location1.getService()%>', <%=location1.getLatitude()%>, <%=location1.getLongtitude()%>, <%=i%>]
+      <%
+      if(SLWrapper.iterator().hasNext()){
+      i++;
+      %>,
+      <%
+      }
+      }%>
+    ];
+    function initialize() {
+      var mapOptions = {
+        zoom: 11,
+        center: new google.maps.LatLng(50.402,30.532)
+      };
+      map = new google.maps.Map(document.getElementById('map-canvas'),
+              mapOptions);
+      var market, i;
+      for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          map: map,
+          icon: image
+
+        });
+      }
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+  </script>
   <title>User service instances</title>
 </head>
 <body>
@@ -82,18 +123,17 @@
               <%=instance.getStatusName()%></span>
         </td>
         <td><%=instance.getServiceName()%></td>
-        </tr>
         </td>
         <td><%=instance.getLongtitude()%> <%=instance.getLatitude()%></td>
         </td>
         <td><%=instance.getLocation()%></td>
-        </tr>
         </tr>
         <%}%>
         </tbody>
       </table>
     </div>
   </div>
+  <div id="map-canvas"></div>
   <%}%>
   <%if(numberOfRecords >10){%>
   <div class="pagination pagination-centered">

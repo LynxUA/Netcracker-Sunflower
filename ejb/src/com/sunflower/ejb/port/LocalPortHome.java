@@ -14,6 +14,6 @@ import javax.ejb.FinderException;
 public interface LocalPortHome extends EJBLocalHome {
 
     public LocalPort findByPrimaryKey(Integer key) throws FinderException;
-    public LocalPort create(String status, int Id_Device) throws CreateException;
+    public LocalPort create(int status, int Id_Device) throws CreateException;
 
 }

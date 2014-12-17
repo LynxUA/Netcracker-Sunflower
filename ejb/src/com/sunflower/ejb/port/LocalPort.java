@@ -15,7 +15,7 @@ public interface LocalPort extends EJBLocalObject {
 
     public int getId_Port();
     public String getStatus();
-    public void setStatus(String status);
+    public void setStatus(int status);
     public int getId_Device();
 
 

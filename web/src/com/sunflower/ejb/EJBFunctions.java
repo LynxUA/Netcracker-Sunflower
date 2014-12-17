@@ -10,6 +10,10 @@ import com.sunflower.ejb.ProviderLocation.LocalProviderLocationHome;
 import com.sunflower.ejb.ProviderLocation.ProviderLocWrapper;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrderHome;
+import com.sunflower.ejb.circuit.LocalCircuit;
+import com.sunflower.ejb.circuit.LocalCircuitHome;
+import com.sunflower.ejb.port.LocalPort;
+import com.sunflower.ejb.port.LocalPortHome;
 import com.sunflower.ejb.price.LocalPrice;
 import com.sunflower.ejb.price.LocalPriceHome;
 import com.sunflower.ejb.price.PriceCatalog;
@@ -19,6 +23,7 @@ import com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
 import com.sunflower.ejb.task.TaskWrapper;
+import com.sunflower.ejb.task.UserWasAssignedException;
 import com.sunflower.ejb.user.BadPasswordException;
 import com.sunflower.ejb.user.CustomerWrapper;
 import com.sunflower.ejb.user.LocalUser;
@@ -226,6 +231,28 @@ public class EJBFunctions {
             throw new UnsupportedOperationException();
         }
         return order;
+    }
+    
+     public static LocalCircuit createCircuit(int Id_Port, int Id_Cable){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalCircuitHome home = null;
+        try {
+            home = (LocalCircuitHome) ic.lookup("java:comp/env/ejb/Circuit");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalCircuit service_order;
+        try {
+            service_order = home.create(Id_Port, Id_Cable);
+            return service_order;
+        } catch (CreateException e) {
+            return null;
+        }
     }
 
     private static boolean isLocationHasFreePorts(int id_prov_location) {
@@ -650,8 +677,74 @@ public class EJBFunctions {
             throw new Exception("Error with EJBs");
         }
     }
+    
+    public static LocalServiceInstance findServiceInstance(int id) {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstance service_instance = null;
+        try {
+            service_instance = home.findByPrimaryKey(id);
+            return service_instance;
+        } catch (FinderException e) {
+            return null;
+        }
 
-    public Collection getServiceInstances(String login, int from, int to) throws Exception {
+    }
+    
+    public static LocalPort findLocalPortById(int id){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalPortHome home = null;
+        try {
+            home = (LocalPortHome)ic.lookup("java:comp/env/ejb/Port");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalPort port = null;
+        try {
+            port = home.findByPrimaryKey(id);
+            return port;
+        } catch (FinderException e) {
+            return null;
+        }
+    }
+    public static LocalCircuit findLocalCircuitById(int id){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalCircuitHome home = null;
+        try {
+            home = (LocalCircuitHome)ic.lookup("java:comp/env/ejb/Circuit");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalCircuit circuit = null;
+        try {
+            circuit = home.findByPrimaryKey(id);
+            return circuit;
+        } catch (FinderException e) {
+            return null;
+        }
+    }
+
+    public static Collection getServiceInstances(String login, int from, int to) throws Exception {
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -692,4 +785,65 @@ public class EJBFunctions {
             throw new Exception("Error with EJBs");
         }
     }
+
+    public static LocalTask findIncompleteTask(String name) throws FinderException {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalTaskHome home = null;
+        try {
+            home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        return home.findIncompleteTask(name);
+
+    }
+    public static void cancelOrder(String login, int id_order) throws UserWasAssignedException {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (home != null&&login.contains(home.findByPrimaryKey(id_order).getUserLogin())) {
+                home.cancelOrder(id_order);
+            }
+        } catch (FinderException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Collection getSLByLogin(String login) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.getSLByLogin(login);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+
 }

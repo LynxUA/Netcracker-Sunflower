@@ -1,6 +1,7 @@
 package com.sunflower.ejb.ServiceOrder;
 
 import com.sunflower.ejb.DataSource;
+import com.sunflower.ejb.task.UserWasAssignedException;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.ejb.*;
@@ -340,6 +341,46 @@ public class ServiceOrderBean implements EntityBean {
             System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
             throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void ejbHomeCancelOrder(int id_order) throws UserWasAssignedException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement("SELECT LOGIN FROM TASK WHERE ID_ORDER = ?");
+            statement.setInt(1, id_order);
+            ResultSet rs = statement.executeQuery();
+            rs.next();
+            rs.getString(1);
+            if (!rs.wasNull()) {
+                throw new UserWasAssignedException();
+            }
+
+            statement = connection.prepareStatement("DELETE FROM TASK WHERE ID_ORDER = ?");
+            statement.setInt(1, id_order);
+            if (statement.executeUpdate() < 1) {
+                throw new NoSuchEntityException("...");
+            }
+            statement = connection.prepareStatement(
+                    "UPDATE SERVICE_ORDER SET ID_STATUS = 2 WHERE ID_ORDER = ?");
+            statement.setInt(1, id_order);
+            if (statement.executeUpdate() < 1) {
+                throw new NoSuchEntityException("...");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
+            throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
                 if (connection != null) {
