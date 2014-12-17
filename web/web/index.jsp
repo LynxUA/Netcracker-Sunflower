@@ -18,7 +18,7 @@
 
       Logger.getLogger("").setLevel(Level.ALL);
       final int ROTATION_COUNT = 5;
-      Handler handler = new FileHandler("%h/sunflower.log", 0, ROTATION_COUNT);
+      Handler handler = new FileHandler("/Developer/Java_EE", 1000000, ROTATION_COUNT);
       Logger.getLogger("").addHandler(handler);
 
     } catch (IOException e){

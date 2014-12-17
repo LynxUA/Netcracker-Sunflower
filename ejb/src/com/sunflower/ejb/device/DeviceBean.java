@@ -23,16 +23,9 @@ public class DeviceBean implements EntityBean {
 
     public Integer ejbFindByPrimaryKey(Integer key) throws FinderException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
-
-            }
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT ID_DEVICE FROM DEVICE WHERE ID_DEVICE = ?");
             statement.setInt(1, key);
             ResultSet resultSet = statement.executeQuery();
@@ -41,19 +34,11 @@ public class DeviceBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-
             e.printStackTrace();
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -71,7 +56,7 @@ public class DeviceBean implements EntityBean {
 
     public void ejbRemove() throws RemoveException, EJBException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("DELETE FROM DEVICE WHERE ID_DEVICE = ?");
@@ -80,15 +65,11 @@ public class DeviceBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            throw new EJBException("DELETE exception");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -103,7 +84,7 @@ public class DeviceBean implements EntityBean {
     public void ejbLoad() throws EJBException {
         id_device = (Integer) entityContext.getPrimaryKey();
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT ID_DEVICE,NAME,NUMBER_OF_PORTS, ID_PROV_LOCATION FROM DEVICE WHERE ID_DEVICE = ?");
@@ -114,24 +95,18 @@ public class DeviceBean implements EntityBean {
             }
             name = resultSet.getString("NAME");
             number_of_ports = resultSet.getInt("NUMBER_OF_PORTS");
-              id_prov_location = resultSet.getInt(" ID_PROV_LOCATION");
+            id_prov_location = resultSet.getInt(" ID_PROV_LOCATION");
 
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
     public void ejbStore() throws EJBException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("UPDATE DEVICE SET NAME  = ?, NUMBER_OF_PORTS = ?, ID_PROV_LOCATION = ? WHERE ID_DEVICE=?");
@@ -153,13 +128,7 @@ public class DeviceBean implements EntityBean {
         } catch (SQLException e) {
             throw new EJBException("Ошибка UPDATE");
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 

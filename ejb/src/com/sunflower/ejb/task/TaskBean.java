@@ -28,14 +28,7 @@ public class TaskBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
-
-            }
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE ID_TASK = ?");
             statement.setInt(1, key);
             ResultSet resultSet = statement.executeQuery();
@@ -44,50 +37,14 @@ public class TaskBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
-   /* public void changeStatus(Integer key,String status) throws FinderException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
-
-            }
-            statement = connection.prepareStatement("UPDATE TASK  SET STATUS=? WHERE ID_TASK = ?");
-            statement.setString(1,status);
-            statement.setInt(2, key);
-            ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                throw new ObjectNotFoundException("...");
-            }
-
-        } catch (SQLException e) {
-            throw new EJBException("SELECT exception in ejbCompleteTask");
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
         if(DataSource.getDataSource()==null){
@@ -112,15 +69,11 @@ public class TaskBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            throw new EJBException("DELETE exception");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -142,7 +95,7 @@ public class TaskBean implements EntityBean {
             statement.setInt(1, id_task);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
-                //throw new NoSuchEntityException("...");
+                throw new NoSuchEntityException("");
 
             }
             description = resultSet.getString(1);
@@ -151,15 +104,11 @@ public class TaskBean implements EntityBean {
             login = resultSet.getString(4);
 
         } catch (SQLException e) {
-            throw new EJBException("Ошибка SELECT");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -180,15 +129,11 @@ public class TaskBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            throw new EJBException("Ошибка UPDATE");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -198,12 +143,14 @@ public class TaskBean implements EntityBean {
         this.id_order = id_order;
         this.login = login;
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             try{
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
-                throw new EJBException("Ошибка dataSource");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw new UnknownError();
             }
             statement = connection.prepareStatement("INSERT INTO TASK"
                     + "(DESCRIPTION, ID_GROUP_USER, ID_ORDER, LOGIN) VALUES(?, ?, ?, ?)");
@@ -220,102 +167,21 @@ public class TaskBean implements EntityBean {
             id_task=rs.getInt(1);
             return id_task;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
-        return null;
     }
 
     public void ejbPostCreate(String description, int id_group_user, int id_order, String login) throws CreateException {
 
     }
 
-
-   /* public Integer ejbFindIncompleteTask() throws FinderException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        String status="Incomplete";
-        int key=0;
-        try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
-
-            }
-            statement = connection.prepareStatement("SELECT MIN(ID_TASK) FROM TASK WHERE STATUS = ?");
-            statement.setString(1, status);
-            ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                throw new ObjectNotFoundException("...");
-            }
-            return resultSet.getInt("MIN(ID_TASK)");
-        } catch (SQLException e) {
-            throw new EJBException("SELECT exception in ejbFindIncomplete");
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-//    }*/
-//  public Integer ejbFindIncompleteTask() throws FinderException {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//        String status="incomplete";
-//        int key=0;
-//        try {
-//            try {
-//                connection = DataSource.getDataSource().getConnection();
-//                System.out.println("zxc1");
-//            }catch(SQLException e)
-//            {
-//                System.out.println(e.getErrorCode());
-//                System.out.println("something wrong with connection");
-//
-//            }
-//            statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-//            statement.setString(1, status);
-//            System.out.println("zxc2");
-//            ResultSet resultSet = statement.executeQuery();
-//
-//            if (!resultSet.next()) {
-//                System.out.println("zxc4");
-//                throw new ObjectNotFoundException("...");
-//            }
-//            System.out.println("zxc3");
-//            System.out.println("Key "+resultSet.getInt(1));
-//            return resultSet.getInt(1);
-//        } catch (SQLException e) {
-//            throw new EJBException("SELECT exception in ejbFindIncomplete");
-//        } finally {
-//            try {
-//                if (connection != null) {
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-
    public Collection ejbHomeGetTasksByEngineer(int id_group_user, int from, int to) {
        Connection connection = null;
-       PreparedStatement statement = null;
+       PreparedStatement statement;
        try {
            connection = DataSource.getDataSource().getConnection();
            statement = connection.prepareStatement("SELECT M, A,B, C, D, E, F, I, J \n" +
@@ -333,17 +199,11 @@ public class TaskBean implements EntityBean {
            }
            return tasks;
        } catch (SQLException e) {
-           System.out.println(e.getErrorCode());
            System.out.println(e.getMessage());
-           throw new EJBException("Ошибка SELECT");
+           e.printStackTrace();
+           throw new UnknownError();
        } finally {
-           try {
-               if (connection != null) {
-                   connection.close();
-               }
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
+           DataSource.closeConnection(connection);
        }
    }
 
@@ -393,28 +253,19 @@ public class TaskBean implements EntityBean {
             statement.setInt(1, id_group_user);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
-//            if (resultSet.getInt(1)==0) {
-//                throw new FinderException();
-//            }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            throw new EJBException("Ошибка SELECT");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
     public void ejbHomeAssignTask(int id_task, String login) throws UserWasAssignedException, UserHaveAssignedTaskException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT LOGIN FROM TASK WHERE ID_TASK = ?");
@@ -448,21 +299,16 @@ public class TaskBean implements EntityBean {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            throw new EJBException("Ошибка UPDATE");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
     public Integer ejbFindIncompleteTask(String name) throws FinderException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             try {
                 connection = DataSource.getDataSource().getConnection();
@@ -480,15 +326,11 @@ public class TaskBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 }

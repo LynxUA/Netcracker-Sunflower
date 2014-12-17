@@ -31,14 +31,15 @@ public class ServiceInstanceBean implements EntityBean {
             try{
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
-                throw new EJBException("Ошибка dataSource");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw new UnknownError();
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_INSTANCE"
                     + "(STATUS) VALUES(?)", new String[]{"ID_SERVICE_INST"});
             statement.setInt(1, status);
 
             if (statement.executeUpdate() != 1) {
-                System.out.println("Fail");
                 throw new CreateException("Insert exception");
             }
             rs = statement.getGeneratedKeys();
@@ -47,20 +48,12 @@ public class ServiceInstanceBean implements EntityBean {
             }
             return id_service_inst;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
-
             System.out.println(e.getMessage());
             e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
-        return null;
     }
 
     public void ejbPostCreate(int status) throws CreateException {
@@ -75,8 +68,9 @@ public class ServiceInstanceBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw new UnknownError();
 
             }
             statement = connection.prepareStatement("SELECT ID_SERVICE_INST FROM SERVICE_INSTANCE WHERE ID_SERVICE_INST = ?");
@@ -87,19 +81,11 @@ public class ServiceInstanceBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            System.out.println("тут");
             e.printStackTrace();
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -125,15 +111,11 @@ public class ServiceInstanceBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            throw new EJBException("DELETE exception");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -168,15 +150,11 @@ public class ServiceInstanceBean implements EntityBean {
             }
 
         } catch (SQLException e) {
-            throw new EJBException("Ошибка SELECT");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -205,17 +183,11 @@ public class ServiceInstanceBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            throw new EJBException("Ошибка UPDATE");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -261,13 +233,7 @@ public class ServiceInstanceBean implements EntityBean {
         } catch (SQLException e) {
             throw new EJBException("Ошибка SELECT");
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -286,17 +252,11 @@ public class ServiceInstanceBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            throw new EJBException("Ошибка SELECT");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -308,8 +268,9 @@ public class ServiceInstanceBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw new UnknownError();
 
             }
             statement = connection.prepareStatement("SELECT LONGTITUDE, LATITUDE, NAME FROM (SELECT DISTINCT SERVICE_INSTANCE.ID_SERVICE_INST" +
@@ -324,15 +285,10 @@ public class ServiceInstanceBean implements EntityBean {
             return wrapper;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 }

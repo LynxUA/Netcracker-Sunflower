@@ -11,7 +11,7 @@ import java.sql.SQLException;
 /**
  * Created by Алексей on 12/14/2014.
  */
-public class CircuitBean {
+public class CircuitBean implements EntityBean {
     private int Id_Circuit;
     private int Id_Port;
     private  int Id_Cable;
@@ -24,14 +24,7 @@ public class CircuitBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
-
-            }
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT ID_CIRCUIT FROM CIRCUIT WHERE ID_CIRCUIT = ?");
             statement.setInt(1, key);
             ResultSet resultSet = statement.executeQuery();
@@ -40,19 +33,11 @@ public class CircuitBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            System.out.println("тут");
             e.printStackTrace();
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
 
     }
@@ -81,15 +66,11 @@ public class CircuitBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            throw new EJBException("DELETE exception");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
     public void ejbActivate() throws EJBException {
@@ -113,25 +94,14 @@ public class CircuitBean {
             if (!resultSet.next()) {
                 throw new NoSuchEntityException("...");
             }
-            try {
-                Id_Port = resultSet.getInt(1);
-                Id_Cable = resultSet.getInt(2);
-            }catch (SQLException e){
-                System.out.println(e.getErrorCode());
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
+            Id_Port = resultSet.getInt(1);
+            Id_Cable = resultSet.getInt(2);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            throw new EJBException("Ошибка SELECT");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -141,31 +111,18 @@ public class CircuitBean {
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("UPDATE CIRCUIT SET ID_PORT = ?, ID_CABLE = ? WHERE ID_CIRCUIT=?");
-
             statement.setInt(1, Id_Port);
-
             statement.setInt(2, Id_Circuit);
-
-
             statement.setInt(3, Id_Port);
-
-
-
-
             if (statement.executeUpdate() < 1) {
-                System.out.println("bad statement");
-                throw new NoSuchEntityException("...");
+                throw new NoSuchEntityException("No such entity");
             }
         } catch (SQLException e) {
-            throw new EJBException("Ошибка UPDATE");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -176,13 +133,10 @@ public class CircuitBean {
 
 
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
-            try{
-                connection = DataSource.getDataSource().getConnection();
-            } catch (SQLException e) {
-                throw new EJBException("Ошибка dataSource");
-            }
+            connection = DataSource.getDataSource().getConnection();
+
             statement = connection.prepareStatement("INSERT INTO CIRCUIT"
                     + "( ID_PORT,ID_CABLE) VALUES(?, ?)", new String[]{"ID_CIRCUIT"});
 
@@ -196,18 +150,12 @@ public class CircuitBean {
             Id_Circuit=statement.getGeneratedKeys().getInt(1);
             return Id_Circuit;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
-        return null;
     }
 
     public void ejbPostCreate(int Id_Port, int Id_Cable) throws CreateException {

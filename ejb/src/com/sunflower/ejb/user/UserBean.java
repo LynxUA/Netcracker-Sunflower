@@ -36,16 +36,9 @@ public class UserBean implements EntityBean {
 
     public String ejbFindByPrimaryKey(String key) throws FinderException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
-
-            }
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE LOGIN LIKE ?");
             statement.setString(1, key);
             ResultSet resultSet = statement.executeQuery();
@@ -54,15 +47,11 @@ public class UserBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
 
     }
@@ -81,7 +70,7 @@ public class UserBean implements EntityBean {
 
     public void ejbRemove() throws RemoveException, EJBException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("DELETE FROM SUN_USER WHERE LOGIN LIKE ?");
@@ -90,15 +79,11 @@ public class UserBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            throw new EJBException("DELETE exception");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -113,7 +98,7 @@ public class UserBean implements EntityBean {
     public void ejbLoad() throws EJBException {
         login = (String) entityContext.getPrimaryKey();
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT EMAIL, NAME, SURNAME, PASSWORD, ID_GROUP_USER FROM SUN_USER WHERE LOGIN LIKE ?");
@@ -123,65 +108,46 @@ public class UserBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
             email = resultSet.getString(1);
-
             name = resultSet.getString(2);
-
             surname = resultSet.getString(3);
-
             password = resultSet.getString(4);
-
             group = resultSet.getInt(5);
 
 
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            throw new EJBException("Ошибка SELECT");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
 
     }
 
     public void ejbStore() throws EJBException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
+
             statement = connection.prepareStatement("UPDATE SUN_USER SET EMAIL = ?, NAME = ?, SURNAME = ?, PASSWORD = ?, ID_GROUP_USER = ? WHERE LOGIN LIKE ?");
 
             statement.setString(1, email);
-
             statement.setString(2, name);
-
             statement.setString(3, surname);
-
             statement.setString(4, password);
-
             statement.setInt(5, group);
-
             statement.setString(6, login);
 
             if (statement.executeUpdate() < 1) {
-                System.out.println("bad statement");
-                throw new NoSuchEntityException("...");
+                throw new NoSuchEntityException("No such entity");
             }
         } catch (SQLException e) {
-            throw new EJBException("Ошибка UPDATE");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -189,11 +155,9 @@ public class UserBean implements EntityBean {
         try {
             ejbFindByPrimaryKey(login);
             throw new DuplicateKeyException("...");
-        } catch (FinderException e) { /*
-        Как это ни странно, именно возникновение исключения
-        дает нам повод и возможность выполнять дальнейшие
-        действия. Поэтому здесь ничего не происходит.
-      */}
+        } catch (FinderException e) {
+            //Everything is ok
+        }
         this.login = login;
         this.email = email;
         this.name = name;
@@ -201,38 +165,31 @@ public class UserBean implements EntityBean {
         this.password = password;
         this.group = id;
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
-            try{
-                connection = DataSource.getDataSource().getConnection();
-            } catch (SQLException e) {
-                throw new EJBException("Ошибка dataSource");
-            }
+            connection = DataSource.getDataSource().getConnection();
+
             statement = connection.prepareStatement("INSERT INTO SUN_USER"
                     + "(LOGIN, EMAIL, NAME, SURNAME, PASSWORD, ID_GROUP_USER) VALUES(?, ?, ?, ?, ?, ?)");
+
             statement.setString(1, login);
             statement.setString(2, email);
             statement.setString(3, name);
             statement.setString(4, surname);
             statement.setString(5, password);
             statement.setInt(6, id);
+
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
             }
             return login;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
-        return null;
     }
 
     public void ejbPostCreate(String login, String email, String name, String surname, String password, int id) throws CreateException {
@@ -242,56 +199,38 @@ public class UserBean implements EntityBean {
     public String ejbFindUser(String login, String password) throws FinderException, BadPasswordException {
         ejbFindByPrimaryKey(login);
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+            connection = DataSource.getDataSource().getConnection();
 
-            }
             statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN LIKE ?) AND (PASSWORD LIKE ?)");
+
             statement.setString(1, login);
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
+
             if (!resultSet.next()) {
                 throw new BadPasswordException();
             }
+
             return login;
-        }/*catch(BadPasswordException e){
-            System.out.println("????????????????????????");
-            throw e;
-        }*/
+        }
         catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
     public String ejbFindUser(String login) throws FinderException, BadPasswordException {
         ejbFindByPrimaryKey(login);
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+            connection = DataSource.getDataSource().getConnection();
 
-            }
             statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN LIKE ?)");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
@@ -301,17 +240,11 @@ public class UserBean implements EntityBean {
             return login;
         }
         catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -345,9 +278,8 @@ public class UserBean implements EntityBean {
     }
 
     public Collection ejbFindСustomers() throws FinderException {
-        //    public Collection ejbFindOrdersByLogin(String login) throws FinderException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE ID_GROUP_USER = 1");
@@ -359,15 +291,11 @@ public class UserBean implements EntityBean {
             }
             return keys;
         } catch (SQLException e) {
-            throw new EJBException("Ошибка SELECT");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
 //
 //    }
@@ -375,7 +303,7 @@ public class UserBean implements EntityBean {
 
     public int ejbHomeGetNumberOfCustomers() throws FinderException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT COUNT(LOGIN)\n" +
@@ -387,17 +315,11 @@ public class UserBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            throw new EJBException("Ошибка SELECT");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -418,17 +340,11 @@ public class UserBean implements EntityBean {
             }
             return customers;
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            throw new EJBException("Ошибка SELECT");
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 }

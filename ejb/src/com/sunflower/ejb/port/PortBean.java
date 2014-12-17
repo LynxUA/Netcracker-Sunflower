@@ -22,14 +22,7 @@ public class PortBean implements EntityBean {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            try {
-                connection = DataSource.getDataSource().getConnection();
-            }catch(SQLException e)
-            {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
-
-            }
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT ID_PORT FROM PORT WHERE ID_PORT = ?");
             statement.setInt(1, key);
             ResultSet resultSet = statement.executeQuery();
@@ -38,19 +31,11 @@ public class PortBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
-            System.out.println("тут");
             e.printStackTrace();
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
 
     }
@@ -79,15 +64,11 @@ public class PortBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            throw new EJBException("DELETE exception");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
     public void ejbActivate() throws EJBException {
@@ -111,31 +92,17 @@ public class PortBean implements EntityBean {
             if (!resultSet.next()) {
                 throw new NoSuchEntityException("...");
             }
-            try {
-                status = resultSet.getInt(1);
-            }catch (SQLException e){
-                System.out.println(e.getErrorCode());
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-            try{
-                Id_Device= resultSet.getInt(2);
-            }catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
+            status = resultSet.getInt(1);
+
+            Id_Device= resultSet.getInt(2);
+
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            throw new EJBException("Ошибка SELECT");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
+
         }
     }
 
@@ -157,19 +124,14 @@ public class PortBean implements EntityBean {
 
 
             if (statement.executeUpdate() < 1) {
-                System.out.println("bad statement");
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            throw new EJBException("Ошибка UPDATE");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -180,13 +142,9 @@ public class PortBean implements EntityBean {
 
 
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
-            try{
-                connection = DataSource.getDataSource().getConnection();
-            } catch (SQLException e) {
-                throw new EJBException("Ошибка dataSource");
-            }
+            connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("INSERT INTO PORT"
                     + "( STATUS,ID_DEVICE) VALUES(?, ?)", new String[]{"ID_PORT"});
 
@@ -200,18 +158,12 @@ public class PortBean implements EntityBean {
             Id_Port=statement.getGeneratedKeys().getInt(1);
             return Id_Port;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSource.closeConnection(connection);
         }
-        return null;
     }
 
     public void ejbPostCreate(int status, int Id_Port) throws CreateException {
