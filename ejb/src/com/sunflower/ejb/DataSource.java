@@ -3,6 +3,7 @@ package com.sunflower.ejb;
 import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.SQLException;
+import java.util.Locale;
 
 /**
  * Created by denysburlakov on 03.12.14.
@@ -11,6 +12,7 @@ public class DataSource {
     private static OracleDataSource dataSource;
     public static void setDataSource(){
         try {
+            Locale.setDefault(new Locale("EN"));
             dataSource = new OracleDataSource();
         } catch (SQLException e) {
             e.printStackTrace();

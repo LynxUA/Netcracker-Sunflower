@@ -1,3 +1,8 @@
+<%@ page import="java.util.logging.Logger" %>
+<%@ page import="java.util.logging.Level" %>
+<%@ page import="java.util.logging.Handler" %>
+<%@ page import="java.util.logging.FileHandler" %>
+<%@ page import="java.io.IOException" %>
 <%--
   Created by IntelliJ IDEA.
   User: denysburlakov
@@ -5,6 +10,23 @@
   Time: 00:19
   To change this template use File | Settings | File Templates.
 --%>
+<%
+  //Parent logger registration
+  if(System.getProperty("java.util.logging.config.class") == null
+          && System.getProperty("java.util.logging.config.file") ==null ) {
+    try {
+
+      Logger.getLogger("").setLevel(Level.ALL);
+      final int ROTATION_COUNT = 5;
+      Handler handler = new FileHandler("%h/sunflower.log", 0, ROTATION_COUNT);
+      Logger.getLogger("").addHandler(handler);
+
+    } catch (IOException e){
+      Logger.getLogger("com.sunflower.web.CheckLoginServlet").
+              log(Level.SEVERE, "Creating log file handler error",e);
+    }
+  }
+%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

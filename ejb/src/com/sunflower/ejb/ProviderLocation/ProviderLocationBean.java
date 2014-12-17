@@ -395,7 +395,6 @@ public class ProviderLocationBean implements EntityBean {
     public Collection ejbHomeGetAllLocations() {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet rs = null;
         List<ProviderLocWrapper> locationList = new ArrayList<ProviderLocWrapper>();
         try {
             try {
@@ -407,7 +406,7 @@ public class ProviderLocationBean implements EntityBean {
             }
 
             statement = connection.prepareStatement("SELECT LOCATION, LONGTITUDE, LATITUDE FROM PROVIDER_LOCATION");
-            rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
                 ProviderLocWrapper pl = new ProviderLocWrapper(rs);
@@ -423,9 +422,6 @@ public class ProviderLocationBean implements EntityBean {
             try {
                 if (connection != null) {
                     connection.close();
-                }
-                if (rs != null) {
-                    rs.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

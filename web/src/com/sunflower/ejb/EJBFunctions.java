@@ -31,14 +31,18 @@ import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by denysburlakov on 02.12.14.
  */
 public class EJBFunctions {
-    private EJBFunctions(){
 
-    }
+    private static Logger logger = Logger.getLogger("com.sunflower.ejb");
+
+    private EJBFunctions(){}
+
     public static LocalUser createUser(String login, String email, String name, String surname, String password, int group) throws CreateException {
         InitialContext ic = null;
         try {
@@ -560,27 +564,27 @@ public class EJBFunctions {
     }
 
     public static ArrayList<PriceCatalog> getServicePriceByLoc(String location){
+
         InitialContext ic = null;
-        try {
-            ic = new InitialContext();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
         LocalPriceHome home = null;
+
         try {
+
+            ic = new InitialContext();
             home = (LocalPriceHome) ic.lookup("java:comp/env/ejb/Price");
+
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.logp(Level.SEVERE,"EjbFunctions","getServicePriceByLoc()","",e);
         }
+
         ArrayList<PriceCatalog> catalogs = null;
 
-        if(home != null) {
+        if(home != null)
             try {
                 catalogs = (ArrayList<PriceCatalog>) home.getServicePriceByLoc(location);
             } catch (FinderException e) {
-                e.printStackTrace();
+                logger.logp(Level.SEVERE, "EjbFunctions", "getServicePriceByLoc()", "", e);
             }
-        }
 
         return catalogs;
     }

@@ -297,9 +297,6 @@ public class PriceBean implements EntityBean {
                 if (connection != null) {
                     connection.close();
                 }
-                if (rs != null) {
-                    rs.close();
-                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
