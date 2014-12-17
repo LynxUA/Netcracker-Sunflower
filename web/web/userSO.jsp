@@ -57,6 +57,7 @@
             <th>id</th>
             <th>Scenario</th>
             <th>Status</th>
+              <th>Disconnect</th>
           </tr>
           </thead>
           <tbody>
@@ -88,6 +89,9 @@
                   >
               <%=order.getStatus_name()%></span>
           </td>
+          <td><%if(order.getStatus_name().contains("Entering")){%>
+              <a href="cancelOrder?id_order=<%=order.getId_order()%>">Cancell</a></td>
+          <%}%></td>
           </tr>
           <%}%>
           </tbody>

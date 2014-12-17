@@ -23,6 +23,7 @@ import com.sunflower.ejb.serviceinstance.LocalServiceInstanceHome;
 import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
 import com.sunflower.ejb.task.TaskWrapper;
+import com.sunflower.ejb.task.UserWasAssignedException;
 import com.sunflower.ejb.user.BadPasswordException;
 import com.sunflower.ejb.user.CustomerWrapper;
 import com.sunflower.ejb.user.LocalUser;
@@ -739,7 +740,7 @@ public class EJBFunctions {
         }
     }
 
-    public Collection getServiceInstances(String login, int from, int to) throws Exception {
+    public static Collection getServiceInstances(String login, int from, int to) throws Exception {
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -798,4 +799,47 @@ public class EJBFunctions {
         return home.findIncompleteTask(name);
 
     }
+    public static void cancelOrder(String login, int id_order) throws UserWasAssignedException {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (home != null&&login.contains(home.findByPrimaryKey(id_order).getUserLogin())) {
+                home.cancelOrder(id_order);
+            }
+        } catch (FinderException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Collection getSLByLogin(String login) throws Exception {
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        LocalServiceInstanceHome home = null;
+        try {
+            home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (home != null) {
+            return home.getSLByLogin(login);
+        }else{
+            throw new Exception("Error with EJBs");
+        }
+    }
+
 }

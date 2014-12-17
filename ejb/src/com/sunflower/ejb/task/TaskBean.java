@@ -11,6 +11,7 @@ import java.util.Vector;
  * Created by denysburlakov on 03.12.14.
  */
 
+
 public class TaskBean implements EntityBean {
     private int id_task;
     private String description;

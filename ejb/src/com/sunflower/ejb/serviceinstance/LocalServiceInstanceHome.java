@@ -13,4 +13,5 @@ public interface LocalServiceInstanceHome extends EJBLocalHome {
     public LocalServiceInstance create(int status) throws CreateException;
     public Collection getServiceInstances(String login, int from, int to);
     public int getNumberOfInstancesByLogin(String login) throws FinderException;
+    public Collection getSLByLogin(String login) throws FinderException;
 }

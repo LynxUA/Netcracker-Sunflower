@@ -245,7 +245,7 @@ public class ServiceInstanceBean implements EntityBean {
         try {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT A,B,C, D, E, F\n" +
-                    "FROM (SELECT SERVICE_ORDER.ID_SERVICE_INST AS A, SI_STATUS.NAME AS B, SERVICE.NAME AS C, PROVIDER_LOCATION.LONGTITUDE AS D, PROVIDER_LOCATION.LATITUDE AS E, PROVIDER_LOCATION.LOCATION AS F, ROWNUM R\n" +
+                    "FROM (SELECT SERVICE_ORDER.ID_SERVICE_INST AS A, SI_STATUS.NAME AS B, SERVICE.NAME AS C, SERVICE_ORDER.LONGTITUDE AS D, SERVICE_ORDER.LATITUDE AS E, PROVIDER_LOCATION.LOCATION AS F, ROWNUM R\n" +
                     "FROM ((((SERVICE_ORDER JOIN SERVICE_INSTANCE ON SERVICE_ORDER.ID_SERVICE_INST = SERVICE_INSTANCE.ID_SERVICE_INST) JOIN SI_STATUS ON SERVICE_INSTANCE.STATUS = SI_STATUS.ID_STATUS) JOIN PRICE ON SERVICE_ORDER.ID_PRICE = PRICE.ID_PRICE) JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE) JOIN PROVIDER_LOCATION ON PRICE.ID_PROV_LOCATION = PROVIDER_LOCATION.ID_PROV_LOCATION\n" +
                     "WHERE LOGIN LIKE ? )\n" +
                     "WHERE R >= ? AND R <=?");
@@ -289,6 +289,42 @@ public class ServiceInstanceBean implements EntityBean {
             System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
             throw new EJBException("Ошибка SELECT");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Collection ejbHomeGetSLByLogin(String login) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            try {
+                connection = DataSource.getDataSource().getConnection();
+            }catch(SQLException e)
+            {
+                System.out.println(e.getErrorCode());
+                System.out.println("something wrong with connection");
+
+            }
+            statement = connection.prepareStatement("SELECT LONGTITUDE, LATITUDE, NAME FROM (SELECT DISTINCT SERVICE_INSTANCE.ID_SERVICE_INST" +
+                    ", LONGTITUDE, LATITUDE, LOGIN, SERVICE.NAME FROM (SERVICE_INSTANCE JOIN SERVICE_ORDER ON SERVICE_INSTANCE.ID_SERVICE_INST = SERVICE_ORDER.ID_SERVICE_INST" +
+                    " JOIN PRICE ON SERVICE_ORDER.ID_PRICE = PRICE.ID_PRICE JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE  )) WHERE LOGIN LIKE ?");
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            Vector<ServiceLocationWrapper> wrapper = new Vector<ServiceLocationWrapper>();
+            while (resultSet.next()) {
+                wrapper.add(new ServiceLocationWrapper(resultSet.getFloat(1), resultSet.getFloat(2), resultSet.getString(3)));
+            }
+            return wrapper;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
                 if (connection != null) {
