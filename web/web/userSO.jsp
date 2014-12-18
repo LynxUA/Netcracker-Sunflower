@@ -55,14 +55,18 @@
           <thead>
           <tr>
             <th>id</th>
+              <th>Date</th>
             <th>Scenario</th>
             <th>Status</th>
+              <th>Location</th>
               <th>Disconnect</th>
+
           </tr>
           </thead>
           <tbody>
           <%for(SOWrapper order:serviceOrders){%>
           <td><%=order.getId_order()%></td>
+          <td><%=order.getSo_date()%></td>
           <td><%=order.getScenario_name()%></td>
           <td><span
               <%
@@ -89,6 +93,7 @@
                   >
               <%=order.getStatus_name()%></span>
           </td>
+          <td><%=order.getLongtitude()%> <%=order.getLatitude()%></td>
           <td><%if(order.getStatus_name().contains("Entering")){%>
               <a href="cancelOrder?id_order=<%=order.getId_order()%>">Cancell</a></td>
           <%}%></td>

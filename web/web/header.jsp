@@ -83,13 +83,14 @@
             %>
                 <li><a href="/webWeb/">Home</a></li>
                 <li><a href="tasks">Tasks</a></li>
+                <li><a href="#">Current task</a></li>
             <%
                 break;
               case IE:
             %>
                 <li><a href="/webWeb/">Home</a></li>
                 <li><a href="tasks">Tasks</a></li>
-                <%--<li><a href="/groups">Groups</a></li>--%>
+                <li><a href="#">Current task</a></li>
             <%
                   break;
               }
