@@ -277,14 +277,15 @@ public class TaskBean implements EntityBean {
                 throw new UserWasAssignedException();
             }
 
-
+            /** Fix later!!! (checks whether someone has assigned this task before you*/
+            /*
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE LOGIN LIKE ?");
             statement.setString(1, login);
             ResultSet result2 = statement.executeQuery();
             if (result2.next()){
                 throw new UserHaveAssignedTaskException();
-            }
+            }*/
 
             statement = connection.prepareStatement("UPDATE SERVICE_ORDER SET ID_STATUS = 3 WHERE ID_ORDER = (SELECT ID_ORDER FROM TASK WHERE ID_TASK = ?)");
             statement.setInt(1,id_task);
