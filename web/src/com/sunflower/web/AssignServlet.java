@@ -36,6 +36,10 @@ public class AssignServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         Connection connection = null;
         PreparedStatement statement;
@@ -60,13 +64,14 @@ public class AssignServlet extends HttpServlet {
                 System.out.println("zxc2");
                 ResultSet resultSet = statement.executeQuery();
 
-                sb.append("<option selected=\"true\" style=\"display:none;\" >Select Port</option>");
+
                 while (resultSet.next()) {
-                    sb.append("<option value=\"" + resultSet.getInt(1) + " " + "<%=Id_Circuit>" + " " + "<%=Id_Si>" + "\">" + resultSet.getInt(1) + "</option>");
+                    sb.append("<option value=\"" + resultSet.getInt(1) +"\">" + resultSet.getInt(1) + "</option>");
 
                 }
-                response.setContentType("text/html;charset=UTF-8");
-                response.getWriter().write(sb.toString());
+
+                request.setAttribute("ports", sb.toString());
+                request.getRequestDispatcher("assign.jsp").forward(request, response);
 
             } catch (SQLException e) {
                 throw new EJBException("SELECT exception in ejbFindIncomplete");
@@ -81,26 +86,77 @@ public class AssignServlet extends HttpServlet {
             }
         }
         if (action.equals("assign")) {
-            StringBuffer sb = new StringBuffer();
-            String[] parameters = request.getParameter("parameters").split(" ");
-            int Id_Port = Integer.parseInt(parameters[0]);
-            Integer Id_Circuit = Integer.parseInt(parameters[1]);
-            Integer Id_ServiceInst = Integer.parseInt(parameters[2]);
-            localPort = EJBFunctions.findLocalPortById(Id_Port);
-            localPort.setStatus(1);
+            Integer Id_Circuit=null;
+            Integer Id_ServiceInst=null;
+            try {
+                try {
+                    connection = DataSource.getDataSource().getConnection();
+                    System.out.println("zxc1");
+                } catch (SQLException e) {
+                    System.out.println(e.getErrorCode());
+                    System.out.println("something wrong with connection");
 
-            if (Id_Circuit != null) {
-                localCircuit = EJBFunctions.findLocalCircuitById(Id_Circuit);
-                localCircuit.setId_Port(Id_Port);
-            } else {
-                localCircuit = EJBFunctions.createCircuit(Id_Port, 0);
-                Id_Circuit = localCircuit.getId_Circuit();
+                }
+                //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
+                statement = connection.prepareStatement("SELECT si.ID_CIRCUIT ,si.ID_Service_INST " +
+                        " from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE" +
+                        " INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION" +
+                        "Inner JOIN DEVICE d On d.Id_Prov_location=pl.Id_Prov_location" +
+                        " Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si" +
+                        " On si.ID_SERVICE_INST=so.ID_SERVICE_INST " +
+                        "where t.login=? and so.ID_status!='4' and so.ID_status!='2'");
+
+
+                statement.setString(1, (String) request.getSession().getAttribute("login"));
+                System.out.println("zxc2");
+                ResultSet resultSet = statement.executeQuery();
+                if(!resultSet.next())
+                {
+                    request.setAttribute("result", "someting wrong");
+                    request.getRequestDispatcher("assign.jsp").forward(request, response);
+                    return;
+                }
+                Id_Circuit=resultSet.getInt(1);
+                Id_ServiceInst=resultSet.getInt(2);
+
+
+
+
+
+
+                if(request.getParameter("Id_Order").equals(""))
+                {
+                    request.setAttribute("ports", "select port");
+                    request.getRequestDispatcher("assign.jsp").forward(request, response);
+                    return;
+                }
+                int Id_Port = Integer.parseInt(request.getParameter("Id_Order"));
+                localPort = EJBFunctions.findLocalPortById(Id_Port);
+                localPort.setStatus(1);
+
+                if (Id_Circuit != null) {
+                    localCircuit = EJBFunctions.findLocalCircuitById(Id_Circuit);
+                    localCircuit.setId_Port(Id_Port);
+                } else {
+                    localCircuit = EJBFunctions.createCircuit(Id_Port, 0);
+                    Id_Circuit = localCircuit.getId_Circuit();
+                }
+                LocalServiceInstance serviceInstance = EJBFunctions.findServiceInstance(Id_ServiceInst);
+                serviceInstance.setId_circuit(Id_Circuit);
+
+                request.setAttribute("result", "port assigned");
+                request.getRequestDispatcher("assign.jsp").forward(request, response);
+            } catch (SQLException e) {
+                throw new EJBException("SELECT exception assigner");
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-            LocalServiceInstance serviceInstance = EJBFunctions.findServiceInstance(Id_ServiceInst);
-            serviceInstance.setId_circuit(Id_Circuit);
-
-            response.setContentType("text/html;charset=UTF-8");
-            response.getWriter().write("<font color=\"#191970\">Port assigned</font>");
         }
         if (action.equals("createCir")) {
 
@@ -114,21 +170,21 @@ public class AssignServlet extends HttpServlet {
 
                 }
                 //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-                statement = connection.prepareStatement("SELECT si.ID_CIRCUIT ,t.DESCRIPTION  from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login=? and so.ID_status!='4'");
+                statement = connection.prepareStatement("SELECT si.ID_CIRCUIT ,t.DESCRIPTION  from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login=? and so.ID_status!='4' and so.ID_status!='2'");
                 statement.setString(1, (String) request.getSession().getAttribute("login"));
                 System.out.println("zxc2");
                 ResultSet resultSet = statement.executeQuery();
                 if (!resultSet.next()) {
-                    response.setContentType("text/html;charset=UTF-8");
-                    response.getWriter().write("<font color=\"#ff0000\">Port not assigned</font>");
+                    request.setAttribute("result", "port not assigned");
+                    request.getRequestDispatcher("assign.jsp").forward(request, response);
                 }
                 int Id_Circuit = resultSet.getInt(1);
                 String[] Description = resultSet.getString(2).split("Cable ID = ");
                 int Id_Cable = Integer.parseInt(Description[1]);
                 localCircuit = EJBFunctions.findLocalCircuitById(Id_Circuit);
                 localCircuit.setId_Cable(Id_Cable);
-                response.setContentType("text/html;charset=UTF-8");
-                response.getWriter().write("<font color=\"#ff0000\">Circuit created</font>");
+                request.setAttribute("result", "Circuit crated");
+                request.getRequestDispatcher("assign.jsp").forward(request, response);
             } catch (SQLException e) {
                 throw new EJBException("SELECT exception in createCir");
             } finally {
@@ -143,15 +199,15 @@ public class AssignServlet extends HttpServlet {
 
         }
         if (action.equals("unassign")) {
-            Integer Id_Port = Integer.parseInt(request.getParameter("parameter"));
+            Integer Id_Port = Integer.parseInt(request.getParameter("unports"));
             if (Id_Port.equals("")) {
-                response.setContentType("text/html;charset=UTF-8");
-                response.getWriter().write("<font color=\"#ff0000\">Write Port Id</font>");
+                request.setAttribute("result", "Please write port id");
+                request.getRequestDispatcher("assign.jsp").forward(request, response);
             }
             localPort = EJBFunctions.findLocalPortById(Id_Port);
             localPort.setStatus(0);
-            response.setContentType("text/html;charset=UTF-8");
-            response.getWriter().write("<font color=\"#ff0000\">Port Is Unnasigned</font>");
+            request.setAttribute("result", "port is unassigned");
+            request.getRequestDispatcher("assign.jsp").forward(request, response);
         }
         if (action.equals("remove")) {
 
@@ -165,13 +221,13 @@ public class AssignServlet extends HttpServlet {
 
                 }
                 //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-                statement = connection.prepareStatement("SELECT si.ID_CIRCUIT ,si.ID_SERVICE_INST ,c.ID_PORT  from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST INNER JOIN CIRCUIT c ON so.ID_CIRCUIT=c.ID_CIRCUIT where t.login=? and so.ID_status!='4'");
+                statement = connection.prepareStatement("SELECT si.ID_CIRCUIT ,si.ID_SERVICE_INST ,c.ID_PORT  from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST INNER JOIN CIRCUIT c ON so.ID_CIRCUIT=c.ID_CIRCUIT where t.login=? and so.ID_status!='4' and so.ID_status!='2'");
                 statement.setString(1, (String) request.getSession().getAttribute("login"));
                 System.out.println("zxc2");
                 ResultSet resultSet = statement.executeQuery();
                 if (!resultSet.next()) {
-                    response.setContentType("text/html;charset=UTF-8");
-                    response.getWriter().write("<font color=\"#ff0000\">Port not assigned</font>");
+                    request.setAttribute("result", "port not assigned");
+                    request.getRequestDispatcher("assign.jsp").forward(request, response);
                 }
                 int Id_Circuit = resultSet.getInt(1);
                 int Id_Si=resultSet.getInt(2);
@@ -182,14 +238,14 @@ public class AssignServlet extends HttpServlet {
                 localServiceInstance.setId_circuit(null);
                 localCircuit.remove();
                 localPort.setStatus(0);
-                response.setContentType("text/html;charset=UTF-8");
-                response.getWriter().write("<font color=\"#ff0000\">Circuit removed</font>");
+                request.setAttribute("result", "Circuit removed");
+                request.getRequestDispatcher("assign.jsp").forward(request, response);
             }
             catch (RemoveException ex)
             {
                 ex.printStackTrace();
-                response.setContentType("text/html;charset=UTF-8");
-                response.getWriter().write("<font color=\"#ff0000\">Something wrong</font>");
+                request.setAttribute("result", "Something wrong");
+                request.getRequestDispatcher("assign.jsp").forward(request, response);
             }
             catch (SQLException e) {
                 throw new EJBException("SELECT exception in createCir");
@@ -203,8 +259,5 @@ public class AssignServlet extends HttpServlet {
                 }
             }
         }
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     }
 }

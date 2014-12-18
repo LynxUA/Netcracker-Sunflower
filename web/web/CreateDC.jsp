@@ -21,16 +21,18 @@
   <%@ page import="javax.ejb.EJBException" %>
 
   <script type="text/javascript"  src="js/create.js" ></script>
+
   <style>
     aside {
       padding: 10px;
       width: 200px;
       float: left;
     }
+
     select, input {
       padding:0.5% 2% 0.5% 2% ;
       margin: 0.5% 2% 0.5% 2%;
-      width: 30%;
+      width: 20%;
       height: 4%;
     }
     p {padding: 0.3% 7% 0.3% 7%;
@@ -57,7 +59,7 @@
     </li>
   </ul>
 </aside>
-<p><pre>   Port                                  User ID</pre></p>
+
 <p>
   <%--<% Connection connection = null;--%>
     <%--PreparedStatement statement;--%>
@@ -85,20 +87,26 @@
 
 
 
-<p>
-  <input  type="text" name="length" placeholder="Length of cable in KM" onkeyup="this.value=this.value.replace(/[^0-9]+/g,'');" >
+<form style="padding: 0.3% 7% 0.3% 7%;
+      margin: 0.3% 7% 0.3% 7%" accept-charset="UTF-8" role="form"  action="CreateDC?action=device&option=device" method="get">
+  <input  type="text" name="lenght" placeholder="Lenght of cable in KM" onkeyup="this.value=this.value.replace(/[^0-9]+/g,'');" >
   <input  type="text" name="type" placeholder="Type of Cable"  >
-  <button  align="right" style="float: right;" class="btn btn-primary" width="15%" onclick="cable()">Create Cable</button>
-</p>
-<p>
-  <input  type="text" name="Devicename" placeholder="Device Name" >
+  <input type="hidden" name="action" value="cable" style=" width:0">
+  <input  class="btn btn-primary" type="submit" align="right" style="float: right;  width:15%"    value="Create Cable">
+  </form>
 
-  <button  align="right" style="float: right;" class="btn btn-primary" width="15%" onclick="device()">Create Cable</button>
-</p>
+<form style="padding: 0.3% 7% 0.3% 7%;
+      margin: 0.3% 7% 0.3% 7%" accept-charset="UTF-8" role="form"  action="CreateDC?action=device&option=device" method="get">
+  <input  type="text" name="Devicename" placeholder="Device Name" id="devicename" >
+ <input type="hidden" name="action" value="device" style=" width:0">
+  <input  class="btn btn-primary" type="submit" align="right" style="float: right; width:15%"   value="Create Device">
+</form>
+
+<%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
+<p name="result">${requestScope.result}</p>
+<%}%>
 
 
-
-<p name="result"></p>
 <%--<%  } catch (SQLException e) {--%>
   <%--throw new EJBException("SELECT exception in CreateDC");--%>
 <%--} finally {--%>

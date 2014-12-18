@@ -26,13 +26,16 @@ public class CurrentTaskServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
       String action =  request.getParameter("action");
+        System.out.println(action);
 
         int key = Integer.parseInt(request.getParameter("key"));
+        System.out.println(key);
 
         LocalTask localTask= EJBFunctions.findLocalTaskById(key);
 
+        System.out.println(localTask);
 
-            if (action == "complete")
+            if (action.equals("complete"))
             {
                 int Id_Si=Integer.parseInt(request.getParameter("Id_Si"));
                 int Id_Order=Integer.parseInt(request.getParameter("Id_Order"));
@@ -43,24 +46,38 @@ public class CurrentTaskServlet extends HttpServlet {
                 if(Id_Scenario==1) {
                     localServiceInstance.setStatus(2);
                     localServiceOrder.setId_status(4);
+                    request.setAttribute("result", "<font color=\"#191970\">Task is completed</font>");
+                    request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
                 }
                 if(Id_Scenario==3)
                 {
                     localServiceInstance.setStatus(3);
                     localServiceOrder.setId_status(4);
+                    request.setAttribute("result", "<font color=\"#191970\">Task is completed</font>");
+                    request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
                 }
             }
-        if (action == "completeIE")
+        if (action.equals("completeIE"))
         {
+            System.out.println("hello");
             localTask.setId_group_user(4);
             localTask.setLogin(null);
+            System.out.println("hey");
+            request.setAttribute("result", "<font color=\"#191970\">Task is completed</font>");
+            request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
+            return;
         }
-            if (action == "suspend") {
+            if (action.equals("suspend")) {
                 LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder(Integer.parseInt(request.getParameter("Id_Order")));
                 localServiceOrder.setId_status(2);
+                request.setAttribute("result", "<font color=\"#191970\">Task is suspended</font>");
+                request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
             }
-        if (action == "unassign") localTask.setLogin(null);
-
+        if (action.equals("unassign")) {
+            localTask.setLogin(null);
+            request.setAttribute("result", "<font color=\"#191970\">Task is unassigned</font>");
+            request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
+        }
 
 
 
