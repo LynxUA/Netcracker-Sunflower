@@ -39,7 +39,7 @@ public class UserBean implements EntityBean {
         PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE LOGIN LIKE ?");
+            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE LOGIN = ?");
             statement.setString(1, key);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -73,7 +73,7 @@ public class UserBean implements EntityBean {
         PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("DELETE FROM SUN_USER WHERE LOGIN LIKE ?");
+            statement = connection.prepareStatement("DELETE FROM SUN_USER WHERE LOGIN = ?");
             statement.setString(1, login);
             if (statement.executeUpdate() < 1) {
                 throw new RemoveException("Exception while deleting");
@@ -101,7 +101,7 @@ public class UserBean implements EntityBean {
         PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT EMAIL, NAME, SURNAME, PASSWORD, ID_GROUP_USER FROM SUN_USER WHERE LOGIN LIKE ?");
+            statement = connection.prepareStatement("SELECT EMAIL, NAME, SURNAME, PASSWORD, ID_GROUP_USER FROM SUN_USER WHERE LOGIN = ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -130,7 +130,7 @@ public class UserBean implements EntityBean {
         try {
             connection = DataSource.getDataSource().getConnection();
 
-            statement = connection.prepareStatement("UPDATE SUN_USER SET EMAIL = ?, NAME = ?, SURNAME = ?, PASSWORD = ?, ID_GROUP_USER = ? WHERE LOGIN LIKE ?");
+            statement = connection.prepareStatement("UPDATE SUN_USER SET EMAIL = ?, NAME = ?, SURNAME = ?, PASSWORD = ?, ID_GROUP_USER = ? WHERE LOGIN = ?");
 
             statement.setString(1, email);
             statement.setString(2, name);
@@ -203,7 +203,7 @@ public class UserBean implements EntityBean {
         try {
             connection = DataSource.getDataSource().getConnection();
 
-            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN LIKE ?) AND (PASSWORD LIKE ?)");
+            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN = ?) AND (PASSWORD = ?)");
 
             statement.setString(1, login);
             statement.setString(2, password);
@@ -231,7 +231,7 @@ public class UserBean implements EntityBean {
         try {
             connection = DataSource.getDataSource().getConnection();
 
-            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN LIKE ?)");
+            statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN = ?)");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
