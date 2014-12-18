@@ -250,7 +250,7 @@ public class ServiceOrderBean implements EntityBean {
             statement = connection.prepareStatement("SELECT A,B,C, D, E, F\n" +
                     "FROM (SELECT ID_ORDER AS A, SO_STATUS.NAME AS B, SCENARIO.NAME AS C, SO_DATE AS D, LONGTITUDE AS E, LATITUDE AS F, ROWNUM R\n" +
                     "FROM (SERVICE_ORDER JOIN SO_STATUS ON SERVICE_ORDER.ID_STATUS = SO_STATUS.ID_STATUS) JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
-                    "WHERE LOGIN LIKE ? )\n" +
+                    "WHERE LOGIN = ? )\n" +
                     "WHERE R >= ? AND R <=?");
             statement.setString(1, login);
             statement.setInt(2, from);
@@ -277,7 +277,7 @@ public class ServiceOrderBean implements EntityBean {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT COUNT(ID_ORDER)\n" +
                     "FROM SERVICE_ORDER\n" +
-                    "WHERE LOGIN LIKE ?");
+                    "WHERE LOGIN = ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {

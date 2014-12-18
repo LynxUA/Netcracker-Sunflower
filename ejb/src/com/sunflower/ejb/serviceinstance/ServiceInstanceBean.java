@@ -219,7 +219,7 @@ public class ServiceInstanceBean implements EntityBean {
             statement = connection.prepareStatement("SELECT A,B,C, D, E, F\n" +
                     "FROM (SELECT SERVICE_ORDER.ID_SERVICE_INST AS A, SI_STATUS.NAME AS B, SERVICE.NAME AS C, SERVICE_ORDER.LONGTITUDE AS D, SERVICE_ORDER.LATITUDE AS E, PROVIDER_LOCATION.LOCATION AS F, ROWNUM R\n" +
                     "FROM ((((SERVICE_ORDER JOIN SERVICE_INSTANCE ON SERVICE_ORDER.ID_SERVICE_INST = SERVICE_INSTANCE.ID_SERVICE_INST) JOIN SI_STATUS ON SERVICE_INSTANCE.STATUS = SI_STATUS.ID_STATUS) JOIN PRICE ON SERVICE_ORDER.ID_PRICE = PRICE.ID_PRICE) JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE) JOIN PROVIDER_LOCATION ON PRICE.ID_PROV_LOCATION = PROVIDER_LOCATION.ID_PROV_LOCATION\n" +
-                    "WHERE LOGIN LIKE ? )\n" +
+                    "WHERE LOGIN = ? )\n" +
                     "WHERE R >= ? AND R <=?");
             statement.setString(1, login);
             statement.setInt(2, from);
@@ -244,7 +244,7 @@ public class ServiceInstanceBean implements EntityBean {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT COUNT(DISTINCT ID_SERVICE_INST)\n" +
                     "FROM (SERVICE_ORDER)\n" +
-                    "WHERE LOGIN LIKE ?");
+                    "WHERE LOGIN = ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -275,7 +275,7 @@ public class ServiceInstanceBean implements EntityBean {
             }
             statement = connection.prepareStatement("SELECT LONGTITUDE, LATITUDE, NAME FROM (SELECT DISTINCT SERVICE_INSTANCE.ID_SERVICE_INST" +
                     ", LONGTITUDE, LATITUDE, LOGIN, SERVICE.NAME FROM (SERVICE_INSTANCE JOIN SERVICE_ORDER ON SERVICE_INSTANCE.ID_SERVICE_INST = SERVICE_ORDER.ID_SERVICE_INST" +
-                    " JOIN PRICE ON SERVICE_ORDER.ID_PRICE = PRICE.ID_PRICE JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE  )) WHERE LOGIN LIKE ?");
+                    " JOIN PRICE ON SERVICE_ORDER.ID_PRICE = PRICE.ID_PRICE JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE  )) WHERE LOGIN = ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             Vector<ServiceLocationWrapper> wrapper = new Vector<ServiceLocationWrapper>();
