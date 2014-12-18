@@ -18,7 +18,7 @@
             float: left;
         }
         p{padding: 1% 7% 1% 7%;
-            margin: 1% 7% 1% 7%  ; }
+            margin: 1% 7% 1% 7%   }
         form{display:inline;}
 
     </style>
@@ -74,7 +74,7 @@
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("SELECT t.ID_TASK, t.DESCRIPTION, so.ID_Order" +
-             " from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login like ? and so.ID_status!=4 ");
+             " from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login like ? and so.ID_status!=4 and so.ID_status!=2 ");
 
             statement.setString(1, (String)request.getSession().getAttribute("login"));
             try{
@@ -116,15 +116,22 @@
 <%if (state)
 {%>
 <p>
-<form method="get" action="currenttask?action=completeIE&key=<%=resultSet.getInt(1)%>">
-    <button type="submit" class="btn btn-primary" value="Complete"><font color="#a9a9a9">Complete</font></button>
+<form method="get" action="currenttask">
+    <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
+    <input type="hidden" name="action" value="completeIE" style=" width:0">
+    <button type="submit" class="btn btn-primary" value="Complete">Complete</button>
 </form>
-<form method="get" action="currenttask?action=suspend&key=<%=resultSet.getInt(1)%>&Id_Order=<%=resultSet.getInt(3)%>">
-    <button type="submit" class="btn btn-primary" value="Suspend"><font color="#a9a9a9">Suspend</font></button>
+<form method="get" action="currenttask">
+    <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
+    <input type="hidden" name="Id_order" value="<%=resultSet.getInt(3)%>" style=" width:0">
+    <input type="hidden" name="action" value="suspend" style=" width:0">
+    <button type="submit" class="btn btn-primary" value="Suspend">Suspend</button>
     </form>
 
-<form method="get" action="currenttask?action=unassign&key=<%=resultSet.getInt(1)%>">
-    <button type="submit" class="btn btn-primary" value="unassign"><font color="#a9a9a9">Unassign Task</font></button>
+<form method="get" action="currenttask">
+    <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
+    <input type="hidden" name="action" value="unassign" style=" width:0">
+    <button type="submit" class="btn btn-primary" value="unassign">Unassign Task</button>
 </form>
 </p>
 <%} else{%>
@@ -135,13 +142,16 @@
     <button type="submit" class="btn btn-primary" value="unassign" disabled>Unassign Task</button>
 </p>
 <%}%>
+<%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
+<p name="result">${requestScope.result}</p>
+<%}%>
 
 <%@include file="footer.jsp"%>
 </body>
 </html>
 <%  } catch (SQLException e) {
     System.out.println(e.getMessage());
-    throw new EJBException("SELECT exception in ejbFindIncomplete");
+    throw new EJBException("SELECT exception in TaskIe");
     } finally {
     try {
     if (connection != null) {
