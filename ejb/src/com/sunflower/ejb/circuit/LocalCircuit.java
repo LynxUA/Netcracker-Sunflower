@@ -10,5 +10,5 @@ public interface LocalCircuit extends EJBLocalObject {
     public int getId_Port();
     public void setId_Port(int Id_Port);
     public int getId_Cable();
-    public void setId_Cable(int Id_Cable);
+    public void setId_Cable(Integer Id_Cable);
 }

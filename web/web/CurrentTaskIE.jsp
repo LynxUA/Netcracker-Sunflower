@@ -119,18 +119,19 @@
 <form method="get" action="currenttask">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
     <input type="hidden" name="action" value="completeIE" style=" width:0">
+    <input type="hidden" name="Description" value="<%=resultSet.getString(2)%>" style=" width:0">
     <button type="submit" class="btn btn-primary" value="Complete">Complete</button>
 </form>
 <form method="get" action="currenttask">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
-    <input type="hidden" name="Id_order" value="<%=resultSet.getInt(3)%>" style=" width:0">
-    <input type="hidden" name="action" value="suspend" style=" width:0">
+    <input type="hidden" name="Id_Order" value="<%=resultSet.getInt(3)%>" style=" width:0">
+    <input type="hidden" name="action" value="suspendIE" style=" width:0">
     <button type="submit" class="btn btn-primary" value="Suspend">Suspend</button>
     </form>
 
 <form method="get" action="currenttask">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
-    <input type="hidden" name="action" value="unassign" style=" width:0">
+    <input type="hidden" name="action" value="unassignIE" style=" width:0">
     <button type="submit" class="btn btn-primary" value="unassign">Unassign Task</button>
 </form>
 </p>

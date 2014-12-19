@@ -11,5 +11,5 @@ import javax.ejb.FinderException;
  */
 public interface LocalCircuitHome extends EJBLocalHome {
     public LocalCircuit findByPrimaryKey(Integer key) throws FinderException;
-    public LocalCircuit create(int Id_Port, int Id_Cable) throws CreateException;
+    public LocalCircuit create(int Id_Port) throws CreateException;
 }

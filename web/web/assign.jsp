@@ -79,14 +79,14 @@
       }
       System.out.println("war1");
       //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-      statement = connection.prepareStatement("SELECT d.ID_DEVICE, d.NAME, d.FREE_PORTS ," +
-              " so.ID_SCENARIO" +
-              " from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE" +
-              " INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION" +
-              "Inner JOIN DEVICE d On d.Id_Prov_location=pl.Id_Prov_location" +
-              " Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si" +
-              " On si.ID_SERVICE_INST=so.ID_SERVICE_INST " +
-              "where t.login=? and so.ID_status!='4' and so.ID_status!='2'");
+      statement = connection.prepareStatement("SELECT d.ID_DEVICE, d.NAME, d.FREE_PORTS ,so.Id_Scenario,t.ID_TASK from SERVICE_ORDER so\n" +
+"  INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE\n" +
+"  INNER JOIN Device d on d.ID_PROV_LOCATION=p.ID_PROV_LOCATIOn\n" +
+"  Inner JOIN  Task t On t.Id_order=so.Id_order\n" +
+"  inner JOIN SERVICE_INSTANCE si\n" +
+"    On si.ID_SERVICE_INST=so.ID_SERVICE_INST\n" +
+"where t.login=? and so.ID_status!='4'\n" +
+"      and so.ID_status!='2' ");
       System.out.println("war2");
 
       statement.setString(1,(String)request.getSession().getAttribute("login"));
@@ -100,15 +100,32 @@
 
 
 <form method="get" action="assign">
-  <select  onchange="window.location='assign/?action=getports&id_router='+this;"  name="router">
+
+  <select  onchange="   var router=document.getElementById('router');
+
+  var url = 'assign?action=getports&id_router=' + escape(router.value);
+
+
+
+  window.location.href = url;" id="router"  name="router">
   <option selected="true" style="display:none;"  value="">Select router</option>
 
     <%
       try{
         ResultSet resultSet = statement.executeQuery();
         System.out.println("war4");
+      Boolean st=false;
+        int ID_task=0;
       while(resultSet.next())
     { System.out.println("war5");
+      if(st) {
+        if (ID_task != resultSet.getInt(5))
+          break;
+      }
+        ID_task=resultSet.getInt(5);
+      st=true;
+
+
       Scenario=resultSet.getInt(4);
       System.out.println("war6");
       if(resultSet.getInt(3)>0){  System.out.println("war7");%>
