@@ -34,7 +34,6 @@ public class CreateDC extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-System.out.println("azazaza");
         String action= request.getParameter("action");
 
         if(action.equals("cable")){

@@ -3,6 +3,59 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <filter>
+        <filter-name>CustomerFilter</filter-name>
+        <filter-class>
+            com.sunflower.filters.CustomerFilter
+        </filter-class>
+
+    </filter>
+    <filter-mapping>
+        <filter-name>CustomerFilter</filter-name>
+        <url-pattern>/order</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>
+            com.sunflower.filters.AdminFilter
+        </filter-class>
+
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/reg_emp</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>CSEFilter</filter-name>
+        <filter-class>
+            com.sunflower.filters.CSEFilter
+        </filter-class>
+
+    </filter>
+    <filter-mapping>
+        <filter-name>CSEFilter</filter-name>
+        <url-pattern>/users</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>EngineerFilter</filter-name>
+        <filter-class>
+            com.sunflower.filters.EngineerFilter
+        </filter-class>
+
+    </filter>
+    <filter-mapping>
+        <filter-name>EngineerFilter</filter-name>
+        <url-pattern>/tasks</url-pattern>
+    </filter-mapping>
+
+
+
+
+
     <servlet>
         <servlet-name>Log4JInitServlet</servlet-name>
         <servlet-class>com.sunflower.system.Log4JInitServlet</servlet-class>

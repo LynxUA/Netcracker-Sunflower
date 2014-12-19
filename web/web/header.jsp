@@ -1,6 +1,5 @@
-<%@ page import="com.sunflower.UserGroup" %>
 <%@ page import="com.sunflower.exceptions.UnknownStatusException" %>
-<%@ page import="static com.sunflower.UserGroup.*" %>
+<%@ page import="com.sunflower.constants.UserGroups" %>
 <%--
   Created by IntelliJ IDEA.
   User: denysburlakov
@@ -16,18 +15,13 @@
    * /orders  (link to /user_so)
    * /tasks (link to /task)
    * */
-
+int status;
   String login = (String) request.getSession().getAttribute("login");
-  UserGroup status = null;
   if(login!=null){
-    try {
-      status = fromInt((Integer) (request.getSession().getAttribute("status")));
-    }catch (UnknownStatusException e){
-      e.printStackTrace();
-    }
+      status = (Integer) (request.getSession().getAttribute("status"));
   }else{
     login = "Guest";
-    status = GUEST;
+    status = UserGroups.GUEST;
   }
 %>
 <div id="wrap">
@@ -52,41 +46,41 @@
           <ul class="nav navbar-nav">
             <%
               switch (status){
-                case GUEST:
+                case UserGroups.GUEST:
             %>
                   <li><a href="/webWeb/">Home</a></li>
                   <li><a href="catalog">Services</a></li>
             <%
                 break;
-              case CUSTOMER:
+              case UserGroups.CUSTOMER:
             %>
                   <li><a href="/webWeb/">Home</a></li>
                   <li><a href="catalog">Services</a></li>
                   <li><a href="order">Make an order</a></li>
             <%
                 break;
-              case ADMIN:
+              case UserGroups.ADMIN:
 
             %>
                   <li><a href="/webWeb/">Home</a></li>
                   <%--<li><a href="users">Users</a></li>--%>
             <%
                 break;
-              case CSE:
+              case UserGroups.CSE:
 
             %>
                   <li><a href="/webWeb/">Home</a></li>
                   <li><a href="users">Users</a></li>
             <%
                 break;
-              case PE:
+              case UserGroups.PE:
             %>
                 <li><a href="/webWeb/">Home</a></li>
                 <li><a href="tasks">Tasks</a></li>
                 <li><a href="#">Current task</a></li>
             <%
                 break;
-              case IE:
+              case UserGroups.IE:
             %>
                 <li><a href="/webWeb/">Home</a></li>
                 <li><a href="tasks">Tasks</a></li>
@@ -101,7 +95,7 @@
             <li class="dropdown">
               <a href="<%
               switch (status){
-              case GUEST:
+              case UserGroups.GUEST:
               %>
               #
               <%
@@ -115,14 +109,14 @@
               <ul class="dropdown-menu">
                 <%
                   switch (status){
-                    case GUEST:
+                    case UserGroups.GUEST:
                 %>
                     <li><a href="login">Log in</a></li>
                     <li><a href="signup">Sign up</a></li>
                     <li><a href="location">My location</a></li>
                 <%
                     break;
-                    case CUSTOMER:
+                    case UserGroups.CUSTOMER:
                 %>
                     <li><a href="user_si">My instances</a></li>
                     <li><a href="user_so">My orders</a></li>
@@ -131,7 +125,7 @@
                     <li><a href="exit">Exit</a></li>
                 <%
                     break;
-                    case ADMIN:
+                    case UserGroups.ADMIN:
                 %>
                     <li><a href="reg_emp">Register employee</a></li>
                     <%--<li><a href="location">My location</a></li>--%>
@@ -140,7 +134,7 @@
 
                 <%
                     break;
-                  case CSE:
+                  case UserGroups.CSE:
                 %>
                     <%--<li><a href="reg_emp">Register employee</a></li>--%>
                     <%--<li><a href="location">My location</a></li>--%>
@@ -148,7 +142,7 @@
                     <li><a href="exit">Exit</a></li>
                 <%
                     break;
-                    case PE:
+                    case UserGroups.PE:
                 %>
                     <%--<li><a href="reg_emp">Register employee</a></li>--%>
                     <%--<li><a href="location">My location</a></li>--%>
@@ -156,7 +150,7 @@
                     <li><a href="exit">Exit</a></li>
                 <%
                     break;
-                    case IE:
+                    case UserGroups.IE:
                 %>
                     <%--<li><a href="reg_emp">Register employee</a></li>--%>
                     <%--<li><a href="location">My location</a></li>--%>

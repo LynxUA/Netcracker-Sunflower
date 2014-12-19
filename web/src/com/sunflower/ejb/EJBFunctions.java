@@ -1,6 +1,5 @@
 package com.sunflower.ejb;
 
-import com.sunflower.UserGroup;
 import com.sunflower.constants.SIStatuses;
 import com.sunflower.constants.SOStatuses;
 import com.sunflower.constants.Scenarios;

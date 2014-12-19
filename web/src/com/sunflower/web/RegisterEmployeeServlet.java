@@ -26,7 +26,7 @@ public class RegisterEmployeeServlet extends HttpServlet {
         clearError(request);
         String check = request.getParameter("check");
         if(check == null && !check.equals("")){
-            response.sendRedirect("www.google.com");
+            response.sendRedirect("http://google.com");
             return;
         }
         if(request.getSession().getAttribute("current_user") != null){

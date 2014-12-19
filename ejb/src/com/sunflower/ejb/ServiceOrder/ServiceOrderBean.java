@@ -142,7 +142,9 @@ public class ServiceOrderBean implements EntityBean {
             connection = dataSource.getConnection();
 
             statement = connection.prepareStatement(
-                    "UPDATE SERVICE_ORDER SET ID_STATUS = ?, ID_SCENARIO = ?, LOGIN = ?, ID_PRICE = ?, ID_SERVICE_INST = ?, SO_DATE = ?, LONGTITUDE = ?, LATITUDE = ? WHERE ID_ORDER = ?");
+                    "UPDATE SERVICE_ORDER \n" +
+                    "SET ID_STATUS = ?, ID_SCENARIO = ?, LOGIN = ?, ID_PRICE = ?, ID_SERVICE_INST = ?, SO_DATE = ?, LONGTITUDE = ?, LATITUDE = ? \n" +
+                    "WHERE ID_ORDER = ?");
             statement.setInt(1, id_status);
             statement.setInt(2, id_scenario);
             statement.setString(3, login);
@@ -208,8 +210,9 @@ public class ServiceOrderBean implements EntityBean {
                 e.printStackTrace();
                 throw new UnknownError();
             }
-            statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER"
-                    + "(ID_STATUS, ID_SCENARIO,LOGIN, ID_PRICE, ID_SERVICE_INST, SO_DATE, LONGTITUDE, LATITUDE) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", new String[]{"ID_ORDER"});
+            statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER " +
+                                                   "(ID_STATUS, ID_SCENARIO,LOGIN, ID_PRICE, ID_SERVICE_INST, SO_DATE, LONGTITUDE, LATITUDE) \n" +
+                                                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?)", new String[]{"ID_ORDER"});
             statement.setInt(1, id_status);
             statement.setInt(2, id_scenario);
             statement.setString(3, login);
