@@ -195,7 +195,7 @@ public class EJBFunctions {
             order= plainCreateServiceOrder(inner_id_service_inst, id_scenario, login, id_price, longtitude, latitude);
             if(isLocationHasFreePorts(getProviderLocationByPrice(order.getId_price()))){
                 try {
-                    createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
+                    createTask("Connect cable for "+login+"'s instance", UserGroups.IE, order.getId_order());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw new UnknownError();
