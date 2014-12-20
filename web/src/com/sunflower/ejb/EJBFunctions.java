@@ -23,10 +23,7 @@ import com.sunflower.ejb.task.LocalTask;
 import com.sunflower.ejb.task.LocalTaskHome;
 import com.sunflower.ejb.task.TaskWrapper;
 import com.sunflower.ejb.task.UserWasAssignedException;
-import com.sunflower.ejb.user.BadPasswordException;
-import com.sunflower.ejb.user.CustomerWrapper;
-import com.sunflower.ejb.user.LocalUser;
-import com.sunflower.ejb.user.LocalUserHome;
+import com.sunflower.ejb.user.*;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
@@ -102,10 +99,34 @@ public class EJBFunctions {
         try{
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
+            throw new UnknownError();
         }
 
         return home.findUser(login, password);
+
+    }
+
+    public static void setPassword(String login, String password) throws NoSuchUserException {
+        InitialContext ic;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
+        }
+        LocalUserHome home;
+        try{
+            home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
+        } catch (NamingException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
+        }
+
+        home.setPassword(login, password);
 
     }
 
@@ -114,7 +135,9 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
+            throw new UnknownError();
         }
         LocalUserHome home = null;
         try {

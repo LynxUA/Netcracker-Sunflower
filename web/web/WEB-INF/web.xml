@@ -38,6 +38,7 @@
     <filter-mapping>
         <filter-name>CSEFilter</filter-name>
         <url-pattern>/users</url-pattern>
+        <url-pattern>/change_password</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -50,6 +51,8 @@
     <filter-mapping>
         <filter-name>EngineerFilter</filter-name>
         <url-pattern>/tasks</url-pattern>
+        <url-pattern>/getTask</url-pattern>
+        <url-pattern>/assign</url-pattern>
     </filter-mapping>
 
 
@@ -68,10 +71,6 @@
     <servlet>
         <servlet-name>CheckLoginServlet</servlet-name>
         <servlet-class>com.sunflower.web.CheckLoginServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ResetPasswordServlet</servlet-name>
-        <servlet-class>com.sunflower.web.ResetPasswordServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CompleteServlet</servlet-name>
@@ -178,8 +177,29 @@
         <servlet-name>CancelOrderServlet</servlet-name>
         <servlet-class>com.sunflower.system.CancelOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeInfoServlet</servlet-name>
+        <servlet-class>com.sunflower.web.ChangeInfoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>com.sunflower.web.ChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccessDeniedServlet</servlet-name>
+        <servlet-class>com.sunflower.web.AccessDeniedServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SuccessServlet</servlet-name>
+        <servlet-class>com.sunflower.web.SuccessServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ErrorServlet</servlet-name>
+        <servlet-class>com.sunflower.web.ErrorServlet</servlet-class>
+    </servlet>
 
-     <servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>AssignServlet</servlet-name>
         <url-pattern>/assign</url-pattern>
     </servlet-mapping>
@@ -190,10 +210,6 @@
     <servlet-mapping>
         <servlet-name>CheckLoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ResetPasswordServlet</servlet-name>
-        <url-pattern>/reset</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CompleteServlet</servlet-name>
@@ -294,6 +310,26 @@
     <servlet-mapping>
         <servlet-name>Log4JInitServlet</servlet-name>
         <url-pattern>/init</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeInfoServlet</servlet-name>
+        <url-pattern>/change_info</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccessDeniedServlet</servlet-name>
+        <url-pattern>/access_denied</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SuccessServlet</servlet-name>
+        <url-pattern>/success</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/change_password</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ErrorServlet</servlet-name>
+        <url-pattern>/error</url-pattern>
     </servlet-mapping>
     
     <ejb-local-ref>

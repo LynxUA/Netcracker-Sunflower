@@ -8,7 +8,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%
-  LocalUser customer = EJBFunctions.findUser(request.getParameter("login"));
+  Integer userStatus = (Integer)(request.getSession().getAttribute("status"));
+  String userLogin = request.getParameter("login");
+
+  LocalUser customer = null;
+  if(userLogin != null && userStatus == UserGroups.CSE) {
+    customer = EJBFunctions.findUser(userLogin);
+  }else{
+    customer = EJBFunctions.findUser((String)(request.getSession().getAttribute("login")));
+  }
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -21,7 +29,7 @@
     
     <div id="body">
       <div class="container">
-        <h3>List of users</h3>
+        <h3>User info</h3>
         <table class="table table-striped table-condensed">
           <tr>
             <th scope="row">Login</th>
@@ -40,13 +48,23 @@
             <td><%=customer.getName()%></td>
           </tr>
         </table>
+        <%if(userLogin != null && userStatus == UserGroups.CSE){%>
+        <div class="col-xs-6 col-md-4">
+          <a href="change_password?login=<%=customer.getLogin()%>" class="btn btn-lg btn-primary btn-block">Change password</a>
+        </div>
+        <div class="col-xs-6 col-md-4">
+          <a href="user_so?login=<%=customer.getLogin()%>" class="btn btn-lg btn-primary btn-block">User orders</a>
+        </div>
+        <div class="col-xs-6 col-md-4">
+          <a href="user_si?login=<%=customer.getLogin()%>" class="btn btn-lg btn-primary btn-block">User instances</a>
+        </div>
+        <%}else{%>
+        <div class="col-xs-6 col-md-4">
+          <a href="change_info" class="btn btn-lg btn-primary btn-block">Change info</a>
+        </div>
+        <%}%>
       </div>
-    </div>
-    <div class="col-xs-6 col-sm-6 col-md-6">
-      <a href="user_so?login=<%=customer.getLogin()%>" class="btn btn-lg btn-primary btn-block">User orders</a>
-    </div>
-    <div class="col-xs-6 col-sm-6 col-md-6">
-      <a href="user_si?login=<%=customer.getLogin()%>" class="btn btn-lg btn-primary btn-block">User instances</a>
+
     </div>
   <%@include file="footer.jsp"%>
   </body>

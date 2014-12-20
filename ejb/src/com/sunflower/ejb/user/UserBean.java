@@ -273,6 +273,14 @@ public class UserBean implements EntityBean {
         this.password = password;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public int getGroup() {
         return group;
     }
@@ -340,6 +348,38 @@ public class UserBean implements EntityBean {
             }
             return customers;
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
+        } finally {
+            DataSource.closeConnection(connection);
+        }
+    }
+
+    public void ejbHomeSetPassword(String login, String password) throws NoSuchUserException{
+        try {
+            ejbFindByPrimaryKey(login);
+        } catch (FinderException e) {
+            throw new NoSuchUserException();
+        }
+        Connection connection = null;
+        PreparedStatement statement;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement("UPDATE SUN_USER SET PASSWORD = ? WHERE LOGIN = ?");
+            System.out.println(login);
+            System.out.println(password);
+            statement.setString(1, login);
+            statement.setString(2, password);
+            System.out.println("lol");
+            statement.executeQuery();
+            connection.commit();
+            System.out.println(connection.getAutoCommit());
+            connection.setAutoCommit(true);
+
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             throw new UnknownError();

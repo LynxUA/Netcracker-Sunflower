@@ -101,7 +101,7 @@ int status;
               <%
               default:
               %>
-              profile
+              #
               <%
               }
 
@@ -120,6 +120,7 @@ int status;
                 %>
                     <li><a href="user_si">My instances</a></li>
                     <li><a href="user_so">My orders</a></li>
+                     <li><a href="profile">My profile</a></li>
                     <%--<li><a href="location">My location</a></li>--%>
                     <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>
@@ -128,6 +129,7 @@ int status;
                     case UserGroups.ADMIN:
                 %>
                     <li><a href="reg_emp">Register employee</a></li>
+                  <li><a href="profile">My profile</a></li>
                     <%--<li><a href="location">My location</a></li>--%>
                     <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>
@@ -138,7 +140,9 @@ int status;
                 %>
                     <%--<li><a href="reg_emp">Register employee</a></li>--%>
                     <%--<li><a href="location">My location</a></li>--%>
-                    <%--<li class="divider"></li>--%>
+
+                  <li><a href="profile">My profile</a></li>
+                    <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>
                 <%
                     break;
@@ -146,7 +150,8 @@ int status;
                 %>
                     <%--<li><a href="reg_emp">Register employee</a></li>--%>
                     <%--<li><a href="location">My location</a></li>--%>
-                    <%--<li class="divider"></li>--%>
+                    <li><a href="profile">My profile</a></li>
+                    <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>
                 <%
                     break;
@@ -154,6 +159,7 @@ int status;
                 %>
                     <%--<li><a href="reg_emp">Register employee</a></li>--%>
                     <%--<li><a href="location">My location</a></li>--%>
+                    <li><a href="profile">My profile</a></li>
                     <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>
                 <%
