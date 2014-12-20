@@ -23,7 +23,7 @@ public class CSEFilter extends MainFilter{
         if(status == null){
             response.sendRedirect("/webWeb/login");
         }else if(!(status== UserGroups.CSE)) {
-            response.sendRedirect("/webWeb/login");
+            response.sendRedirect("/webWeb/access_denied");
         }else {
             chain.doFilter(request, response);
         }

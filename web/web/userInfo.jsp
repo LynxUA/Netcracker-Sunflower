@@ -45,7 +45,7 @@
           </tr>
           <tr>
             <th scope="row">Surname</th>
-            <td><%=customer.getName()%></td>
+            <td><%=customer.getSurname()%></td>
           </tr>
         </table>
         <%if(userLogin != null && userStatus == UserGroups.CSE){%>
