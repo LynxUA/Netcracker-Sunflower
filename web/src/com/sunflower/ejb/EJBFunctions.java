@@ -28,6 +28,7 @@ import com.sunflower.ejb.user.BadPasswordException;
 import com.sunflower.ejb.user.CustomerWrapper;
 import com.sunflower.ejb.user.LocalUser;
 import com.sunflower.ejb.user.LocalUserHome;
+import org.apache.log4j.Logger;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
@@ -36,15 +37,13 @@ import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by denysburlakov on 02.12.14.
  */
 public class EJBFunctions {
 
-    private static Logger logger = Logger.getLogger("com.sunflower.ejb");
+    private static Logger logger = Logger.getLogger(EJBFunctions.class);
 
     private EJBFunctions(){}
 
@@ -53,13 +52,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalUserHome home = null;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalUser user = null;
         if (home != null) {
@@ -73,13 +72,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalUserHome home = null;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalUser user = null;
         if (home != null) {
@@ -93,13 +92,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalUserHome home = null;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         if (home != null) {
@@ -114,13 +113,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalUserHome home = null;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         if (home != null) {
@@ -136,13 +135,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalUserHome home = null;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         try {
             return home.getNumberOfCustomers();
@@ -157,20 +156,20 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalTaskHome home = null;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         if (home != null) {
             try {
                 return home.create(description, id_group_user, id_order, null);
             } catch (CreateException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }else{
             throw new Exception("Error with EJBs");
@@ -189,13 +188,13 @@ public class EJBFunctions {
                 try {
                     createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }else{
                 try {
                     createTask("Add new router for new instances", UserGroups.IE, order.getId_order());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
 
 
@@ -207,13 +206,13 @@ public class EJBFunctions {
                 try {
                     createTask("Connect ports for "+login+"'s instance", UserGroups.PE, order.getId_order());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }else{
                 try {
                     createTask("Add new router for new instances", UserGroups.IE, order.getId_order());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);;
                 }
 
 
@@ -224,7 +223,7 @@ public class EJBFunctions {
             try {
                 createTask("Disconnect ports for "+login+"'s instance", UserGroups.IE, order.getId_order());
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
 
         }else{
@@ -238,13 +237,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalCircuitHome home = null;
         try {
             home = (LocalCircuitHome) ic.lookup("java:comp/env/ejb/Circuit");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalCircuit service_order;
         try {
@@ -260,13 +259,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalProviderLocationHome home = null;
         try {
             home = (LocalProviderLocationHome)ic.lookup("java:comp/env/ejb/ProviderLocation");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return home.isLocationHasFreePorts(id_prov_location);
 
@@ -276,19 +275,19 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalPriceHome home = null;
         try {
             home = (LocalPriceHome) ic.lookup("java:comp/env/ejb/Price");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         try {
             return home.getLocationByPrice(id_price);
         } catch (FinderException e) {
             //Critical exception
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return 0;
         }
     }
@@ -298,13 +297,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceOrderHome home = null;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceOrder service_order = null;
         try {
@@ -320,13 +319,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceOrderHome home = null;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceOrder service_order = null;
         try {
@@ -343,13 +342,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceOrderHome home = null;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         Collection service_order = null;
         try {
@@ -366,13 +365,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceOrderHome home = null;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         int number;
         try {
@@ -389,13 +388,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalProviderLocationHome home = null;
         try {
             home = (LocalProviderLocationHome)ic.lookup("java:comp/env/ejb/ProviderLocation");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalProviderLocation location = null;
         try {
@@ -411,13 +410,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalProviderLocationHome home = null;
         try {
             home = (LocalProviderLocationHome)ic.lookup("java:comp/env/ejb/ProviderLocation");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalProviderLocation location = null;
         try {
@@ -433,13 +432,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceHome home = null;
         try {
             home = (LocalServiceHome)ic.lookup("java:comp/env/ejb/Service");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         Collection services = null;
         try {
@@ -457,14 +456,14 @@ public class EJBFunctions {
             System.out.println("dwa2");
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalTaskHome home = null;
         try {
             System.out.println("dwa3");
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalTask localTask = null;
         try {
@@ -485,13 +484,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalTaskHome home = null;
         try {
             home = (LocalTaskHome)ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalTask task = null;
         try {
@@ -507,13 +506,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalProviderLocationHome home = null;
         try {
             home = (LocalProviderLocationHome)ic.lookup("java:comp/env/ejb/ProviderLocation");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         float distance;
         try {
@@ -529,13 +528,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalPriceHome home = null;
         try {
             home = (LocalPriceHome)ic.lookup("java:comp/env/ejb/Price");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         try {
             return home.findByLocationAndService(service, providerLocation);
@@ -550,13 +549,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceInstanceHome home = null;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalServiceInstance service_order = null;
 
@@ -573,13 +572,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         LocalProviderLocationHome home = null;
         try {
             home = (LocalProviderLocationHome) ic.lookup("java:comp/env/ejb/ProviderLocation");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         ArrayList<ProviderLocWrapper> locations = null;
 
@@ -601,7 +600,7 @@ public class EJBFunctions {
             home = (LocalPriceHome) ic.lookup("java:comp/env/ejb/Price");
 
         } catch (NamingException e) {
-            logger.logp(Level.SEVERE,"EjbFunctions","getServicePriceByLoc()","",e);
+            logger.error(e.getMessage(),e);
         }
 
         ArrayList<PriceCatalog> catalogs = null;
@@ -610,8 +609,9 @@ public class EJBFunctions {
             try {
                 catalogs = (ArrayList<PriceCatalog>) home.getServicePriceByLoc(location);
             } catch (FinderException e) {
-                logger.logp(Level.SEVERE, "EjbFunctions", "getServicePriceByLoc()", "", e);
+                logger.error(e.getMessage(),e);
             }
+
 
         return catalogs;
     }
@@ -621,13 +621,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalTaskHome home = null;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         if (home != null) {
@@ -642,13 +642,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalTaskHome home = null;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         if (home != null) {
@@ -662,13 +662,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalTaskHome home = null;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         if (home != null) {
@@ -683,13 +683,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalServiceInstanceHome home = null;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalServiceInstance service_instance = null;
         try {
@@ -706,13 +706,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalPortHome home = null;
         try {
             home = (LocalPortHome)ic.lookup("java:comp/env/ejb/Port");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalPort port = null;
         try {
@@ -727,13 +727,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalCircuitHome home = null;
         try {
             home = (LocalCircuitHome)ic.lookup("java:comp/env/ejb/Circuit");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalCircuit circuit = null;
         try {
@@ -749,13 +749,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalServiceInstanceHome home = null;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         if (home != null) {
@@ -770,13 +770,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalServiceInstanceHome home = null;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         if (home != null) {
@@ -791,13 +791,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalTaskHome home = null;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         return home.findIncompleteTask(name);
@@ -808,20 +808,20 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalServiceOrderHome home = null;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         try {
             if (home != null&&login.contains(home.findByPrimaryKey(id_order).getUserLogin())) {
                 home.cancelOrder(id_order);
             }
         } catch (FinderException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
     }
 
@@ -830,13 +830,13 @@ public class EJBFunctions {
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         LocalServiceInstanceHome home = null;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         if (home != null) {

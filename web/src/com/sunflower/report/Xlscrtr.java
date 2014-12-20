@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -29,6 +30,9 @@ public class Xlscrtr {
     HSSFCell cell;
     String filename=null;
     File f=null;
+
+    private static Logger logger = Logger.getLogger(Xlscrtr.class);
+
     public File newor(Connection connection, Date d1, Date d2,ArrayList<String> locations) throws SQLException {
 
         java.sql.Date sd1=new java.sql.Date(d1.getTime());
@@ -119,8 +123,8 @@ public class Xlscrtr {
             wb.write(fileOut);
             fileOut.close();
          
-        } catch (Exception ee) {
-            ee.printStackTrace();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             
         }
             finally{
@@ -191,13 +195,13 @@ public class Xlscrtr {
                 wb.write(fileOut);
                 fileOut.close();
 
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (FileNotFoundException e) {
+                logger.error(e.getMessage(), e);
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
             }
-            catch (IOException ex) {
-                ex.printStackTrace();
+            catch (IOException e) {
+                logger.error(e.getMessage(), e);
             }
             finally{
                 return f;
@@ -297,8 +301,8 @@ public class Xlscrtr {
                     sheet.autoSizeColumn(4);
                     wb.write(fileOut);
                     fileOut.close();
-                } catch (Exception ee) {
-                    ee.printStackTrace();
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
                 }
                        finally{
         return f;

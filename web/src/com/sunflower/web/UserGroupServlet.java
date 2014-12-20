@@ -2,6 +2,7 @@ package com.sunflower.web;
 
 import com.sunflower.ejb.usergroup.LocalUserGroup;
 import com.sunflower.ejb.usergroup.LocalUserGroupHome;
+import org.apache.log4j.Logger;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
@@ -18,6 +19,7 @@ import java.io.PrintWriter;
  * Created by Den on 02.12.2014.
  */
 public class UserGroupServlet extends HttpServlet {
+    private static Logger logger = Logger.getLogger(UserGroupServlet.class);
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -34,14 +36,14 @@ public class UserGroupServlet extends HttpServlet {
            /* } catch (CreateException e) {
                 e.printStackTrace();*/
             } catch (FinderException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
 
             PrintWriter pw = response.getWriter();
             pw.println(userGroup.getColumnName());
 
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 }

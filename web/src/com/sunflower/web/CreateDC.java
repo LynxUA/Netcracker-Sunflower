@@ -3,6 +3,7 @@ package com.sunflower.web;
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.EJBFunctions;
 import com.sunflower.ejb.task.LocalTask;
+import org.apache.log4j.Logger;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
@@ -25,6 +26,7 @@ import java.sql.SQLException;
 @WebServlet(name = "CreateDC")
 public class CreateDC extends HttpServlet {
     private ServletContext context;
+    private static Logger logger = Logger.getLogger(CreateDC.class);
     @Override
     public void init(ServletConfig config) throws ServletException {
         this.context = config.getServletContext();
@@ -73,7 +75,7 @@ public class CreateDC extends HttpServlet {
                         connection.close();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }
         }
@@ -100,15 +102,14 @@ public class CreateDC extends HttpServlet {
 
 
             } catch (SQLException e) {
-                //throw new EJBException("Ошибка INSERT");
-                System.out.println(e.getMessage());
+                logger.error(e.getMessage(), e);
             } finally {
                 try {
                     if (connection != null) {
                         connection.close();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }
 

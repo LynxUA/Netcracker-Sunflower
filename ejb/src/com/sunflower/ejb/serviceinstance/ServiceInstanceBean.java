@@ -2,6 +2,8 @@ package com.sunflower.ejb.serviceinstance;
 
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.ServiceOrder.SOWrapper;
+import com.sunflower.ejb.servicelocation.ServiceLocationBean;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.*;
@@ -15,7 +17,7 @@ public class ServiceInstanceBean implements EntityBean {
     private int id_service_inst;
     private int status;
     private Integer id_circuit;
-
+    private final static Logger logger = Logger.getLogger(ServiceLocationBean.class);
     private EntityContext entityContext;
 
     public ServiceInstanceBean() {
@@ -31,6 +33,7 @@ public class ServiceInstanceBean implements EntityBean {
             try{
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_INSTANCE"
@@ -47,17 +50,14 @@ public class ServiceInstanceBean implements EntityBean {
             }
             return id_service_inst;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
-
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);;
         } finally {
             try {
                 if (connection != null) {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
         return null;
@@ -75,8 +75,7 @@ public class ServiceInstanceBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT ID_SERVICE_INST FROM SERVICE_INSTANCE WHERE ID_SERVICE_INST = ?");
@@ -87,10 +86,7 @@ public class ServiceInstanceBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
-            System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -98,7 +94,7 @@ public class ServiceInstanceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -132,7 +128,7 @@ public class ServiceInstanceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -168,6 +164,7 @@ public class ServiceInstanceBean implements EntityBean {
             }
 
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -175,7 +172,7 @@ public class ServiceInstanceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -205,8 +202,7 @@ public class ServiceInstanceBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
@@ -214,7 +210,7 @@ public class ServiceInstanceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -259,6 +255,7 @@ public class ServiceInstanceBean implements EntityBean {
             }
             return instances;
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -266,7 +263,7 @@ public class ServiceInstanceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -286,8 +283,7 @@ public class ServiceInstanceBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -295,7 +291,7 @@ public class ServiceInstanceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -308,8 +304,7 @@ public class ServiceInstanceBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT LONGTITUDE, LATITUDE, NAME FROM (SELECT DISTINCT SERVICE_INSTANCE.ID_SERVICE_INST" +
@@ -323,7 +318,7 @@ public class ServiceInstanceBean implements EntityBean {
             }
             return wrapper;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -331,7 +326,7 @@ public class ServiceInstanceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.sunflower.ejb.usergroup;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.*;
@@ -18,6 +19,7 @@ public class UserGroupBean implements EntityBean {
     private String position;
     private String groupName;
     private EntityContext entityContext;
+    private final static Logger logger = Logger.getLogger(UserGroupBean.class);
 
     public UserGroupBean() {
     }
@@ -37,7 +39,7 @@ public class UserGroupBean implements EntityBean {
                 if(primaryKey != rsKey.getInt(1)) throw new FinderException("WRONG PK!");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return primaryKey;
@@ -51,7 +53,7 @@ public class UserGroupBean implements EntityBean {
             connection = DataSource.getDataSource().getConnection();
 
     } catch (SQLException e) {
-        e.printStackTrace();
+        logger.error(e.getMessage(), e);
     }
     }
 
@@ -62,7 +64,7 @@ public class UserGroupBean implements EntityBean {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -76,7 +78,7 @@ public class UserGroupBean implements EntityBean {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (ps != null) {
@@ -84,7 +86,7 @@ public class UserGroupBean implements EntityBean {
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -114,7 +116,7 @@ public class UserGroupBean implements EntityBean {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (ps != null) {
@@ -124,7 +126,7 @@ public class UserGroupBean implements EntityBean {
                     rs.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -143,14 +145,14 @@ public class UserGroupBean implements EntityBean {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -172,7 +174,7 @@ public class UserGroupBean implements EntityBean {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (ps != null) {
@@ -182,7 +184,7 @@ public class UserGroupBean implements EntityBean {
                     rs.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -221,7 +223,7 @@ public class UserGroupBean implements EntityBean {
                 colNames.add(columnName);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return colNames;
@@ -251,7 +253,7 @@ public class UserGroupBean implements EntityBean {
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (ps != null) {
@@ -261,7 +263,7 @@ public class UserGroupBean implements EntityBean {
                     rs.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
 
         }

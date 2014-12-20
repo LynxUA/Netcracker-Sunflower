@@ -3,6 +3,7 @@ package com.sunflower.system;
 import com.sunflower.ejb.EJBFunctions;
 import com.sunflower.ejb.task.UserHaveAssignedTaskException;
 import com.sunflower.ejb.task.UserWasAssignedException;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import java.io.IOException;
  */
 @WebServlet(name = "GetTaskServlet")
 public class GetTaskServlet extends HttpServlet {
+    private static Logger logger = Logger.getLogger(GetTaskServlet.class);
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -26,12 +28,12 @@ public class GetTaskServlet extends HttpServlet {
         try {
             EJBFunctions.assignTask(id_task, login);
         } catch (UserWasAssignedException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         catch (UserHaveAssignedTaskException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         response.sendRedirect("tasks");
     }

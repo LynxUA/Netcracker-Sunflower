@@ -1,6 +1,7 @@
 package com.sunflower.ejb.price;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.Connection;
@@ -23,6 +24,8 @@ public class PriceBean implements EntityBean {
 
     private EntityContext entityContext;
 
+    private final static Logger logger = Logger.getLogger(PriceBean.class);
+
     public PriceBean() {
     }
 
@@ -33,8 +36,7 @@ public class PriceBean implements EntityBean {
             try {
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT ID_PRICE FROM PRICE WHERE ID_PRICE = ?");
@@ -45,10 +47,7 @@ public class PriceBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
-            System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -56,7 +55,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -83,6 +82,7 @@ public class PriceBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(),e);
             throw new EJBException("DELETE exception");
         } finally {
             try {
@@ -90,7 +90,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
     }
@@ -121,6 +121,7 @@ public class PriceBean implements EntityBean {
             id_prov_location = resultSet.getInt(4);
 
         } catch (SQLException e) {
+            logger.error(e.getMessage(),e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -128,7 +129,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
     }
@@ -154,6 +155,7 @@ public class PriceBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(),e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
@@ -161,7 +163,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
     }
@@ -173,9 +175,7 @@ public class PriceBean implements EntityBean {
             try {
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
-
+                logger.error(e.getMessage(),e);
             }
             statement = connection.prepareStatement("SELECT ID_PRICE FROM PRICE WHERE ID_SERVICE = ? AND ID_PROV_LOCATION = ?");
             statement.setInt(1, id_service);
@@ -186,10 +186,7 @@ public class PriceBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
-            System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -197,7 +194,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
     }
@@ -233,8 +230,7 @@ public class PriceBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(),e);
 
             }
             statement = connection.prepareStatement("SELECT ID_PROV_LOCATION FROM PRICE WHERE ID_PRICE = ?");
@@ -245,10 +241,7 @@ public class PriceBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
-            System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -256,7 +249,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
     }
@@ -271,9 +264,7 @@ public class PriceBean implements EntityBean {
             try {
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                System.out.println("Something wrong with connection");
-
+                logger.error(e.getMessage(),e);
             }
 
             statement = connection.prepareStatement("SELECT NAME, PRICE_OF_SERVICE, PRICE_OF_LOCATION " +
@@ -289,8 +280,7 @@ public class PriceBean implements EntityBean {
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
-            throw new EJBException("SELECT exception");
+            logger.error(e.getMessage(),e);
 
         } finally {
             try {
@@ -298,7 +288,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
 

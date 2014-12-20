@@ -4,6 +4,8 @@ package com.sunflower.web;
  * Created by yurariznyk&romantsimura on 22.11.14.
  */
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,6 +27,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class MailServer {
+
+    private static Logger logger = Logger.getLogger(MailServer.class);
+
     protected static void messageAfterRegistration(String name, String password, String email, String login){
         Map<String, String> rootMap = new HashMap<String, String>();//here are fields, which we wanted to paste into template
         rootMap.put("name", name);
@@ -65,7 +70,7 @@ public class MailServer {
             message.setContent(makeTemplate(rootMap, readFile(templateName)), "text/html");
             Transport.send(message);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
     //reading template file and store into String
@@ -78,9 +83,9 @@ public class MailServer {
             while((s=fin.readLine())!=null)
                 res+=s+'\n';
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return res;
     }

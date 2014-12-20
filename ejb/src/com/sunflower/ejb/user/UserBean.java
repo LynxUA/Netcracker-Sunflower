@@ -5,6 +5,7 @@ package com.sunflower.ejb.user;
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.ServiceOrder.SOWrapper;
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import javax.naming.Context;
@@ -27,7 +28,7 @@ public class UserBean implements EntityBean {
     private String name;
     private String surname;
     private String password;
-
+    private final static Logger logger = Logger.getLogger(UserBean.class);
     private int group;
 
     private EntityContext entityContext;
@@ -42,8 +43,7 @@ public class UserBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE LOGIN LIKE ?");
@@ -61,7 +61,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -97,7 +97,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -134,8 +134,7 @@ public class UserBean implements EntityBean {
 
 
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -143,7 +142,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -180,7 +179,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -229,7 +228,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
         return null;
@@ -274,7 +273,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -288,8 +287,7 @@ public class UserBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT LOGIN FROM SUN_USER WHERE (LOGIN LIKE ?)");
@@ -301,8 +299,7 @@ public class UserBean implements EntityBean {
             return login;
         }
         catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -366,7 +363,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);;
             }
         }
 //
@@ -387,8 +384,7 @@ public class UserBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -396,7 +392,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -427,7 +423,7 @@ public class UserBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.sunflower.ejb.ProviderLocation;
 
+import org.apache.log4j.Logger;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,6 +13,7 @@ public class ProviderLocWrapper {
     private String location;
     private float longtitude;
     private float latitude;
+    private final static Logger logger = Logger.getLogger(ProviderLocWrapper.class);
 
     public ProviderLocWrapper(ResultSet rs){
         try {
@@ -18,7 +21,7 @@ public class ProviderLocWrapper {
             longtitude = rs.getFloat(2);
             latitude = rs.getFloat(3);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
 
         }
     }

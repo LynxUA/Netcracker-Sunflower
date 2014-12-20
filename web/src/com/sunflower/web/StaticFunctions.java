@@ -1,6 +1,8 @@
 package com.sunflower.web;
 
 
+import org.apache.log4j.Logger;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import java.util.regex.Pattern;
  * Created by Andriy on 11/20/2014.
  */
 public class StaticFunctions {
+    private static Logger logger = Logger.getLogger(StaticFunctions.class);
     public static Map<String,String> users = new HashMap<String, String>();
     private static final Pattern EMAIL_PATTERN = Pattern.compile( "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -46,7 +49,7 @@ public class StaticFunctions {
         try {
             md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         //Add password bytes to digest

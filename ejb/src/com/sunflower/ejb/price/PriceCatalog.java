@@ -1,5 +1,7 @@
 package com.sunflower.ejb.price;
 
+import org.apache.log4j.Logger;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,6 +13,7 @@ public class PriceCatalog {
     private String nameOfService;
     private double priceOfService;
     private double priceOfLocation;
+    private static Logger logger = Logger.getLogger(PriceCatalog.class);
 
     public PriceCatalog(){}
 
@@ -30,7 +33,7 @@ public class PriceCatalog {
             priceOfLocation = rs.getDouble(3);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
     }

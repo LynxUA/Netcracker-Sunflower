@@ -3,6 +3,7 @@ package com.sunflower.ejb.ServiceOrder;
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.task.UserWasAssignedException;
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.*;
@@ -25,7 +26,7 @@ public class ServiceOrderBean implements EntityBean {
     private Date so_date;
     float longtitude;
     float latitude;
-
+    private final static Logger logger = Logger.getLogger(ServiceOrderBean.class);
     private EntityContext entityContext;
     private OracleDataSource dataSource;
 
@@ -42,8 +43,7 @@ public class ServiceOrderBean implements EntityBean {
                 connection = dataSource.getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
@@ -54,6 +54,7 @@ public class ServiceOrderBean implements EntityBean {
             }
             return Integer.valueOf(key);
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -61,7 +62,7 @@ public class ServiceOrderBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -71,7 +72,7 @@ public class ServiceOrderBean implements EntityBean {
         try {
             dataSource = new OracleDataSource();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
         dataSource.setUser("sunflower");
@@ -93,6 +94,7 @@ public class ServiceOrderBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("DELETE exception");
         } finally {
             try {
@@ -100,7 +102,7 @@ public class ServiceOrderBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -135,6 +137,7 @@ public class ServiceOrderBean implements EntityBean {
             latitude = resultSet.getFloat(8);
 
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -142,7 +145,7 @@ public class ServiceOrderBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -168,6 +171,7 @@ public class ServiceOrderBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
@@ -175,7 +179,7 @@ public class ServiceOrderBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -220,6 +224,7 @@ public class ServiceOrderBean implements EntityBean {
             try{
                 connection = dataSource.getConnection();
             } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER"
@@ -243,17 +248,14 @@ public class ServiceOrderBean implements EntityBean {
             }
             return id_order;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
-
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (connection != null) {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
         return null;
@@ -285,7 +287,7 @@ public class ServiceOrderBean implements EntityBean {
 //                    connection.close();
 //                }
 //            } catch (SQLException e) {
-//                e.printStackTrace();
+//                logger.error(e.getMessage(), e);
 //            }
 //        }
 //
@@ -311,6 +313,7 @@ public class ServiceOrderBean implements EntityBean {
             }
             return orders;
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -318,7 +321,7 @@ public class ServiceOrderBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -338,8 +341,7 @@ public class ServiceOrderBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -347,7 +349,7 @@ public class ServiceOrderBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -378,8 +380,7 @@ public class ServiceOrderBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
@@ -387,7 +388,7 @@ public class ServiceOrderBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }

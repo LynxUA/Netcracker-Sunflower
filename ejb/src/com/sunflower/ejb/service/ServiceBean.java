@@ -1,6 +1,7 @@
 package com.sunflower.ejb.service;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.Connection;
@@ -16,7 +17,7 @@ import java.util.Vector;
 public class ServiceBean implements EntityBean {
     private int id_service;
     private String name;
-
+    private final static Logger logger = Logger.getLogger(ServiceBean.class);
     private EntityContext entityContext;
     public ServiceBean() {
     }
@@ -29,8 +30,7 @@ public class ServiceBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT ID_SERVICE FROM SERVICE WHERE ID_SERVICE = ?");
@@ -41,10 +41,7 @@ public class ServiceBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
-            System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -52,7 +49,7 @@ public class ServiceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -82,6 +79,7 @@ public class ServiceBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("DELETE exception");
         } finally {
             try {
@@ -89,7 +87,7 @@ public class ServiceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -115,6 +113,7 @@ public class ServiceBean implements EntityBean {
             name = resultSet.getString(1);
 
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -122,7 +121,7 @@ public class ServiceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -140,6 +139,7 @@ public class ServiceBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
@@ -147,7 +147,7 @@ public class ServiceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -167,6 +167,7 @@ public class ServiceBean implements EntityBean {
             }
             return keys;
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -174,7 +175,7 @@ public class ServiceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 

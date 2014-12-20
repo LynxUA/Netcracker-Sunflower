@@ -9,6 +9,7 @@ package com.sunflower.ejb.ProviderLocation;
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.price.PriceCatalog;
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.*;
@@ -22,7 +23,7 @@ public class ProviderLocationBean implements EntityBean {
     private int Num_of_services;
     private float longtitude;
     private float latitude;
-
+    private final static Logger logger = Logger.getLogger(ProviderLocationBean.class);
     private EntityContext entityContext;
     public ProviderLocationBean() {
     }
@@ -50,7 +51,7 @@ public class ProviderLocationBean implements EntityBean {
             System.out.println(e.getErrorCode());
             System.out.println(e.getMessage());
             System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -58,7 +59,7 @@ public class ProviderLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -72,8 +73,7 @@ public class ProviderLocationBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             //statement.setFloat(1, latitude);
@@ -93,10 +93,7 @@ public class ProviderLocationBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
-            System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -104,7 +101,7 @@ public class ProviderLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -132,6 +129,7 @@ public class ProviderLocationBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("DELETE exception");
         } finally {
             try {
@@ -139,7 +137,7 @@ public class ProviderLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -167,30 +165,24 @@ public class ProviderLocationBean implements EntityBean {
             try {
                 Location = resultSet.getString(1);
             }catch (SQLException e){
-                System.out.println(e.getErrorCode());
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
             try{
             Num_of_services = resultSet.getInt(2);
             }catch (SQLException e){
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
             try{
             longtitude = resultSet.getFloat(3);
             }catch (SQLException e){
-                System.out.println(e.getErrorCode());
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
             try{
             latitude = resultSet.getFloat(4);
             }catch (SQLException e){
-                System.out.println(e.getErrorCode());
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
 
 
@@ -203,7 +195,7 @@ public class ProviderLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -238,7 +230,7 @@ public class ProviderLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -265,6 +257,7 @@ public class ProviderLocationBean implements EntityBean {
             try{
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO PROVIDER_LOCATION"
@@ -282,15 +275,14 @@ public class ProviderLocationBean implements EntityBean {
             Id_Prov_Location=statement.getGeneratedKeys().getInt(1);
             return Id_Prov_Location;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (connection != null) {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
         return null;
@@ -325,8 +317,7 @@ public class ProviderLocationBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             //statement.setFloat(1, latitude);
@@ -345,10 +336,7 @@ public class ProviderLocationBean implements EntityBean {
             }
             return resultSet.getFloat(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
-            System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -356,7 +344,7 @@ public class ProviderLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -387,7 +375,7 @@ public class ProviderLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -400,8 +388,7 @@ public class ProviderLocationBean implements EntityBean {
             try {
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                System.out.println("Something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
 
@@ -415,7 +402,7 @@ public class ProviderLocationBean implements EntityBean {
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception");
 
         } finally {
@@ -424,7 +411,7 @@ public class ProviderLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 

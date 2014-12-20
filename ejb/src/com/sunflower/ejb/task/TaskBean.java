@@ -1,6 +1,7 @@
 package com.sunflower.ejb.task;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.*;
@@ -18,7 +19,7 @@ public class TaskBean implements EntityBean {
     private int id_group_user;
     private int id_order;
     private String login;
-
+    private final static Logger logger = Logger.getLogger(TaskBean.class);
     private EntityContext entityContext;
     public TaskBean() {
 
@@ -32,8 +33,7 @@ public class TaskBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE ID_TASK = ?");
@@ -51,7 +51,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -84,7 +84,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }*/
@@ -119,7 +119,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -151,6 +151,7 @@ public class TaskBean implements EntityBean {
             login = resultSet.getString(4);
 
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -158,7 +159,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -180,6 +181,7 @@ public class TaskBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
@@ -187,7 +189,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -203,6 +205,7 @@ public class TaskBean implements EntityBean {
             try{
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO TASK"
@@ -220,15 +223,14 @@ public class TaskBean implements EntityBean {
             id_task=rs.getInt(1);
             return id_task;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (connection != null) {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
         return null;
@@ -268,7 +270,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 //    }*/
@@ -307,7 +309,7 @@ public class TaskBean implements EntityBean {
 //                    connection.close();
 //                }
 //            } catch (SQLException e) {
-//                e.printStackTrace();
+//                logger.error(e.getMessage(), e);
 //            }
 //        }
 //    }
@@ -333,8 +335,7 @@ public class TaskBean implements EntityBean {
            }
            return tasks;
        } catch (SQLException e) {
-           System.out.println(e.getErrorCode());
-           System.out.println(e.getMessage());
+           logger.error(e.getMessage(), e);
            throw new EJBException("Ошибка SELECT");
        } finally {
            try {
@@ -342,7 +343,7 @@ public class TaskBean implements EntityBean {
                    connection.close();
                }
            } catch (SQLException e) {
-               e.printStackTrace();
+               logger.error(e.getMessage(), e);
            }
        }
    }
@@ -398,8 +399,7 @@ public class TaskBean implements EntityBean {
 //            }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -407,7 +407,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -447,7 +447,7 @@ public class TaskBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
@@ -455,7 +455,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -468,8 +468,7 @@ public class TaskBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT TASK.ID_TASK FROM (TASK JOIN SERVICE_ORDER ON TASK.ID_ORDER = SERVICE_ORDER.ID_ORDER) WHERE TASK.LOGIN = ? AND SERVICE_ORDER.ID_STATUS NOT IN (4)");
@@ -480,6 +479,7 @@ public class TaskBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -487,7 +487,7 @@ public class TaskBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }

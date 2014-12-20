@@ -116,8 +116,21 @@
         <servlet-name>CancelOrderServlet</servlet-name>
         <servlet-class>com.sunflower.system.CancelOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoggerServlet</servlet-name>
+        <servlet-class>com.sunflower.web.LoggerServlet</servlet-class>
+        <init-param>
+            <param-name>log4j</param-name>
+            <param-value>resources/log4j.properties</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-     <servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoggerServlet</servlet-name>
+        <url-pattern>/logger</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>AssignServlet</servlet-name>
         <url-pattern>/assign</url-pattern>
     </servlet-mapping>

@@ -23,12 +23,15 @@ import com.sunflower.ejb.EJBFunctions;
 import com.sunflower.ejb.port.LocalPort;
 import com.sunflower.ejb.circuit.LocalCircuit;
 import com.sunflower.ejb.serviceinstance.LocalServiceInstance;
+import org.apache.log4j.Logger;
+
 /**
  * Created by Алексей on 12/14/2014.
  */
 @WebServlet(name = "AssignServlet")
 public class AssignServlet extends HttpServlet {
     private ServletContext context;
+    private static Logger logger = Logger.getLogger(AssignServlet.class);
     @Override
       public void init(ServletConfig config) throws ServletException {
         this.context = config.getServletContext();
@@ -50,8 +53,7 @@ public class AssignServlet extends HttpServlet {
                     connection = DataSource.getDataSource().getConnection();
                     System.out.println("zxc1");
                 } catch (SQLException e) {
-                    System.out.println(e.getErrorCode());
-                    System.out.println("something wrong with connection");
+                    logger.error(e.getMessage(), e);
 
                 }
                 //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
@@ -76,7 +78,7 @@ public class AssignServlet extends HttpServlet {
                         connection.close();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }
         }
@@ -109,8 +111,7 @@ public class AssignServlet extends HttpServlet {
                     connection = DataSource.getDataSource().getConnection();
                     System.out.println("zxc1");
                 } catch (SQLException e) {
-                    System.out.println(e.getErrorCode());
-                    System.out.println("something wrong with connection");
+                    logger.error(e.getMessage(), e);
 
                 }
                 //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
@@ -137,7 +138,7 @@ public class AssignServlet extends HttpServlet {
                         connection.close();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }
 
@@ -160,9 +161,7 @@ public class AssignServlet extends HttpServlet {
                     connection = DataSource.getDataSource().getConnection();
                     System.out.println("zxc1");
                 } catch (SQLException e) {
-                    System.out.println(e.getErrorCode());
-                    System.out.println("something wrong with connection");
-
+                    logger.error(e.getMessage(), e);
                 }
                 //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
                 statement = connection.prepareStatement("SELECT si.ID_CIRCUIT ,si.ID_SERVICE_INST ,c.ID_PORT  from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST INNER JOIN CIRCUIT c ON so.ID_CIRCUIT=c.ID_CIRCUIT where t.login=? and so.ID_status!='4'");
@@ -199,7 +198,7 @@ public class AssignServlet extends HttpServlet {
                         connection.close();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }
         }

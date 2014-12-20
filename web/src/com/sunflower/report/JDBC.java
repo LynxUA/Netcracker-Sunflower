@@ -1,6 +1,8 @@
 package com.sunflower.report;
 
 
+import org.apache.log4j.Logger;
+
 import java.sql.*;
 
 public class JDBC {
@@ -13,7 +15,7 @@ public class JDBC {
     final private static String password = "sunflower14";
     private static Connection connection;
     private static boolean isConnected = false;
-
+    private static Logger logger = Logger.getLogger(JDBC.class);
     public  Connection connect() {
         try {
 
@@ -28,10 +30,10 @@ public class JDBC {
             else
                 isConnected = true;
         } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFoundException");
+            logger.error(e.getMessage(), e);
             isConnected = false;
         } catch (SQLException e) {
-            System.out.println("SQLException\n" + e.getMessage());
+            logger.error(e.getMessage(), e);
             isConnected = false;
         }
         finally {    System.out.println(isConnected);

@@ -1,6 +1,7 @@
 package com.sunflower.ejb.servicelocation;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.Connection;
@@ -17,6 +18,7 @@ public class ServiceLocationBean implements EntityBean {
     private int id_prov_location;
     private int id_order;
     private EntityContext entityContext;
+    private final static Logger logger = Logger.getLogger(ServiceLocationBean.class);
 
     public ServiceLocationBean() {
     }
@@ -29,8 +31,7 @@ public class ServiceLocationBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getErrorCode());
-                System.out.println("something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
             statement = connection.prepareStatement("SELECT ID_SERV_LOCATION FROM SERVICE_LOCATION WHERE ID_SERV_LOCATION = ?");
@@ -41,6 +42,7 @@ public class ServiceLocationBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -48,7 +50,7 @@ public class ServiceLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -75,6 +77,7 @@ public class ServiceLocationBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("DELETE exception");
         } finally {
             try {
@@ -82,7 +85,7 @@ public class ServiceLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -112,6 +115,7 @@ public class ServiceLocationBean implements EntityBean {
             id_order = resultSet.getInt(3);
 
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             try {
@@ -119,7 +123,7 @@ public class ServiceLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -139,6 +143,7 @@ public class ServiceLocationBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             try {
@@ -146,7 +151,7 @@ public class ServiceLocationBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -161,6 +166,7 @@ public class ServiceLocationBean implements EntityBean {
             try{
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
                 throw new EJBException("Ошибка dataSource");
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_LOCATION"
@@ -174,15 +180,14 @@ public class ServiceLocationBean implements EntityBean {
             id_serv_location = statement.getGeneratedKeys().getInt(1);
             return id_serv_location;
         } catch (SQLException e) {
-            //throw new EJBException("Ошибка INSERT");
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (connection != null) {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
         return null;
