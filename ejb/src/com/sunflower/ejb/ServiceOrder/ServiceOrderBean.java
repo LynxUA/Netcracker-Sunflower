@@ -3,7 +3,6 @@ package com.sunflower.ejb.ServiceOrder;
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.task.UserWasAssignedException;
 import oracle.jdbc.pool.OracleDataSource;
-import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.*;
@@ -26,7 +25,7 @@ public class ServiceOrderBean implements EntityBean {
     private Date so_date;
     float longtitude;
     float latitude;
-    private final static Logger logger = Logger.getLogger(ServiceOrderBean.class);
+
     private EntityContext entityContext;
     private OracleDataSource dataSource;
 
@@ -43,8 +42,9 @@ public class ServiceOrderBean implements EntityBean {
                 connection = dataSource.getConnection();
             }catch(SQLException e)
             {
-                logger.error(e.getMessage(), e);
-
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw new UnknownError();
             }
             statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
             statement.setInt(1, key);
@@ -54,16 +54,11 @@ public class ServiceOrderBean implements EntityBean {
             }
             return Integer.valueOf(key);
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -72,7 +67,7 @@ public class ServiceOrderBean implements EntityBean {
         try {
             dataSource = new OracleDataSource();
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
         dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
         dataSource.setUser("sunflower");
@@ -94,16 +89,11 @@ public class ServiceOrderBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new EJBException("DELETE exception");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -137,16 +127,11 @@ public class ServiceOrderBean implements EntityBean {
             latitude = resultSet.getFloat(8);
 
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка SELECT");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -157,7 +142,9 @@ public class ServiceOrderBean implements EntityBean {
             connection = dataSource.getConnection();
 
             statement = connection.prepareStatement(
-                    "UPDATE SERVICE_ORDER SET ID_STATUS = ?, ID_SCENARIO = ?, LOGIN = ?, ID_PRICE = ?, ID_SERVICE_INST = ?, SO_DATE = ?, LONGTITUDE = ?, LATITUDE = ? WHERE ID_ORDER = ?");
+                    "UPDATE SERVICE_ORDER \n" +
+                    "SET ID_STATUS = ?, ID_SCENARIO = ?, LOGIN = ?, ID_PRICE = ?, ID_SERVICE_INST = ?, SO_DATE = ?, LONGTITUDE = ?, LATITUDE = ? \n" +
+                    "WHERE ID_ORDER = ?");
             statement.setInt(1, id_status);
             statement.setInt(2, id_scenario);
             statement.setString(3, login);
@@ -171,16 +158,11 @@ public class ServiceOrderBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка UPDATE");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -224,11 +206,13 @@ public class ServiceOrderBean implements EntityBean {
             try{
                 connection = dataSource.getConnection();
             } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                throw new EJBException("Ошибка dataSource");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw new UnknownError();
             }
-            statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER"
-                    + "(ID_STATUS, ID_SCENARIO,LOGIN, ID_PRICE, ID_SERVICE_INST, SO_DATE, LONGTITUDE, LATITUDE) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", new String[]{"ID_ORDER"});
+            statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER " +
+                                                   "(ID_STATUS, ID_SCENARIO,LOGIN, ID_PRICE, ID_SERVICE_INST, SO_DATE, LONGTITUDE, LATITUDE) \n" +
+                                                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?)", new String[]{"ID_ORDER"});
             statement.setInt(1, id_status);
             statement.setInt(2, id_scenario);
             statement.setString(3, login);
@@ -239,7 +223,6 @@ public class ServiceOrderBean implements EntityBean {
             statement.setFloat(8, latitude);
 
             if (statement.executeUpdate() != 1) {
-                System.out.println("Fail");
                 throw new CreateException("Insert exception");
             }
             rs = statement.getGeneratedKeys();
@@ -248,50 +231,19 @@ public class ServiceOrderBean implements EntityBean {
             }
             return id_order;
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
-        return null;
     }
 
     public void ejbPostCreate(int id_scenario, String login, int id_order, int id_service_inst, float longtitude, float latitude) throws CreateException {
 
     }
 
-//    public Collection ejbFindOrdersByLogin(String login) throws FinderException {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//        try {
-//            connection = DataSource.getDataSource().getConnection();
-//            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE LOGIN = ?");
-//            statement.setString(1, login);
-//            ResultSet resultSet = statement.executeQuery();
-//            Vector keys = new Vector();
-//            while (resultSet.next()) {
-//                Integer id_order = resultSet.getInt(1);
-//                keys.addElement(id_order);
-//            }
-//            return keys;
-//        } catch (SQLException e) {
-//            throw new EJBException("Ошибка SELECT");
-//        } finally {
-//            try {
-//                if (connection != null) {
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                logger.error(e.getMessage(), e);
-//            }
-//        }
-//
-//    }
+
 
     public Collection ejbHomeGetOrdersByLogin(String login, int from, int to) throws FinderException {
         Connection connection = null;
@@ -301,7 +253,7 @@ public class ServiceOrderBean implements EntityBean {
             statement = connection.prepareStatement("SELECT A,B,C, D, E, F\n" +
                     "FROM (SELECT ID_ORDER AS A, SO_STATUS.NAME AS B, SCENARIO.NAME AS C, SO_DATE AS D, LONGTITUDE AS E, LATITUDE AS F, ROWNUM R\n" +
                     "FROM (SERVICE_ORDER JOIN SO_STATUS ON SERVICE_ORDER.ID_STATUS = SO_STATUS.ID_STATUS) JOIN SCENARIO ON SERVICE_ORDER.ID_SCENARIO = SCENARIO.ID_SCENARIO\n" +
-                    "WHERE LOGIN LIKE ? )\n" +
+                    "WHERE LOGIN = ? )\n" +
                     "WHERE R >= ? AND R <=?");
             statement.setString(1, login);
             statement.setInt(2, from);
@@ -313,16 +265,11 @@ public class ServiceOrderBean implements EntityBean {
             }
             return orders;
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка SELECT");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -333,7 +280,7 @@ public class ServiceOrderBean implements EntityBean {
             connection = DataSource.getDataSource().getConnection();
             statement = connection.prepareStatement("SELECT COUNT(ID_ORDER)\n" +
                     "FROM SERVICE_ORDER\n" +
-                    "WHERE LOGIN LIKE ?");
+                    "WHERE LOGIN = ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -341,16 +288,11 @@ public class ServiceOrderBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка SELECT");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -380,16 +322,11 @@ public class ServiceOrderBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка UPDATE");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 }

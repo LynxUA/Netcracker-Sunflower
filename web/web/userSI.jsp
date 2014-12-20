@@ -12,9 +12,9 @@
 <%
   int user_status = (Integer)(request.getSession().getAttribute("status"));
   String order_login;
-  if(user_status == 1) {
+  if(user_status == UserGroups.CUSTOMER) {
     order_login = (String) (request.getSession().getAttribute("login"));
-  }else if (user_status == 3){
+  }else if (user_status == UserGroups.CSE){
     order_login = request.getParameter("login");
   }else{
     response.sendRedirect("/webWeb/");

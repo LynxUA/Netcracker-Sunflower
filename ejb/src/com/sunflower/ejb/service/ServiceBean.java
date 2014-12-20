@@ -31,6 +31,7 @@ public class ServiceBean implements EntityBean {
             }catch(SQLException e)
             {
                 logger.error(e.getMessage(), e);
+                throw new UnknownError();
 
             }
             statement = connection.prepareStatement("SELECT ID_SERVICE FROM SERVICE WHERE ID_SERVICE = ?");
@@ -42,7 +43,7 @@ public class ServiceBean implements EntityBean {
             return key;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            throw new UnknownError();
         } finally {
             try {
                 if (connection != null) {
@@ -50,6 +51,7 @@ public class ServiceBean implements EntityBean {
                 }
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
+                throw new UnknownError();
             }
         }
 
@@ -79,8 +81,8 @@ public class ServiceBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new EJBException("DELETE exception");
+            logger.error(e.getMessage(), e);;
+            throw new UnknownError();
         } finally {
             try {
                 if (connection != null) {
@@ -88,6 +90,7 @@ public class ServiceBean implements EntityBean {
                 }
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
+                throw new UnknownError();
             }
         }
     }
@@ -108,13 +111,13 @@ public class ServiceBean implements EntityBean {
             statement.setInt(1, id_service);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
-                throw new NoSuchEntityException("...");
+                throw new NoSuchEntityException();
             }
             name = resultSet.getString(1);
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка SELECT");
+            throw new UnknownError();
         } finally {
             try {
                 if (connection != null) {
@@ -122,6 +125,7 @@ public class ServiceBean implements EntityBean {
                 }
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
+                throw new UnknownError();
             }
         }
     }
@@ -136,11 +140,11 @@ public class ServiceBean implements EntityBean {
             statement.setString(1, name);
             statement.setInt(2, id_service);
             if (statement.executeUpdate() < 1) {
-                throw new NoSuchEntityException("...");
+                throw new NoSuchEntityException();
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка UPDATE");
+            throw new UnknownError();
         } finally {
             try {
                 if (connection != null) {
@@ -148,6 +152,7 @@ public class ServiceBean implements EntityBean {
                 }
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
+                throw new UnknownError();
             }
         }
     }
@@ -168,7 +173,7 @@ public class ServiceBean implements EntityBean {
             return keys;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка SELECT");
+            throw new UnknownError();
         } finally {
             try {
                 if (connection != null) {
@@ -176,6 +181,7 @@ public class ServiceBean implements EntityBean {
                 }
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
+                throw new UnknownError();
             }
         }
 

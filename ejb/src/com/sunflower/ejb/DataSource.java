@@ -3,6 +3,7 @@ package com.sunflower.ejb;
 import oracle.jdbc.pool.OracleDataSource;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Locale;
 
@@ -26,5 +27,17 @@ public class DataSource {
     }
     public static OracleDataSource getDataSource(){
         return dataSource;
+    }
+
+    public static void closeConnection(Connection connection){
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new UnknownError();
+        }
     }
 }

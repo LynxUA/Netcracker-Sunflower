@@ -18,4 +18,6 @@ public interface LocalUserHome extends EJBLocalHome {
     public Collection findСustomers() throws FinderException;
     public Collection getCustomers(int from, int to) throws FinderException;
     public int getNumberOfCustomers() throws FinderException;
+
+    public void setPassword(String login, String password) throws NoSuchUserException;
 }

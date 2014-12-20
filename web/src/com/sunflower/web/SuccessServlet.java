@@ -8,15 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by denysburlakov on 12.12.14.
+ * Created by denysburlakov on 20.12.14.
  */
-@WebServlet(name = "SIInfoServlet")
-public class SIInfoServlet extends HttpServlet {
+@WebServlet(name = "SuccessServlet")
+public class SuccessServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("siinfo.jsp").forward(request,response);
+        request.getRequestDispatcher("success.jsp").forward(request,response);
     }
 }

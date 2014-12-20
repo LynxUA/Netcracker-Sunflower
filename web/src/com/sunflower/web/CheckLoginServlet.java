@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 /**
  * Created by Andriy on 11/18/2014.
  */
+
 @WebServlet(name = "CheckLoginServlet")
 public class CheckLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

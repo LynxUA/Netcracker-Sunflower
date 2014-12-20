@@ -34,6 +34,7 @@
 <%@ page import="javax.ejb.EJBException" %>
 <%@ page import="javax.ejb.CreateException" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="javax.ejb.FinderException" %>
 
 <aside>
     <ul class="nav nav-list bs-docs-sidenav affix">
@@ -62,35 +63,50 @@
             <ul class="nav nav-list bs-docs-sidenav affix">
                     <%
                      Connection connection = null;
+                     ResultSet resultSet=null;
         PreparedStatement statement = null;
+        boolean state=false;
+          Object lgn=request.getSession().getAttribute("login");
+
         try {
             try{
+
+            System.out.println("war1");
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
+              System.out.println("warerr");
                 throw new EJBException("Ошибка dataSource");
             }
-            statement = connection.prepareStatement("SELECT t.ID_TASK, t.DESCRIPTION,so.Id_Service_Inst,so.ID_ORDER,so.Id_Scenario" +
-             " from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login=? and so.ID_status!='4' ");
-
-            statement.setString(1, (String)request.getSession().getAttribute("login"));
-            ResultSet resultSet = statement.executeQuery();
-            boolean state=true;
-            if(!resultSet.next())
+              System.out.println("war2");
+              System.out.println((String)request.getSession().getAttribute("login"));
+            statement = connection.prepareStatement("SELECT" +
+             " t.ID_TASK, t.DESCRIPTION,so.Id_Service_Inst,so.ID_ORDER,so.Id_Scenario" +
+             " from SERVICE_ORDER so " +
+              "INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE" +
+              " INNER  join PROVIDER_LOCATION pl" +
+               " on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION " +
+              "Inner JOIN  Task t On t.Id_order=so.Id_order " +
+               "inner JOIN SERVICE_INSTANCE si " +
+               "On si.ID_SERVICE_INST=so.ID_SERVICE_INST " +
+                "where t.login=? and so.ID_status!='4' " +
+                "and so.ID_status!='2' ");
+  System.out.println("war3");
+  if(lgn==null) statement.setString(1, "0");
+  else statement.setString(1, (String) lgn);
+              System.out.println("war4");
+              state=true;
+          try{
+            System.out.println("war5");
+            resultSet = statement.executeQuery();
+           if(!resultSet.next())
             {
-             state=false;
+             throw new FinderException();
             }
-
-            if (statement.executeUpdate() != 1) {
-                throw new CreateException("Insert exception");
+            }catch (FinderException e)
+            {
+                state = false;
             }
-
-
-                LocalTask localTask;
-                String name=(String) request.getSession().getAttribute("login");
-                localTask=EJBFunctions.findIncompleteTask(name);
-
-
-                if(localTask!=null) {
+            if(state){
             %>
 
                 <td align="Center"><%=resultSet.getString(2)%></td>
@@ -101,18 +117,28 @@
         </tbody>
     </table>
 </div>
-<%if (state=true)
+<%if(state)
 {%>
 <p>
-<form method="get" action="currenttask?action=complete&key=<%=resultSet.getInt(1)%>&Id_Si=<%=resultSet.getInt(3)%>&Id_Order=<%=resultSet.getInt(4)%>&Id_Scenario<%=resultSet.getInt(5)%>">
-    <button type="submit" class="btn btn-primary" value="Complete"><font color="#a9a9a9">Complete</font></button>
+<form method="get" action="currenttask">
+    <input type="hidden" name="action" value="complete" style=" width:0">
+    <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
+    <input type="hidden" name="Id_Si" value="<%=resultSet.getInt(3)%>" style=" width:0">
+    <input type="hidden" name="Id_Order" value="<%=resultSet.getInt(4)%>" style=" width:0">
+    <input type="hidden" name="Id_Scenario" value="<%=resultSet.getInt(5)%>" style=" width:0">
+    <button type="submit" class="btn btn-primary" value="Complete">Complete</button>
 </form>
-<form method="get" action="currenttask?action=suspend&key=<%=resultSet.getInt(1)%>&Id_Order=<%=resultSet.getInt(4)%>">
-    <button type="submit" class="btn btn-primary" value="Suspend"><font color="#a9a9a9">Suspend</font></button>
+<form method="get" action="currenttask">
+    <input type="hidden" name="action" value="suspendPE" style=" width:0">
+    <input type="hidden" name="Id_Order" value="<%=resultSet.getInt(4)%>" style=" width:0">
+    <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
+    <button type="submit" class="btn btn-primary" value="Suspend">Suspend</button>
     </form>
 
 <form method="get" action="currenttask?action=unassign&key=<%=resultSet.getInt(1)%>">
-    <button type="submit" class="btn btn-primary" value="unassign"><font color="#a9a9a9">Unassign Task</font></button>
+    <input type="hidden" name="action" value="unassignPE" style=" width:0">
+    <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
+    <button type="submit" class="btn btn-primary" value="unassign">Unassign Task</button>
 </form>
 </p>
 <%} else{%>
@@ -124,11 +150,14 @@
 </p>
 <%}%>
 
+<%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
+<p name="result">${requestScope.result}</p>
+<%}%>
 <%@include file="footer.jsp"%>
 </body>
 </html>
 <%  } catch (SQLException e) {
-    throw new EJBException("SELECT exception in ejbFindIncomplete");
+    throw new EJBException("SELECT exception in CurrentTaskPe");
     } finally {
     try {
     if (connection != null) {

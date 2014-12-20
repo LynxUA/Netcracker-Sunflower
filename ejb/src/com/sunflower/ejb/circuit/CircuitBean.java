@@ -15,8 +15,9 @@ import java.sql.SQLException;
 public class CircuitBean implements EntityBean {
     private int Id_Circuit;
     private int Id_Port;
-    private  int Id_Cable;
     private final static Logger logger = Logger.getLogger(CircuitBean.class);
+    private  Integer Id_Cable;
+
     private EntityContext entityContext;
     public CircuitBean() {
     }
@@ -40,15 +41,9 @@ public class CircuitBean implements EntityBean {
             return key;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
 
     }
@@ -78,15 +73,9 @@ public class CircuitBean implements EntityBean {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new EJBException("DELETE exception");
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
     public void ejbActivate() throws EJBException {
@@ -98,7 +87,7 @@ public class CircuitBean implements EntityBean {
     }
 
     public void ejbLoad() throws EJBException {
-        Id_Port = (Integer) entityContext.getPrimaryKey();
+        Id_Circuit = (Integer) entityContext.getPrimaryKey();
         Connection connection = null;
         PreparedStatement statement;
         try {
@@ -110,23 +99,17 @@ public class CircuitBean implements EntityBean {
             if (!resultSet.next()) {
                 throw new NoSuchEntityException("...");
             }
-            try {
-                Id_Port = resultSet.getInt(1);
-                Id_Cable = resultSet.getInt(2);
-            }catch (SQLException e){
-                logger.error(e.getMessage(), e);
+            Id_Port = resultSet.getInt(1);
+            Id_Cable = resultSet.getInt(2);
+            if(Id_Cable == 0){
+                Id_Cable = null;
+                //System.out.println("id_circuit is null");
             }
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            throw new EJBException("Ошибка SELECT");
+            logger.error(e.getMessage(), e);
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -135,86 +118,79 @@ public class CircuitBean implements EntityBean {
         PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("UPDATE CIRCUIT SET ID_PORT = ?, ID_CABLE = ? WHERE ID_CIRCUIT=?");
 
-            statement.setInt(1, Id_Port);
+            if(Id_Cable!=null) {
+                statement = connection.prepareStatement("UPDATE CIRCUIT SET ID_PORT = ?, ID_CABLE = ? WHERE ID_CIRCUIT=?");
+                statement.setInt(1, Id_Port);
+                statement.setInt(2, Id_Cable);
+                statement.setInt(3, Id_Circuit);
+                if (statement.executeUpdate() < 1) {
+                    throw new NoSuchEntityException("No such entity");
+                }
+            }
+            else {
+                statement = connection.prepareStatement("UPDATE CIRCUIT SET ID_PORT = ? WHERE ID_CIRCUIT=?");
+                statement.setInt(1, Id_Port);
 
-            statement.setInt(2, Id_Circuit);
-
-
-            statement.setInt(3, Id_Port);
-
-
-
-
-            if (statement.executeUpdate() < 1) {
-                System.out.println("bad statement");
-                throw new NoSuchEntityException("...");
+                statement.setInt(2, Id_Circuit);
+                if (statement.executeUpdate() < 1) {
+                    throw new NoSuchEntityException("No such entity");
+                }
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка UPDATE");
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
-    public Integer ejbCreate(int Id_Port, int Id_Cable) throws CreateException {
+    public Integer ejbCreate(int Id_Port) throws CreateException {
 
         this.Id_Port = Id_Port;
-        this.Id_Cable = Id_Cable;
+
 
 
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
+        ResultSet resultSet;
         try {
-            try{
-                connection = DataSource.getDataSource().getConnection();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                throw new EJBException("Ошибка dataSource");
-            }
+            connection = DataSource.getDataSource().getConnection();
+
             statement = connection.prepareStatement("INSERT INTO CIRCUIT"
-                    + "( ID_PORT,ID_CABLE) VALUES(?, ?)", new String[]{"ID_CIRCUIT"});
+                    + "(ID_PORT) VALUES(?)");
 
             statement.setInt(1, Id_Port);
-            statement.setInt(2, Id_Cable);
+
 
 
             if (statement.executeUpdate() != 1) {
                 throw new CreateException("Insert exception");
             }
-            Id_Circuit=statement.getGeneratedKeys().getInt(1);
+
+                    statement=connection.prepareStatement("SELECT Id_Circuit from CIRCUIT where Id_Port = ?");
+            statement.setInt(1, Id_Port);
+           resultSet=  statement.executeQuery();
+            resultSet.next();
+
+            Id_Circuit=resultSet.getInt(1);
             return Id_Circuit;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
-        return null;
-    }
+            DataSource.closeConnection(connection);
+        }    }
 
-    public void ejbPostCreate(int Id_Port, int Id_Cable) throws CreateException {
+    public void ejbPostCreate(int Id_Port) throws CreateException {
 
     }
 
     public int getId_Circuit(){return Id_Circuit;}
     public int getId_Port(){return Id_Port;}
     public void setId_Port(int Id_Port){this.Id_Port=Id_Port;}
-    public int getId_Cable(){return  Id_Cable;}
-    public void setId_Cable(int Id_Cable){this.Id_Cable=Id_Cable;}
+    public Integer getId_Cable(){return  Id_Cable;}
+    public void setId_Cable(Integer Id_Cable){this.Id_Cable=Id_Cable;}
 
 
 

@@ -17,16 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by Andriy on 11/20/2014.
- */
 @WebServlet(name = "SignUpServlet")
 public class RegisterEmployeeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         clearError(request);
         String check = request.getParameter("check");
         if(check == null && !check.equals("")){
-            response.sendRedirect("www.google.com");
+            response.sendRedirect("http://google.com");
             return;
         }
         if(request.getSession().getAttribute("current_user") != null){
@@ -48,77 +45,63 @@ public class RegisterEmployeeServlet extends HttpServlet {
 
         if(login.isEmpty()){
             request.setAttribute("login_error", "Login can`t be empty");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
             return;
         }
         if(email.isEmpty()){
             request.setAttribute("email_error", "Email can`t be empty");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
             return;
         }
 
         if(!StaticFunctions.isValidEmail(email)){
             request.setAttribute("email_error", "Wrong email format");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
             return;
         }
 
         if(StaticFunctions.isEmailExist(email)){
             request.setAttribute("email_error", "Such email is already registered");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
             return;
         }
 
         if(name == null || name.equals("")) {
             request.setAttribute("name_error", "Type your name");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
             return;
         }
 
         if(password == null || repeat_password == null ||
                 (password.compareTo("") == 0) || (repeat_password.compareTo("") == 0)) {
             request.setAttribute("password_error", "Type the passwords");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
             return;
         }
 
         if(password.compareTo(repeat_password) != 0) {
             request.setAttribute("password_error", "Passwords should be equal");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
             return;
         }
 
         if(!StaticFunctions.isValidPassword(password))
         {
             request.setAttribute("password_error", "Wrong password format");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
             return;
         }
 
-        //addNewUser(login, email,name,StaticFunctions.getHashCode(password));
-        //addNewUser(login, email,name, password);
         try {
             LocalUser user = EJBFunctions.createUser(login, email, name, surname, password, Integer.parseInt(request.getParameter("group")));
         }catch(DuplicateKeyException e) {
             request.setAttribute("login_error", "User with this login is already exist");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
         } catch (CreateException e1) {
             request.setAttribute("login_error", "Server error");
-            request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
         }
-//        if(EJBFunctions.createUser(login.toLowerCase(), email, name, surname, password)==null){
-//                request.setAttribute("login_error", "User with this login is already exist");
-//                request.getRequestDispatcher("signup.jsp").forward(request, response);
-//            }else{
-//                request.getSession().setAttribute("login", login);
-//                request.getSession().setAttribute("status", 1);
-//                /** Прибрати*/
-//                System.out.println(login);
-//            }
-//        } catch (CreateException e) {
-//            e.printStackTrace();
-//        }
-        //MailServer.messageAfterRegistration(name,password,email,login);
+
         MailServer.messageAfterRegistration(name,password,email,login);
         response.sendRedirect("/webWeb");
 
@@ -126,34 +109,9 @@ public class RegisterEmployeeServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         clearError(request);
-        request.getRequestDispatcher("register_employee.jsp").forward(request, response);
+        request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
     }
-    /*private void addNewUser(String login,String email, String name, String password){
-        //StaticFunctions.users.put(login,password);
-        InitialContext ic = null;
-        try {
-            ic = new InitialContext();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-        LocalUserHome home = null;
-        try {
-            home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-        LocalUser user = null;
-        try {
-            if (home != null) {
-                user = home.create(login, email, name, "Burlakov", password, 1);
-            }
-        } catch (CreateException e) {
-            e.printStackTrace();
-        }
-        System.out.println("hurray");
 
-        return;
-    }*/
     private void clearError(HttpServletRequest request) {
         request.setAttribute("login_error", "");
         request.setAttribute("name_error","");

@@ -2,7 +2,7 @@
 <html>
 <head>
     <%@include file="includes.jsp"%>
-    <title>Sign up</title>
+    <title>Register employee</title>
 </head>
 <body>
 

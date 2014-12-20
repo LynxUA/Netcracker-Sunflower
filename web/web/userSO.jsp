@@ -13,9 +13,9 @@
 <%
     int user_status = (Integer)(request.getSession().getAttribute("status"));
     String order_login;
-    if(user_status == 1) {
+    if(user_status == UserGroups.CUSTOMER) {
         order_login = (String) (request.getSession().getAttribute("login"));
-    }else if (user_status == 3){
+    }else if (user_status == UserGroups.CSE){
         order_login = request.getParameter("login");
     }else{
         response.sendRedirect("/webWeb/");
@@ -55,21 +55,23 @@
           <thead>
           <tr>
             <th>id</th>
+              <th>Date</th>
             <th>Scenario</th>
             <th>Status</th>
+              <th>Location</th>
               <th>Disconnect</th>
+
           </tr>
           </thead>
           <tbody>
           <%for(SOWrapper order:serviceOrders){%>
           <td><%=order.getId_order()%></td>
+          <td><%=order.getSo_date()%></td>
           <td><%=order.getScenario_name()%></td>
           <td><span
-              <%
-                System.out.println(order.getStatus_name());
-                        System.out.println(order.getStatus_name().compareTo("Entering"));
-                        if(order.getStatus_name().contains("Entering")){
-                        %>
+                  <%
+                  if(order.getStatus_name().contains("Entering")){
+              %>
                   class="label label-primary"
             <%
                         } else if(order.getStatus_name().compareTo("Processing")==0){
@@ -89,8 +91,9 @@
                   >
               <%=order.getStatus_name()%></span>
           </td>
+          <td><%=order.getLongtitude()%> <%=order.getLatitude()%></td>
           <td><%if(order.getStatus_name().contains("Entering")){%>
-              <a href="cancelOrder?id_order=<%=order.getId_order()%>">Cancell</a></td>
+              <a href="cancelOrder?id_order=<%=order.getId_order()%>">Cancel</a></td>
           <%}%></td>
           </tr>
           <%}%>

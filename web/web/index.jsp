@@ -75,11 +75,11 @@
       </div>--%>
 
       <div align="center">
-        <h1>Sunflower OSS</h1>
+        <h1>Sunflower the internet provider</h1>
         <img id="logo" src="resources/sunflower_logo.png" />
         <p>
           <form action="signup" method="get">
-            <input class="btn btn-lg btn-primary" type="submit" value="&nbsp;&nbsp;Start using&nbsp;&nbsp;">
+            <input class="btn btn-lg btn-primary" type="submit" value="&nbsp;&nbsp;Make me feel good&nbsp;&nbsp;">
           </form>
         </p>
       </div>

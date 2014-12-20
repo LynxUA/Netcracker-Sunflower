@@ -40,6 +40,7 @@ public class UserGroupBean implements EntityBean {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         }
 
         return primaryKey;
@@ -47,25 +48,13 @@ public class UserGroupBean implements EntityBean {
 
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         this.entityContext = entityContext;
-        try {
-
-            if(DataSource.getDataSource()==null) DataSource.setDataSource();
-            connection = DataSource.getDataSource().getConnection();
-
-    } catch (SQLException e) {
-        logger.error(e.getMessage(), e);
-    }
+        if(DataSource.getDataSource()==null){
+            DataSource.setDataSource();
+        }
     }
 
     public void unsetEntityContext() throws EJBException {
-
         this.entityContext = null;
-
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
     }
 
     public void ejbRemove() throws RemoveException, EJBException {
@@ -79,15 +68,9 @@ public class UserGroupBean implements EntityBean {
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
     }
 
@@ -117,26 +100,16 @@ public class UserGroupBean implements EntityBean {
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
 
     }
 
     //Saves current data to DB
     public void ejbStore() throws EJBException {
-
         PreparedStatement ps = null;
-
         try {
             ps = connection.prepareStatement("UPDATE user_group SET position = ?, group_name = ? WHERE id_group_user=?");
             ps.setString(1, position);
@@ -146,14 +119,9 @@ public class UserGroupBean implements EntityBean {
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
 
     }
@@ -175,17 +143,9 @@ public class UserGroupBean implements EntityBean {
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
         }
 
 
@@ -224,6 +184,10 @@ public class UserGroupBean implements EntityBean {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
+            ;
+            throw new UnknownError();
+        }finally {
+            DataSource.closeConnection(connection);
         }
 
         return colNames;
@@ -254,17 +218,9 @@ public class UserGroupBean implements EntityBean {
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-            }
+            DataSource.closeConnection(connection);
 
         }
 
