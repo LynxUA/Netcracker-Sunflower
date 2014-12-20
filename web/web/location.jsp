@@ -32,12 +32,10 @@
   <%@include file="includes.jsp"%>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
   <script>
-    var geocoder;
+    var geocoder = new google.maps.Geocoder();
     var map;
     var latlng;
     var marker_main;
-
-
     var image = 'img/chart.png';
     var locations = [
               <% int i = 1;
@@ -52,8 +50,31 @@
             }%>
             ];
 
+    function geocodePosition(pos) {
+      geocoder.geocode({
+        latLng: pos
+      }, function(responses) {
+        if (responses && responses.length > 0) {
+          updateMarkerAddress(responses[0].formatted_address);
+          latlng = marker_main.position;
+          document.getElementById('x').value = latlng.lat();
+          document.getElementById('y').value = latlng.lng();
+        } else {
+          document.getElementById('address').value = 'Cannot determine address at this location.';
+        }
+      });
+    }
+
+    function updateMarkerAddress(str) {
+      document.getElementById('address').value = str;
+    }
+
+    function updateMarkerPosition(latLng) {
+      document.getElementById('x').value = latLng.lat();
+      document.getElementById('y').value = latLng.lng();
+    }
+
     function initialize() {
-      geocoder = new google.maps.Geocoder();
       latlng = new google.maps.LatLng(<%=x%>,<%=y%>);
       var mapOptions = {
         zoom: 11,
@@ -66,7 +87,11 @@
         draggable: true,
         title: 'Your location'
       });
-      var market, i;
+
+      updateMarkerPosition(latlng);
+      geocodePosition(latlng);
+
+      var marker, i;
       for (i = 0; i < locations.length; i++) {
         marker = new google.maps.Marker({
           position: new google.maps.LatLng(locations[i][1], locations[i][2]),
@@ -77,8 +102,13 @@
       }
 
       google.maps.event.addListener(marker_main,'drag',function() {
+        updateMarkerPosition(marker_main.getPosition());
+      });
+
+      google.maps.event.addListener(marker_main, 'dragend', function() {
         geocodePosition(marker_main.getPosition());
       });
+
       // Try HTML5 geolocation
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -97,20 +127,7 @@
         //handleNoGeolocation(false);
       }
     }
-    function geocodePosition(pos) {
-      geocoder.geocode({
-        latLng: pos
-      }, function(responses) {
-        if (responses && responses.length > 0) {
-          document.getElementById('address').value = responses[0].formatted_address;
-          latlng = marker_main.position;
-          document.getElementById('x').value = latlng.lat();
-          document.getElementById('y').value = latlng.lng();
-        } else {
-          document.getElementById('address').value = 'Cannot determine address at this location.';
-        }
-      });
-    }
+
     function handleNoGeolocation(errorFlag) {
       if (errorFlag) {
         var content = 'Error: The Geolocation service failed.';

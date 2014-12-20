@@ -33,7 +33,7 @@
   <%@include file="includes.jsp"%>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
   <script>
-    var geocoder;
+    var geocoder = new google.maps.Geocoder();
     var map;
     var latlng;
     var marker;
@@ -52,10 +52,34 @@
       }%>
     ];
 
+    function geocodePosition(pos) {
+      geocoder.geocode({
+        latLng: pos
+      }, function(responses) {
+        if (responses && responses.length > 0) {
+          updateMarkerAddress(responses[0].formatted_address);
+          latlng = marker.position;
+          document.getElementById('x').value = latlng.lat();
+          document.getElementById('y').value = latlng.lng();
+          $('#services').html('');
+          $('#price').html('');
+        } else {
+          document.getElementById('address').value = 'Cannot determine address at this location.';
+        }
+      });
+    }
+
+    function updateMarkerAddress(str) {
+      document.getElementById('address').value = str;
+    }
+
+    function updateMarkerPosition(latLng) {
+      document.getElementById('x').value = latLng.lat();
+      document.getElementById('y').value = latLng.lng();
+    }
 
     //var serviceLocation;
     function initialize() {
-      geocoder = new google.maps.Geocoder();
       latlng = new google.maps.LatLng(<%=x%>,<%=y%>);
       var mapOptions = {
         zoom: 11,
@@ -68,13 +92,11 @@
         draggable: true,
         title: 'Your location'
       });
-      google.maps.event.addListener(marker,'drag',function() {
-        geocodePosition(marker.getPosition());
-        $('#services').html('');
-        $('#price').html('');
-      });
 
-      var market_prov, i;
+      updateMarkerPosition(latlng);
+      geocodePosition(latlng);
+
+      var marker_prov, i;
       for (i = 0; i < locations.length; i++) {
         marker_prov = new google.maps.Marker({
           position: new google.maps.LatLng(locations[i][1], locations[i][2]),
@@ -83,9 +105,18 @@
 
         });
       }
-//      google.maps.event.addListener(marker,'dragend',function() {
-//        geocodePosition(marker.getPosition());
-//      });
+
+      google.maps.event.addListener(marker,'drag',function() {
+        updateMarkerPosition(marker.getPosition());
+        //geocodePosition(marker.getPosition());
+        $('#services').html('');
+        $('#price').html('');
+      });
+
+      google.maps.event.addListener(marker, 'dragend', function() {
+        geocodePosition(marker.getPosition());
+      });
+
       // Try HTML5 geolocation
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -106,22 +137,7 @@
         //handleNoGeolocation(false);
       }
     }
-    function geocodePosition(pos) {
-      geocoder.geocode({
-        latLng: pos
-      }, function(responses) {
-        if (responses && responses.length > 0) {
-          document.getElementById('address').value = responses[0].formatted_address;
-          latlng = marker.position;
-          document.getElementById('x').value = latlng.lat();
-          document.getElementById('y').value = latlng.lng();
-          $('#services').html('');
-          $('#price').html('');
-        } else {
-          document.getElementById('address').value = 'Cannot determine address at this location.';
-        }
-      });
-    }
+
     function handleNoGeolocation(errorFlag) {
       if (errorFlag) {
         var content = 'Error: The Geolocation service failed.';
