@@ -264,7 +264,7 @@ public class EJBFunctions {
         return order;
     }
     
-     public static LocalCircuit createCircuit(int Id_Port, int Id_Cable){
+     public static LocalCircuit createCircuit(int Id_Port){
         InitialContext ic = null;
         try {
             ic = new InitialContext();
@@ -281,10 +281,10 @@ public class EJBFunctions {
             e.printStackTrace();
             throw new UnknownError();
         }
-        LocalCircuit service_order;
+        LocalCircuit localCircuit;
         try {
-            service_order = home.create(Id_Port, Id_Cable);
-            return service_order;
+            localCircuit = home.create(Id_Port);
+            return localCircuit;
         } catch (CreateException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

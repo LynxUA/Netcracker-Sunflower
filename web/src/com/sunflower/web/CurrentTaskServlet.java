@@ -54,32 +54,47 @@ public class CurrentTaskServlet extends HttpServlet {
                     localServiceInstance.setStatus(3);
                     localServiceOrder.setId_status(4);
                     request.setAttribute("result", "<font color=\"#191970\">Task is completed</font>");
-                    request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
+                    request.getRequestDispatcher("CurrentTaskPE.jsp").forward(request, response);
                 }
             }
         if (action.equals("completeIE"))
         {
-            System.out.println("hello");
+          String[] description=request.getParameter("Description").split("Cable ID = ");;
+            if(description.length<=1)
+            {
+                request.setAttribute("result", "<font color=\"#191970\">Create cable please</font>");
+                request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
+            }
             localTask.setId_group_user(4);
             localTask.setLogin(null);
-            System.out.println("hey");
+
             request.setAttribute("result", "<font color=\"#191970\">Task is completed</font>");
             request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
             return;
         }
-            if (action.equals("suspend")) {
-                LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder(Integer.parseInt(request.getParameter("Id_Order")));
+            if (action.equals("suspendIE")) {
+                LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder((int)Integer.parseInt(request.getParameter("Id_Order")));
                 localServiceOrder.setId_status(2);
                 request.setAttribute("result", "<font color=\"#191970\">Task is suspended</font>");
                 request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
             }
-        if (action.equals("unassign")) {
+        if (action.equals("suspendPE")) {
+            LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder((int)Integer.parseInt(request.getParameter("Id_Order")));
+            localServiceOrder.setId_status(2);
+            request.setAttribute("result", "<font color=\"#191970\">Task is suspended</font>");
+            request.getRequestDispatcher("CurrentTaskPE.jsp").forward(request, response);
+        }
+        if (action.equals("unassignPE")) {
             localTask.setLogin(null);
             request.setAttribute("result", "<font color=\"#191970\">Task is unassigned</font>");
-            request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
+            request.getRequestDispatcher("CurrentTaskPE.jsp").forward(request, response);
         }
 
-
+        if (action.equals("unassignIE")) {
+            localTask.setLogin(null);
+            request.setAttribute("result", "<font color=\"#191970\">Task is unassigned</font>");
+            request.getRequestDispatcher("CurrentTaskPE.jsp").forward(request, response);
+        }
 
     }
 }

@@ -79,10 +79,16 @@
             }
               System.out.println("war2");
               System.out.println((String)request.getSession().getAttribute("login"));
-            statement = connection.prepareStatement("SELECT t.ID_TASK, t.DESCRIPTION,so.Id_Service_Inst,so.ID_ORDER,so.Id_Scenario" +
-             " from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION " +
-              "Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si " +
-               "On si.ID_SERVICE_INST=so.ID_SERVICE_INST where t.login=? and so.ID_status!='4' " +
+            statement = connection.prepareStatement("SELECT" +
+             " t.ID_TASK, t.DESCRIPTION,so.Id_Service_Inst,so.ID_ORDER,so.Id_Scenario" +
+             " from SERVICE_ORDER so " +
+              "INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE" +
+              " INNER  join PROVIDER_LOCATION pl" +
+               " on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION " +
+              "Inner JOIN  Task t On t.Id_order=so.Id_order " +
+               "inner JOIN SERVICE_INSTANCE si " +
+               "On si.ID_SERVICE_INST=so.ID_SERVICE_INST " +
+                "where t.login=? and so.ID_status!='4' " +
                 "and so.ID_status!='2' ");
   System.out.println("war3");
   if(lgn==null) statement.setString(1, "0");
@@ -123,14 +129,14 @@
     <button type="submit" class="btn btn-primary" value="Complete">Complete</button>
 </form>
 <form method="get" action="currenttask">
-    <input type="hidden" name="action" value="suspend" style=" width:0">
+    <input type="hidden" name="action" value="suspendPE" style=" width:0">
     <input type="hidden" name="Id_Order" value="<%=resultSet.getInt(4)%>" style=" width:0">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
     <button type="submit" class="btn btn-primary" value="Suspend">Suspend</button>
     </form>
 
 <form method="get" action="currenttask?action=unassign&key=<%=resultSet.getInt(1)%>">
-    <input type="hidden" name="action" value="unassign" style=" width:0">
+    <input type="hidden" name="action" value="unassignPE" style=" width:0">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
     <button type="submit" class="btn btn-primary" value="unassign">Unassign Task</button>
 </form>

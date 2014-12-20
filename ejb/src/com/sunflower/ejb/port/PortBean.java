@@ -111,7 +111,7 @@ public class PortBean implements EntityBean {
         PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("UPDATE PORT SET STATUS  = ?, ID_DEVICE = ? WHERE ID_PORTT=?");
+            statement = connection.prepareStatement("UPDATE PORT SET STATUS  = ?, ID_DEVICE = ? WHERE ID_PORT=?");
 
             statement.setInt(1, status);
 
