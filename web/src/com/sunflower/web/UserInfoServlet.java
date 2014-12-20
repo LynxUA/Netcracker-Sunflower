@@ -17,6 +17,6 @@ public class UserInfoServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("userInfo.jsp").forward(request,response);
+        request.getRequestDispatcher("userinfo.jsp").forward(request,response);
     }
 }

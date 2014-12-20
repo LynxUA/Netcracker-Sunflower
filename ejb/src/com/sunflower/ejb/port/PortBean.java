@@ -4,6 +4,7 @@ package com.sunflower.ejb.port;
  * Created by Alexey on 12/11/2014.
  */
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 
 import javax.ejb.*;
@@ -13,7 +14,7 @@ public class PortBean implements EntityBean {
     private int Id_Port;
     private int status;
     private  int Id_Device;
-
+    private final static Logger logger = Logger.getLogger(PortBean.class);
     private EntityContext entityContext;
     public PortBean() {
     }
@@ -31,8 +32,7 @@ public class PortBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -64,8 +64,7 @@ public class PortBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -97,8 +96,7 @@ public class PortBean implements EntityBean {
             Id_Device= resultSet.getInt(2);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -127,8 +125,7 @@ public class PortBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -158,8 +155,7 @@ public class PortBean implements EntityBean {
             Id_Port=statement.getGeneratedKeys().getInt(1);
             return Id_Port;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);

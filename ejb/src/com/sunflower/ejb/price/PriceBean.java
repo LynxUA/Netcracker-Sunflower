@@ -1,6 +1,7 @@
 package com.sunflower.ejb.price;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.Connection;
@@ -20,7 +21,7 @@ public class PriceBean implements EntityBean {
     private float price_of_location;
     private int id_service;
     private int id_prov_location;
-
+    private final static Logger logger = Logger.getLogger(PriceBean.class);
     private EntityContext entityContext;
 
     public PriceBean() {
@@ -39,8 +40,7 @@ public class PriceBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -69,8 +69,7 @@ public class PriceBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -103,8 +102,7 @@ public class PriceBean implements EntityBean {
             id_prov_location = resultSet.getInt(4);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -131,8 +129,7 @@ public class PriceBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -153,8 +150,7 @@ public class PriceBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -204,10 +200,7 @@ public class PriceBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            System.out.println(e.getMessage());
-            System.out.println("тут");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception in ejbFindByPrimaryKey");
         } finally {
             try {
@@ -215,7 +208,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -230,8 +223,7 @@ public class PriceBean implements EntityBean {
             try {
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                System.out.println("Something wrong with connection");
+                logger.error(e.getMessage(), e);
 
             }
 
@@ -248,7 +240,7 @@ public class PriceBean implements EntityBean {
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new EJBException("SELECT exception");
 
         } finally {
@@ -257,7 +249,7 @@ public class PriceBean implements EntityBean {
                     connection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 

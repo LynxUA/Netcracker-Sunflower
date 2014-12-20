@@ -1,6 +1,7 @@
 package com.sunflower.ejb.device;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.Connection;
@@ -16,7 +17,7 @@ public class DeviceBean implements EntityBean {
     private String name;
     private int number_of_ports;
     private int id_prov_location;
-
+    private final static Logger logger = Logger.getLogger(DeviceBean.class);
     private EntityContext entityContext;
     public DeviceBean() {
     }
@@ -34,8 +35,7 @@ public class DeviceBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -65,8 +65,7 @@ public class DeviceBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -98,6 +97,7 @@ public class DeviceBean implements EntityBean {
             id_prov_location = resultSet.getInt(" ID_PROV_LOCATION");
 
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка SELECT");
         } finally {
             DataSource.closeConnection(connection);
@@ -126,6 +126,7 @@ public class DeviceBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
             throw new EJBException("Ошибка UPDATE");
         } finally {
             DataSource.closeConnection(connection);

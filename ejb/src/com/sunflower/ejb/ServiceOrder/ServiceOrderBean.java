@@ -3,6 +3,7 @@ package com.sunflower.ejb.ServiceOrder;
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.task.UserWasAssignedException;
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.*;
@@ -25,7 +26,7 @@ public class ServiceOrderBean implements EntityBean {
     private Date so_date;
     float longtitude;
     float latitude;
-
+    private final static Logger logger = Logger.getLogger(ServiceOrderBean.class);
     private EntityContext entityContext;
     private OracleDataSource dataSource;
 
@@ -42,8 +43,7 @@ public class ServiceOrderBean implements EntityBean {
                 connection = dataSource.getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
                 throw new UnknownError();
             }
             statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE ID_ORDER = ?");
@@ -54,8 +54,7 @@ public class ServiceOrderBean implements EntityBean {
             }
             return Integer.valueOf(key);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -67,7 +66,7 @@ public class ServiceOrderBean implements EntityBean {
         try {
             dataSource = new OracleDataSource();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         dataSource.setURL("jdbc:oracle:thin:@//194.44.143.139:1521/XE");
         dataSource.setUser("sunflower");
@@ -89,8 +88,7 @@ public class ServiceOrderBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -127,8 +125,7 @@ public class ServiceOrderBean implements EntityBean {
             latitude = resultSet.getFloat(8);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -158,8 +155,7 @@ public class ServiceOrderBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -207,7 +203,7 @@ public class ServiceOrderBean implements EntityBean {
                 connection = dataSource.getConnection();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
                 throw new UnknownError();
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_ORDER " +
@@ -231,8 +227,7 @@ public class ServiceOrderBean implements EntityBean {
             }
             return id_order;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -265,8 +260,7 @@ public class ServiceOrderBean implements EntityBean {
             }
             return orders;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -288,8 +282,7 @@ public class ServiceOrderBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -322,8 +315,7 @@ public class ServiceOrderBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);

@@ -1,6 +1,7 @@
 package com.sunflower.ejb.servicelocation;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.Connection;
@@ -17,7 +18,8 @@ public class ServiceLocationBean implements EntityBean {
     private int id_prov_location;
     private int id_order;
     private EntityContext entityContext;
-
+    private final static Logger logger = Logger.getLogger(ServiceLocationBean.class);
+    
     public ServiceLocationBean() {
     }
 
@@ -29,8 +31,7 @@ public class ServiceLocationBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             }catch(SQLException e)
             {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
                 throw new UnknownError();
 
             }
@@ -42,8 +43,7 @@ public class ServiceLocationBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -72,8 +72,7 @@ public class ServiceLocationBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -105,8 +104,7 @@ public class ServiceLocationBean implements EntityBean {
             id_order = resultSet.getInt(3);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -128,8 +126,7 @@ public class ServiceLocationBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -147,7 +144,7 @@ public class ServiceLocationBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
                 throw new UnknownError();
             }
             statement = connection.prepareStatement("INSERT INTO SERVICE_LOCATION"
@@ -161,8 +158,7 @@ public class ServiceLocationBean implements EntityBean {
             id_serv_location = statement.getGeneratedKeys().getInt(1);
             return id_serv_location;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);

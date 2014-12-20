@@ -311,10 +311,6 @@
         <url-pattern>/cancelOrder</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Log4JInitServlet</servlet-name>
-        <url-pattern>/init</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ChangeInfoServlet</servlet-name>
         <url-pattern>/change_info</url-pattern>
     </servlet-mapping>

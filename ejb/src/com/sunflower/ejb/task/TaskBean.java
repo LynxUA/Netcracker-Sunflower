@@ -1,6 +1,7 @@
 package com.sunflower.ejb.task;
 
 import com.sunflower.ejb.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import java.sql.*;
@@ -18,7 +19,7 @@ public class TaskBean implements EntityBean {
     private int id_group_user;
     private int id_order;
     private String login;
-
+    private final static Logger logger = Logger.getLogger(TaskBean.class);
     private EntityContext entityContext;
     public TaskBean() {
 
@@ -37,8 +38,7 @@ public class TaskBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -69,8 +69,7 @@ public class TaskBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -104,8 +103,7 @@ public class TaskBean implements EntityBean {
             login = resultSet.getString(4);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -129,8 +127,7 @@ public class TaskBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -149,7 +146,7 @@ public class TaskBean implements EntityBean {
                 connection = DataSource.getDataSource().getConnection();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
                 throw new UnknownError();
             }
             statement = connection.prepareStatement("INSERT INTO TASK"
@@ -167,8 +164,7 @@ public class TaskBean implements EntityBean {
             id_task=rs.getInt(1);
             return id_task;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -199,8 +195,7 @@ public class TaskBean implements EntityBean {
            }
            return tasks;
        } catch (SQLException e) {
-           System.out.println(e.getMessage());
-           e.printStackTrace();
+           logger.error(e.getMessage(), e);
            throw new UnknownError();
        } finally {
            DataSource.closeConnection(connection);
@@ -255,8 +250,7 @@ public class TaskBean implements EntityBean {
             resultSet.next();
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -299,8 +293,7 @@ public class TaskBean implements EntityBean {
                 throw new NoSuchEntityException("...");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -327,8 +320,7 @@ public class TaskBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);

@@ -5,6 +5,7 @@ package com.sunflower.ejb.user;
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.ServiceOrder.SOWrapper;
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.log4j.Logger;
 
 import javax.ejb.*;
 import javax.naming.Context;
@@ -27,7 +28,7 @@ public class UserBean implements EntityBean {
     private String name;
     private String surname;
     private String password;
-
+    private final static Logger logger = Logger.getLogger(UserBean.class);
     private int group;
 
     private EntityContext entityContext;
@@ -47,8 +48,7 @@ public class UserBean implements EntityBean {
             }
             return key;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -79,8 +79,7 @@ public class UserBean implements EntityBean {
                 throw new RemoveException("Exception while deleting");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -114,9 +113,8 @@ public class UserBean implements EntityBean {
             group = resultSet.getInt(5);
 
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        } catch (SQLException e) {;
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -143,8 +141,7 @@ public class UserBean implements EntityBean {
                 throw new NoSuchEntityException("No such entity");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -184,8 +181,7 @@ public class UserBean implements EntityBean {
             }
             return login;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -216,8 +212,7 @@ public class UserBean implements EntityBean {
             return login;
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -240,8 +235,7 @@ public class UserBean implements EntityBean {
             return login;
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -299,8 +293,7 @@ public class UserBean implements EntityBean {
             }
             return keys;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -323,8 +316,7 @@ public class UserBean implements EntityBean {
             }
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -348,8 +340,7 @@ public class UserBean implements EntityBean {
             }
             return customers;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
@@ -380,8 +371,7 @@ public class UserBean implements EntityBean {
 
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
