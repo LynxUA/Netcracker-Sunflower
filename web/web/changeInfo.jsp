@@ -29,27 +29,28 @@
         <div class="panel-body">
 
           <form method="post" action="change_info">
-
+            <p>Name:</p>
             <%if(request.getAttribute("name_error") != null && !((String) request.getAttribute("name_error")).isEmpty()){%>
             <div class="alert alert-danger" role="alert">${requestScope.name_error}</div>
             <%}%>
             <div class="form-group">
               <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Name" value="<%=customer.getName()%>" tabindex="4">
             </div>
+            <p>Surname:</p>
             <%if(request.getAttribute("surname_error") != null && !((String) request.getAttribute("surname_error")).isEmpty()){%>
             <div class="alert alert-danger" role="alert">${requestScope.surname_error}</div>
             <%}%>
             <div class="form-group">
               <input type="text" name="surname" id="surname" class="form-control input-lg" placeholder="Surname" value="<%=customer.getSurname()%>" tabindex="4">
             </div>
-
+            <p>Password:</p>
             <%if(request.getAttribute("password_error") != null && !((String) request.getAttribute("password_error")).isEmpty()){%>
             <div class="alert alert-danger" role="alert">${requestScope.password_error}</div>
             <%}%>
             <div class="form-group">
               <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" value="<%=customer.getPassword()%>" tabindex="4">
             </div>
-
+            <p>Password check:</p>
             <div class="form-group">
               <input type="password" name="repeat_password" id="repeat_password" class="form-control input-lg" placeholder="Repeat password" value="<%=customer.getPassword()%>" tabindex="4">
             </div>

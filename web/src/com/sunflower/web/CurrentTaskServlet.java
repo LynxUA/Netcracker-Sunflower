@@ -46,6 +46,7 @@ public class CurrentTaskServlet extends HttpServlet {
                 if(Id_Scenario==1) {
                     localServiceInstance.setStatus(2);
                     localServiceOrder.setId_status(4);
+                    localTask.setDescription("Connect ports for " + localServiceOrder.getUserLogin() + "'s instance");
                     request.setAttribute("result", "<font color=\"#191970\">Task is completed</font>");
                     request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
                 }
