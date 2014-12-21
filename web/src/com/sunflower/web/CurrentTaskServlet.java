@@ -61,18 +61,20 @@ public class CurrentTaskServlet extends HttpServlet {
         if (action.equals("completeIE"))
         {
           String[] description=request.getParameter("Description").split("Cable id = ");
+
             if(description.length <= 1) {
                 request.setAttribute("result", "<font color=\"#191970\">Create cable please</font>");
                 request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
                 return;
             }
+            int Cable_id=Integer.parseInt(description[1]);
             String lgn = null;
             String[] lgn1= description[0].split("for");
             String[] lgn2=lgn1[1].split("inst");
             lgn=lgn2[0];
             localTask.setId_group_user(4);
             localTask.setLogin(null);
-            localTask.setDescription("Assign port for"+lgn+"instance "+",Cable Id = "+description[1]);
+            localTask.setDescription("Assign port for"+lgn+"instance "+",Cable Id = "+Cable_id);
 
             request.setAttribute("result", "<font color=\"#191970\">Task is completed</font>");
             request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
