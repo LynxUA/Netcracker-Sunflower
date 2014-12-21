@@ -16,4 +16,6 @@ public interface LocalServiceOrder extends EJBLocalObject {
     public String getUserLogin();
     public int getId_order();
     public int getId_price();
+    public float getLatitude();
+    public float getLongtitude();
 }

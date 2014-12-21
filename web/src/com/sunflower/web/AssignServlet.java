@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 @WebServlet(name = "AssignServlet")
 public class AssignServlet extends HttpServlet {
     private ServletContext context;
-    private static Logger logger = Logger.getLogger(AssignServlet.class)
+    private static Logger logger = Logger.getLogger(AssignServlet.class);
     @Override
       public void init(ServletConfig config) throws ServletException {
         this.context = config.getServletContext();

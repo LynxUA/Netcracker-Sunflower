@@ -83,7 +83,7 @@
 
 
 <div class="container" style="padding-bottom: 30px">
-  <h3>Service orders</h3>
+  <h3>Service instances</h3>
   <%if(serviceInstances.size() == 0){%>
 
   <h1>Sorry, but you don`t have any service instances.</h1>
@@ -98,22 +98,24 @@
           <th>Service</th>
           <th>Service Location</th>
           <th>Provider office</th>
+          <%if(status == UserGroups.CUSTOMER){%><th>Disconnect</th><%}%>
         </tr>
         </thead>
         <tbody>
         <%for(SIWrapper instance:serviceInstances){%>
+        <tr>
         <td><%=instance.getId_service_inst()%></td>
         <td><span
                 <%
-                if(instance.getStatusName().compareTo("Planned")==0){
+                if(instance.getStatusName().contains("Planned")){
                 %>
                 class="label label-warning"
                 <%
-                } else if(instance.getStatusName().equals("Active")){
+                } else if(instance.getStatusName().contains("Active")){
                 %>
                 class="label label-success"
                 <%
-                }else if(instance.getStatusName().equals("Disconnected")){
+                }else if(instance.getStatusName().contains("Disconnected")){
                 %>
                 class="label label-danger"
                 <%
@@ -123,12 +125,11 @@
               <%=instance.getStatusName()%></span>
         </td>
         <td><%=instance.getServiceName()%></td>
-        </td>
         <td><%=instance.getLongtitude()%> <%=instance.getLatitude()%></td>
-        </td>
-        <td><%=instance.getLocation()%></td>
+        <td><%=instance.getLocation()%></td><td><%if(status == UserGroups.CUSTOMER && instance.getStatusName().contains("Active"))
+        {%><a href="disconnect?id_service_inst=<%=instance.getId_service_inst()%>">Disconnect</a><%}%></td>
         </tr>
-        <%}%>
+            <%}%>
         </tbody>
       </table>
     </div>
@@ -138,11 +139,11 @@
   <%if(numberOfRecords >10){%>
   <div class="pagination pagination-centered">
     <ul class="pagination pagination-centered">
-      <li class="<%if(to/10==1){%>disabled<%}else{%>active<%}%>"><a href="user_so?from=1&to=10">&laquo;</a></li>
-      <%if(!(to/10 == 1)){%><li class="active"><a href="user_so?from=<%=from-10%>&to=<%=to-10%>"><%=(to-10)/10%></a></li><%}%>
+      <li class="<%if(to/10==1){%>disabled<%}else{%>active<%}%>"><a href="user_si?from=1&to=10">&laquo;</a></li>
+      <%if(!(to/10 == 1)){%><li class="active"><a href="user_si?from=<%=from-10%>&to=<%=to-10%>"><%=(to-10)/10%></a></li><%}%>
       <li class="disabled"><a href="#"><%=to/10%></a></li>
-      <%if(!(from+10 > numberOfRecords )){%><li class="active"><a href="user_so?from=<%=from+10%>&to=<%=to+10%>"><%=(to+10)/10%></a></li><%}%>
-      <%if(!(from+20 > numberOfRecords )){%><li class="active"><a href="user_so?from=<%=numberOfRecords - (numberOfRecords%10)%>&to=<%=numberOfRecords/10%>">&raquo;</a></li><%}%>
+      <%if(!(from+10 > numberOfRecords )){%><li class="active"><a href="user_si?from=<%=from+10%>&to=<%=to+10%>"><%=(to+10)/10%></a></li><%}%>
+      <%if(!(from+20 > numberOfRecords )){%><li class="active"><a href="user_si?from=<%=numberOfRecords - (numberOfRecords%10)%>&to=<%=numberOfRecords/10%>">&raquo;</a></li><%}%>
     </ul>
   </div>
   <%}%>

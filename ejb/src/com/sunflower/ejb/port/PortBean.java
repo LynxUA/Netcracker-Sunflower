@@ -166,12 +166,32 @@ public class PortBean implements EntityBean {
 
     }
 
-
     public int getId_Port(){return  Id_Port;}
     public int getStatus(){return  status;}
     public void setStatus(int status){this.status=status;}
     public int getId_Device(){return Id_Device;}
 
 
+    public int ejbHomeGetPortIdByInstance(int id_service_inst) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DataSource.getDataSource().getConnection();
+            statement = connection.prepareStatement("SELECT B.ID_PORT\n" +
+                    "FROM SERVICE_INSTANCE A, CIRCUIT B\n" +
+                    "WHERE A.ID_CIRCUIT = B.ID_CIRCUIT(+) AND A.ID_SERVICE_INST=?");
+            statement.setInt(1, id_service_inst);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new SQLException();
+            }
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new UnknownError();
+        } finally {
+            DataSource.closeConnection(connection);
+        }
+    }
 }
 

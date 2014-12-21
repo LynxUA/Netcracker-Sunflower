@@ -186,6 +186,14 @@ public class ServiceOrderBean implements EntityBean {
     }
     public int getId_price() {return  id_price; }
 
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public float getLongtitude() {
+        return longtitude;
+    }
+
     public Integer ejbCreate(int id_scenario, String login, int id_price, int id_service_inst, float longtitude, float latitude) throws CreateException {
         this.id_status = 1; //SOStatuses.Entering
         this.id_scenario = id_scenario;
@@ -314,6 +322,32 @@ public class ServiceOrderBean implements EntityBean {
             if (statement.executeUpdate() < 1) {
                 throw new NoSuchEntityException("...");
             }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new UnknownError();
+        } finally {
+            DataSource.closeConnection(connection);
+        }
+    }
+
+    public Integer ejbFindByInstanceId(int id_service_inst) throws FinderException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            try {
+                connection = dataSource.getConnection();
+            }catch(SQLException e)
+            {
+                logger.error(e.getMessage(), e);
+                throw new UnknownError();
+            }
+            statement = connection.prepareStatement("SELECT ID_ORDER FROM SERVICE_ORDER WHERE ID_SERVICE_INST = ?");
+            statement.setInt(1, id_service_inst);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new ObjectNotFoundException("...");
+            }
+            return resultSet.getInt(1);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();

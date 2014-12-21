@@ -77,14 +77,14 @@ int status;
             %>
                 <li><a href="/webWeb/">Home</a></li>
                 <li><a href="tasks">Tasks</a></li>
-                <li><a href="#">Current task</a></li>
+                <li><a href="task_pe">Current task</a></li>
             <%
                 break;
               case UserGroups.IE:
             %>
                 <li><a href="/webWeb/">Home</a></li>
                 <li><a href="tasks">Tasks</a></li>
-                <li><a href="#">Current task</a></li>
+                <li><a href="task_ie">Current task</a></li>
             <%
                   break;
               }

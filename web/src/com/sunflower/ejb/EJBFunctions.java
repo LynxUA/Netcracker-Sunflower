@@ -233,8 +233,9 @@ public class EJBFunctions {
             //createTask(order.getId_order());
         }else if(id_service_inst !=null && id_scenario == Scenarios.DISCONNECT){
             order = plainCreateServiceOrder(id_service_inst, id_scenario, login, id_price, longtitude, latitude);
+            int id_port = getPortByInstance(id_service_inst);
             try {
-                createTask("Disconnect ports for "+login+"'s instance", UserGroups.IE, order.getId_order());
+                createTask("Disconnect ports for "+login+"'s instance, Port="+id_port, UserGroups.PE, order.getId_order());
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 throw new UnknownError();
@@ -270,6 +271,23 @@ public class EJBFunctions {
             e.printStackTrace();
             throw new UnknownError();
         }
+    }
+    private static int getPortByInstance(int id_service_inst){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            logger.error(e.getMessage(), e);
+            throw new UnknownError();
+        }
+        LocalPortHome home;
+        try {
+            home = (LocalPortHome)ic.lookup("java:comp/env/ejb/Port");
+        } catch (NamingException e) {
+            logger.error(e.getMessage(), e);
+            throw new UnknownError();
+        }
+        return home.getPortIdByInstance(id_service_inst);
     }
 
     private static boolean isLocationHasFreePorts(int id_prov_location) {
@@ -467,7 +485,7 @@ public class EJBFunctions {
         }
     }
 
-    public static Collection findByProviderLocationId(int id){
+    public static Collection findServiceByProviderLocationId(int id){
         InitialContext ic;
         try {
             ic = new InitialContext();
@@ -886,5 +904,30 @@ public class EJBFunctions {
 
         return home.getSLByLogin(login);
     }
+    public static LocalServiceOrder findSOBySI(int id_service_inst){
+        InitialContext ic = null;
+        try {
+            ic = new InitialContext();
+        } catch (NamingException e) {
+            logger.error(e.getMessage(), e);
+            throw new UnknownError();
+        }
+        LocalServiceOrderHome home = null;
+        try {
+            home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
+        } catch (NamingException e) {
+            logger.error(e.getMessage(), e);
+            throw new UnknownError();
+        }
+        LocalServiceOrder service_order;
+        try {
+            service_order = home.findByInstanceId(id_service_inst);
+            return service_order;
+        } catch (FinderException e) {
+            logger.error(e.getMessage(), e);
+            throw new UnknownError();
+        }
+    }
+
 
 }

@@ -14,7 +14,6 @@
 }
 function getports() {
     var router = document.getElementById('router');
-
     $$a({
 
             type:'get',//тип запроса: get,post либо head

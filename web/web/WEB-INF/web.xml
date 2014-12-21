@@ -197,6 +197,18 @@
         <servlet-name>ErrorServlet</servlet-name>
         <servlet-class>com.sunflower.web.ErrorServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DisconnectInstanceServlet</servlet-name>
+        <servlet-class>com.sunflower.system.DisconnectInstanceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CurrentTaskIEServlet</servlet-name>
+        <servlet-class>com.sunflower.web.CurrentTaskIEServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CurrentTaskPEServlet</servlet-name>
+        <servlet-class>com.sunflower.web.CurrentTaskPEServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>LoggerServlet</servlet-name>
@@ -329,6 +341,18 @@
     <servlet-mapping>
         <servlet-name>ErrorServlet</servlet-name>
         <url-pattern>/error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisconnectInstanceServlet</servlet-name>
+        <url-pattern>/disconnect</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CurrentTaskIEServlet</servlet-name>
+        <url-pattern>/task_ie</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CurrentTaskPEServlet</servlet-name>
+        <url-pattern>/task_pe</url-pattern>
     </servlet-mapping>
     
     <ejb-local-ref>
