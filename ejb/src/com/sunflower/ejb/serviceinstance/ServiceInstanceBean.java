@@ -1,7 +1,6 @@
 package com.sunflower.ejb.serviceinstance;
 
 import com.sunflower.ejb.DataSource;
-import com.sunflower.ejb.ServiceOrder.SOWrapper;
 import com.sunflower.ejb.servicelocation.ServiceLocationBean;
 import org.apache.log4j.Logger;
 
@@ -208,13 +207,13 @@ public class ServiceInstanceBean implements EntityBean {
 
     public Collection ejbHomeGetServiceInstances(String login, int from, int to) {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT A,B,C, D, E, F\n" +
+            statement = connection.prepareStatement("SELECT DISTINCT A,B,C, D, E, F\n" +
                     "FROM (SELECT SERVICE_ORDER.ID_SERVICE_INST AS A, SI_STATUS.NAME AS B, SERVICE.NAME AS C, SERVICE_ORDER.LONGTITUDE AS D, SERVICE_ORDER.LATITUDE AS E, PROVIDER_LOCATION.LOCATION AS F, ROWNUM R\n" +
                     "FROM ((((SERVICE_ORDER JOIN SERVICE_INSTANCE ON SERVICE_ORDER.ID_SERVICE_INST = SERVICE_INSTANCE.ID_SERVICE_INST) JOIN SI_STATUS ON SERVICE_INSTANCE.STATUS = SI_STATUS.ID_STATUS) JOIN PRICE ON SERVICE_ORDER.ID_PRICE = PRICE.ID_PRICE) JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE) JOIN PROVIDER_LOCATION ON PRICE.ID_PROV_LOCATION = PROVIDER_LOCATION.ID_PROV_LOCATION\n" +
-                    "WHERE LOGIN = ? )\n" +
+                    "WHERE LOGIN = ?)\n" +
                     "WHERE R >= ? AND R <=?");
             statement.setString(1, login);
             statement.setInt(2, from);

@@ -35,7 +35,7 @@ public class MailServer {
         rootMap.put("name", name);
         rootMap.put("login", login);
         rootMap.put("password", password);
-        sendMessage(email, rootMap, "mail-registration-template.ftl","Registration on SunFlower");
+        sendMessage(email, rootMap, "/Developer/Java_EE/glassfish4/glassfish/config/mail-registration-template.ftl","Registration on SunFlower");
     }
 
     protected static void messagePasswordReminder(String email){

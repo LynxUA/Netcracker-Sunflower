@@ -115,7 +115,8 @@
 </div>
 <%if (state)
 {%>
-<p>
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%" >
 <form method="get" action="currenttask">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
     <input type="hidden" name="action" value="completeIE" style=" width:0">
@@ -134,7 +135,7 @@
     <input type="hidden" name="action" value="unassignIE" style=" width:0">
     <button type="submit" class="btn btn-primary" value="unassign">Unassign Task</button>
 </form>
-</p>
+</div>
 <%} else{%>
 <p>
     <button type="submit" class="btn btn-primary" value="Complete" disabled>Complete</button>
@@ -144,7 +145,8 @@
 </p>
 <%}%>
 <%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
-<p name="result">${requestScope.result}</p>
+<div  style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%"  name="result">${requestScope.result}</div>
 <%}%>
 
 <%@include file="footer.jsp"%>

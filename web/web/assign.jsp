@@ -22,6 +22,8 @@
   <%@ page import="javax.ejb.FinderException" %>
 
   <script type="text/javascript"  src="js/assign.js" ></script>
+
+  <script type="text/javascript" src="js/scriptjava.js"></script>
   <style>
     aside {
       padding: 10px;
@@ -31,7 +33,7 @@
     select, input {
       padding:0.5% 2% 0.5% 2% ;
       margin: 0.5% 2% 0.5% 2%;
-      width: 15%;
+      width: 30%;
       height: 4%;
     }
     p {padding: 0.3% 7% 0.3% 7%;
@@ -43,7 +45,9 @@
       padding: 0;
       margin: 0}
     button{
-      width:15%;
+      padding:0.5% 2% 0.5% 2% ;
+      margin: 0.5% 2% 0.5% 2%;
+      width:20%;
     }
   </style>
 </head>
@@ -62,7 +66,8 @@
   </ul>
 </aside>
 
-<p align="right">
+<div style="padding: 1% 7% 1% 7%;
+margin: 1% 7% 1% 7%" align="right">
   <% Connection connection = null;
     PreparedStatement statement;
     int Scenario=0;
@@ -101,13 +106,7 @@
 
 <form method="get" action="assign">
 
-  <select  onchange="   var router=document.getElementById('router');
-
-  var url = 'assign?action=getports&id_router=' + escape(router.value);
-
-
-
-  window.location.href = url;" id="router"  name="router">
+  <select  onchange="getports();" id="router"  name="router">
   <option selected="true" style="display:none;"  value="">Select router</option>
 
     <%
@@ -143,34 +142,35 @@
   </select>
   </form>
 <form method="get" action="assign">
-  <input type="hidden" name="action" value="assign" style=" width:0">
-  <select name="Id_Port">
+
+  <select name="Id_Port" id="Id_Port">
 
     <option selected="true" style="display:none;" >Select Port</option>
-    <%if(request.getAttribute("ports") != null && !((String) request.getAttribute("ports")).isEmpty()){%>
-    ${requestScope.ports}
-    <%}%>
+
     <!--<option selected="true" style="display:none;" >Select router</option>-->
   </select>
-
-  <button align="right"  class="btn btn-primary" width="15%"  type="submit">Assign port  </button>
+  <input type="hidden" name="action" value="assign" style=" width:20%">
+  <button align="right"  class="btn btn-primary" width="15%"  type="submit"<%if(request.getAttribute("result")!=null){ if (request.getAttribute("result").equals("<font color=\"#191970\">port assigned<font>)")){%> disabled<%}}%>>Assign port  </button>
   </form>
-</p>
-<p align="right">
+</div>
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%" align="right">
 
 <form method="get" action="assign" align="right">
   <input type="hidden" name="action" value="createCir" style=" width:0">
   <button  align="right"  class="btn btn-primary" width="15%" type="submit" >Create circuit</button>
-</form> </p>
+</form> </div>
 
-<p align="right">
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%" align="right">
 <form method="get" action="assign">
   <input  type="text" name="unports" placeholder="Write port id" onkeyup="this.value=this.value.replace(/[^0-9]+/g,''); isrightm(this);" >
-  <input type="hidden" name="action" value="unassign" style=" width:0">
+  <input type="hidden" name="action" value="unassign" style=" width:55%">
 <button  align="right"  class="btn btn-primary" width="15%" type="submit">Unassign port</button>
 </form>
-</p>
-<p align="right">
+</div>
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%" align="right">
 <%if(Scenario==3){%>
 <form method="get" action="assign">
   <input type="hidden" name="action" value="remove" style=" width:0">
@@ -180,9 +180,10 @@
 
 <button  align="right"  class="btn btn-primary" width="15%" disabled>Remove the circuit</button>
 <% }%>
-</p>
+</div>
 <%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
-<p name="result">${requestScope.result}</p>
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%"  align="right" name="result">${requestScope.result}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 <%}%>
 <%  } catch (SQLException e) {
       throw new EJBException("SELECT exception in assign");

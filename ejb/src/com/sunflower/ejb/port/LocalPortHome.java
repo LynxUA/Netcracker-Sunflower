@@ -15,5 +15,5 @@ public interface LocalPortHome extends EJBLocalHome {
 
     public LocalPort findByPrimaryKey(Integer key) throws FinderException;
     public LocalPort create(int status, int Id_Device) throws CreateException;
-
+    public int getPortIdByInstance(int id_service_inst);
 }

@@ -68,11 +68,11 @@
     <%if(numberOfRecords >10){%>
     <div class="pagination pagination-centered">
       <ul class="pagination pagination-centered">
-        <li class="<%if(to/10==1){%>disabled<%}else{%>active<%}%>"><a href="users?from=1&to=10">&laquo;</a></li>
-        <%if(!(to/10 == 1)){%><li class="active"><a href="users?from=<%=from-10%>&to=<%=to-10%>"><%=(to-10)/10%></a></li><%}%>
+        <li class="<%if(to/10==1){%>disabled<%}else{%>active<%}%>"><a href="tasks?from=1&to=10">&laquo;</a></li>
+        <%if(!(to/10 == 1)){%><li class="active"><a href="tasks?from=<%=from-10%>&to=<%=to-10%>"><%=(to-10)/10%></a></li><%}%>
         <li class="disabled"><a href="#"><%=to/10%></a></li>
-        <%if(!(from+10 > numberOfRecords )){%><li class="active"><a href="users?from=<%=from+10%>&to=<%=to+10%>"><%=(to+10)/10%></a></li><%}%>
-        <%if(!(from+20 > numberOfRecords )){%><li class="active"><a href="users?from=<%=numberOfRecords - (numberOfRecords%10)%>&to=<%=numberOfRecords/10%>">&raquo;</a></li><%}%>
+        <%if(!(from+10 > numberOfRecords )){%><li class="active"><a href="tasks?from=<%=from+10%>&to=<%=to+10%>"><%=(to+10)/10%></a></li><%}%>
+        <%if(!(from+20 > numberOfRecords )){%><li class="active"><a href="tasks?from=<%=numberOfRecords - (numberOfRecords%10)%>&to=<%=numberOfRecords/10%>">&raquo;</a></li><%}%>
       </ul>
     </div>
     <%}%>

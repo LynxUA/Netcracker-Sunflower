@@ -80,7 +80,7 @@
               System.out.println("war2");
               System.out.println((String)request.getSession().getAttribute("login"));
             statement = connection.prepareStatement("SELECT" +
-             " t.ID_TASK, t.DESCRIPTION,so.Id_Service_Inst,so.ID_ORDER,so.Id_Scenario" +
+             " t.ID_TASK, t.DESCRIPTION,so.Id_Service_Inst,so.ID_ORDER,so.Id_Scenario,si.Id_Circuit" +
              " from SERVICE_ORDER so " +
               "INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE" +
               " INNER  join PROVIDER_LOCATION pl" +
@@ -119,8 +119,13 @@
 </div>
 <%if(state)
 {%>
-<p>
-<form method="get" action="currenttask">
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%">
+    <% if(((resultSet.getInt(5)==3)&&(resultSet.getInt(6)!=0))||((resultSet.getInt(5)==1)&&(resultSet.getInt(6)==0))){ %>
+    <button type="submit" class="btn btn-primary" value="Complete" disabled>Complete</button>
+    <% } else{%>
+<form style="padding: 0;
+      margin: 0 " method="get" action="currenttask">
     <input type="hidden" name="action" value="complete" style=" width:0">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
     <input type="hidden" name="Id_Si" value="<%=resultSet.getInt(3)%>" style=" width:0">
@@ -128,30 +133,35 @@
     <input type="hidden" name="Id_Scenario" value="<%=resultSet.getInt(5)%>" style=" width:0">
     <button type="submit" class="btn btn-primary" value="Complete">Complete</button>
 </form>
-<form method="get" action="currenttask">
+    <%}  %>
+<form style="padding: 0;
+      margin: 0 "  method="get" action="currenttask">
     <input type="hidden" name="action" value="suspendPE" style=" width:0">
     <input type="hidden" name="Id_Order" value="<%=resultSet.getInt(4)%>" style=" width:0">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
     <button type="submit" class="btn btn-primary" value="Suspend">Suspend</button>
     </form>
 
-<form method="get" action="currenttask?action=unassign&key=<%=resultSet.getInt(1)%>">
+<form style="padding: 0;
+      margin: 0 "  method="get" action="currenttask?action=unassign&key=<%=resultSet.getInt(1)%>">
     <input type="hidden" name="action" value="unassignPE" style=" width:0">
     <input type="hidden" name="key" value="<%=resultSet.getInt(1)%>" style=" width:0">
     <button type="submit" class="btn btn-primary" value="unassign">Unassign Task</button>
 </form>
-</p>
+</div>
 <%} else{%>
-<p>
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%">
     <button type="submit" class="btn btn-primary" value="Complete" disabled>Complete</button>
 
     <button type="submit" class="btn btn-primary" value="Suspend" disabled>Suspend</button>
     <button type="submit" class="btn btn-primary" value="unassign" disabled>Unassign Task</button>
-</p>
+</div>
 <%}%>
 
 <%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
-<p name="result">${requestScope.result}</p>
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%" name="result">${requestScope.result}</div>
 <%}%>
 <%@include file="footer.jsp"%>
 </body>

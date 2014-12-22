@@ -3,7 +3,6 @@ package com.sunflower.web;
 import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.EJBFunctions;
 import com.sunflower.ejb.task.LocalTask;
-import org.apache.log4j.Logger;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
@@ -19,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.apache.log4j.Logger;
 
 /**
  * Created by Алексей on 12/16/2014.
@@ -41,29 +41,49 @@ public class CreateDC extends HttpServlet {
         if(action.equals("cable")){
             if(request.getParameter("lenght")=="")
             {
-                request.setAttribute("result", "<font color=\"#191970\">Set lenght</font>");
+                request.setAttribute("result", "<font color=\"#ff0000\">Set lenght</font>");
                 request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
                 return;
             }
             float lenght= Float.valueOf(request.getParameter("lenght"));
             String type=request.getParameter("type");
-            System.out.println(lenght);
-            System.out.println(type);
+
 
             if(type.equals(""))
             {
-                request.setAttribute("result", "<font color=\"#191970\">Cable type is wrong</font>");
+                request.setAttribute("result", "<font color=\"#ff0000\">Please write cable type</font>");
                 request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
                 return;
             }
 
             Connection connection = null;
             PreparedStatement statement = null;
+            ResultSet rs;
             try {
                 try{
                     connection = DataSource.getDataSource().getConnection();
                 } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
                     throw new EJBException("Ошибка dataSource");
+                }
+                statement = connection.prepareStatement("SELECT t.ID_TASK FROM TASK t INNER JOIN SERVICE_ORDER so On so.ID_ORDER=t.ID_ORDER where t.login=? and so.Id_Status!=4 and so.Id_Status!=2");
+                statement.setString(1,(String)request.getSession().getAttribute("login"));
+                rs = statement.executeQuery();
+                if(!rs.next())
+                {
+
+                    request.setAttribute("result", "<font color=\"#ff0000\">Something wrong</font>");
+                    request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
+                }
+                int Id_Task=rs.getInt(1);
+                LocalTask localTask= EJBFunctions.findLocalTaskById(Id_Task);
+                String description=localTask.getDescription();
+                String[] desc=description.split("Cable id");
+                if (desc.length>1)
+                {
+                    request.setAttribute("result", "<font color=\"#191970\">Cable is already connected</font>");
+                    request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
+                    return;
                 }
                 statement = connection.prepareStatement("INSERT INTO CABLE"
                         + "(LENGHT ,TYPE ) VALUES(?, ?)");
@@ -72,34 +92,24 @@ public class CreateDC extends HttpServlet {
                 statement.executeQuery();
 
                 statement = connection.prepareStatement("SELECT MAX(ID_CABLE) FROM CABLE");
-                ResultSet rs = statement.executeQuery();
+                 rs = statement.executeQuery();
                 rs.next();
                 int id_cable=rs.getInt(1);
-                statement = connection.prepareStatement("SELECT t.ID_TASK FROM TASK t INNER JOIN SERVICE_ORDER so On so.ID_ORDER=t.ID_ORDER where t.login=? and so.Id_Status!=4");
-                statement.setString(1,(String)request.getSession().getAttribute("login"));
-                rs = statement.executeQuery();
-                if(!rs.next())
-                {
 
-                    request.setAttribute("result", "<font color=\"#191970\">Something wrong</font>");
-                    request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
-                }
-                int Id_Task=rs.getInt(1);
-                LocalTask localTask= EJBFunctions.findLocalTaskById(Id_Task);
-                String description=localTask.getDescription();
-                localTask.setDescription(description+" Cable ID = "+id_cable);
+                localTask.setDescription(description+" ,Cable id = "+id_cable);
                 request.setAttribute("result", "<font color=\"#191970\">Cable created</font>");
                 request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
             } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
                 //throw new EJBException("Ошибка INSERT");
-                System.out.println(e.getMessage());
+
             } finally {
                 try {
                     if (connection != null) {
                         connection.close();
                     }
                 } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
+                    e.printStackTrace();
                 }
             }
         }
@@ -110,6 +120,7 @@ public class CreateDC extends HttpServlet {
                 try{
                     connection = DataSource.getDataSource().getConnection();
                 } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
                     throw new EJBException("Ошибка dataSource");
                 }
                 statement = connection.prepareStatement("Select pl.Id_PRov_location From SERVICE_ORDER so INNER  JOIN  PRICE p " +
@@ -135,6 +146,8 @@ public class CreateDC extends HttpServlet {
                 request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
+                //throw new EJBException("Ошибка INSERT");
+
             } finally {
                 try {
                     if (connection != null) {
@@ -142,6 +155,7 @@ public class CreateDC extends HttpServlet {
                     }
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
+
                 }
             }
 

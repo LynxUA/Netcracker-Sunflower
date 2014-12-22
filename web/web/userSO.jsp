@@ -74,15 +74,15 @@
               %>
                   class="label label-primary"
             <%
-                        } else if(order.getStatus_name().compareTo("Processing")==0){
+                        } else if(order.getStatus_name().contains("Processing")){
                         %>
                   class="label label-warning"
             <%
-                        } else if(order.getStatus_name().equals("Completed")){
+                        } else if(order.getStatus_name().contains("Completed")){
                         %>
                   class="label label-success"
             <%
-                        }else if(order.getStatus_name().equals("Cancelled")){
+                        }else if(order.getStatus_name().contains("Cancelled")){
                         %>
                   class="label label-danger"
             <%

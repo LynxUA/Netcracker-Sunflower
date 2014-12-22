@@ -32,14 +32,12 @@
     select, input {
       padding:0.5% 2% 0.5% 2% ;
       margin: 0.5% 2% 0.5% 2%;
-      width: 20%;
+      width: 30%;
       height: 4%;
     }
     p {padding: 0.3% 7% 0.3% 7%;
       margin: 0.3% 7% 0.3% 7%  }
-    pre {
-      width:70%
-    }
+
     button{
       width:15%;
     }
@@ -60,7 +58,7 @@
   </ul>
 </aside>
 
-<p>
+
   <%--<% Connection connection = null;--%>
     <%--PreparedStatement statement;--%>
 
@@ -86,24 +84,26 @@
   <%--%>--%>
 
 
-
-<form style="padding: 0.3% 7% 0.3% 7%;
-      margin: 0.3% 7% 0.3% 7%" accept-charset="UTF-8" role="form"  action="CreateDC?action=device&option=device" method="get">
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%" align="right">
+<form accept-charset="UTF-8" role="form"  action="CreateDC?action=device&option=device" method="get">
   <input  type="text" name="lenght" placeholder="Lenght of cable in KM" onkeyup="this.value=this.value.replace(/[^0-9]+/g,'');" >
   <input  type="text" name="type" placeholder="Type of Cable"  >
   <input type="hidden" name="action" value="cable" style=" width:0">
-  <input  class="btn btn-primary" type="submit" align="right" style="float: right;  width:15%"    value="Create Cable">
+  <input align="right"  class="btn btn-primary" type="submit"  style="  width:15%"    value="Create Cable">
   </form>
-
-<form style="padding: 0.3% 7% 0.3% 7%;
-      margin: 0.3% 7% 0.3% 7%" accept-charset="UTF-8" role="form"  action="CreateDC?action=device&option=device" method="get">
+</div>
+<div style="padding: 1% 7% 1% 7%;
+margin: 1% 7% 1% 7%" align="right">
+<form accept-charset="UTF-8" role="form"  action="CreateDC?action=device&option=device" method="get">
   <input  type="text" name="Devicename" placeholder="Device Name" id="devicename" >
  <input type="hidden" name="action" value="device" style=" width:0">
-  <input  class="btn btn-primary" type="submit" align="right" style="float: right; width:15%"   value="Create Device">
+  <input   class="btn btn-primary" type="submit"  style=" width:15%"   value="Create Device">
 </form>
-
+</div>
 <%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
-<p name="result">${requestScope.result}</p>
+<div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%"  align="right" name="result">${requestScope.result}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 <%}%>
 
 
