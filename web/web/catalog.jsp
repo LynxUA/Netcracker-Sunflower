@@ -5,7 +5,8 @@
 <%
   String locationParam = request.getParameter("location");
   ArrayList<ProviderLocWrapper> locationList = EJBFunctions.getAllLocations();
-  ArrayList<PriceCatalog> catalogList = EJBFunctions.getServicePriceByLoc("Troeschina");
+  String firstLoc = (EJBFunctions.findProviderLocationById(1)).getLocation();
+  ArrayList<PriceCatalog> catalogList = EJBFunctions.getServicePriceByLoc(firstLoc);
   if(locationParam != null) {
     catalogList = EJBFunctions.getServicePriceByLoc(locationParam);
   }
