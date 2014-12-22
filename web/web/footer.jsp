@@ -11,7 +11,7 @@
     <nav id="myNavbar" class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
       <ul class="nav navbar-nav">
-        <li><a href="#">About us</a></li>
+        <li><a href="about_us">About us</a></li>
         <li><a href="contuctus">Contact us</a></li>
       </ul>
     </nav>

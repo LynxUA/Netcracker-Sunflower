@@ -9,7 +9,7 @@
 <html>
 <head>
   <%@include file="includes.jsp"%>
-  <title>Netcracker Sunflower</title>
+  <title>Sunflower</title>
 </head>
 <body>
 
