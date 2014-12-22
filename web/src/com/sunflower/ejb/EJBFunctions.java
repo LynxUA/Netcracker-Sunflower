@@ -43,15 +43,26 @@ public class EJBFunctions {
 
     private EJBFunctions(){}
 
+
+    /**
+     * @param login
+     * @param email
+     * @param name
+     * @param surname
+     * @param password
+     * @param group
+     * @return
+     * @throws CreateException
+     */
     public static LocalUser createUser(String login, String email, String name, String surname, String password, int group) throws CreateException {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalUserHome home = null;
+        LocalUserHome home;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
@@ -62,15 +73,22 @@ public class EJBFunctions {
         user = home.create(login, email, name, surname, password, group);
         return user;
     }
+
+
+    /**
+     * @param login
+     * @return
+     * @throws FinderException
+     */
     public static LocalUser findUser(String login) throws FinderException{
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalUserHome home = null;
+        LocalUserHome home;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
@@ -82,15 +100,24 @@ public class EJBFunctions {
         return user;
 
     }
+
+    /**
+     * @param login
+     * @param password
+     * @return
+     * @throws Exception
+     * @throws BadPasswordException
+     * @throws FinderException
+     */
     public static LocalUser login(String login, String password) throws Exception, BadPasswordException, FinderException {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalUserHome home = null;
+        LocalUserHome home;
         try{
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
@@ -102,6 +129,11 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * @param login
+     * @param password
+     * @throws NoSuchUserException
+     */
     public static void setPassword(String login, String password) throws NoSuchUserException {
         InitialContext ic;
         try {
@@ -124,15 +156,21 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * @param from
+     * @param to
+     * @return
+     * @throws Exception
+     */
     public static Vector<CustomerWrapper> getCustomers(int from, int to) throws Exception {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalUserHome home = null;
+        LocalUserHome home;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
@@ -143,15 +181,18 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * @return number of customers in the system
+     */
     public static int getNumberOfCustomers() throws FinderException {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalUserHome home = null;
+        LocalUserHome home;
         try {
             home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
         } catch (NamingException e) {
@@ -162,15 +203,21 @@ public class EJBFunctions {
 
     }
 
-    public static LocalTask createTask(String description, int id_group_user, int id_order) throws Exception {
-        InitialContext ic = null;
+    /**
+     * @param description
+     * @param id_group_user
+     * @param id_order
+     * @return
+     */
+    public static LocalTask createTask(String description, int id_group_user, int id_order){
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalTaskHome home = null;
+        LocalTaskHome home;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
@@ -186,6 +233,15 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @param id_service_inst
+     * @param id_scenario
+     * @param login
+     * @param id_price
+     * @param longtitude
+     * @param latitude
+     * @return
+     */
     public static LocalServiceOrder createServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price, float longtitude, float latitude){
         LocalServiceOrder order;
         if(id_service_inst == null && id_scenario == Scenarios.NEW){
@@ -202,7 +258,7 @@ public class EJBFunctions {
                 }
             }else{
                 try {
-                    createTask("Add new router for new instances", UserGroups.IE, order.getId_order());
+                    createTask("Add new router for new instances and connect cable", UserGroups.IE, order.getId_order());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw new UnknownError();
@@ -222,7 +278,7 @@ public class EJBFunctions {
                 }
             }else{
                 try {
-                    createTask("Add new router for new instances", UserGroups.IE, order.getId_order());
+                    createTask("Add new router for new instances and connect cable", UserGroups.IE, order.getId_order());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw new UnknownError();
@@ -246,16 +302,20 @@ public class EJBFunctions {
         }
         return order;
     }
-    
+
+    /**
+     * @param Id_Port
+     * @return
+     */
      public static LocalCircuit createCircuit(int Id_Port){
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalCircuitHome home = null;
+        LocalCircuitHome home;
         try {
             home = (LocalCircuitHome) ic.lookup("java:comp/env/ejb/Circuit");
         } catch (NamingException e) {
@@ -272,8 +332,13 @@ public class EJBFunctions {
             throw new UnknownError();
         }
     }
+
+    /**
+     * @param id_service_inst
+     * @return
+     */
     private static int getPortByInstance(int id_service_inst){
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
@@ -290,8 +355,12 @@ public class EJBFunctions {
         return home.getPortIdByInstance(id_service_inst);
     }
 
+    /**
+     * @param id_prov_location
+     * @return
+     */
     private static boolean isLocationHasFreePorts(int id_prov_location) {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
@@ -308,14 +377,20 @@ public class EJBFunctions {
         return home.isLocationHasFreePorts(id_prov_location);
 
     }
+
+    /**
+     * @param id_price
+     * @return
+     */
     private static int getProviderLocationByPrice(int id_price){
         InitialContext ic = null;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         }
-        LocalPriceHome home = null;
+        LocalPriceHome home;
         try {
             home = (LocalPriceHome) ic.lookup("java:comp/env/ejb/Price");
         } catch (NamingException e) {
@@ -331,15 +406,24 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @param id_service_inst
+     * @param id_scenario
+     * @param login
+     * @param id_price
+     * @param longtitude
+     * @param latitude
+     * @return
+     */
     private static LocalServiceOrder plainCreateServiceOrder(Integer id_service_inst, int id_scenario, String login, int id_price, float longtitude, float latitude){
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceOrderHome home = null;
+        LocalServiceOrderHome home;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
@@ -357,15 +441,19 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public static LocalServiceOrder findServiceOrder(int id) {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceOrderHome home = null;
+        LocalServiceOrderHome home;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
@@ -384,15 +472,21 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * @param login
+     * @param from
+     * @param to
+     * @return
+     */
     public static Collection findOrderByLogin(String login, int from , int to) {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceOrderHome home = null;
+        LocalServiceOrderHome home;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
@@ -411,14 +505,19 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * @param login
+     * @return
+     */
     public static int getNumberOfOrdersByLogin(String login) {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         }
-        LocalServiceOrderHome home = null;
+        LocalServiceOrderHome home;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
@@ -433,8 +532,13 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * @param longtitude
+     * @param latitude
+     * @return
+     */
     public static LocalProviderLocation findProviderLocation(float longtitude, float latitude){
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
@@ -459,8 +563,12 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public static LocalProviderLocation findProviderLocationById(int id){
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
@@ -485,6 +593,10 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public static Collection findServiceByProviderLocationId(int id){
         InitialContext ic;
         try {
@@ -509,7 +621,11 @@ public class EJBFunctions {
             throw new UnknownError();
         }
     }
-    
+
+    /**
+     * @param id
+     * @return
+     */
     public static LocalTask findLocalTaskById(int id){
         InitialContext ic;
         try {
@@ -536,6 +652,11 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @param longtitude
+     * @param latitude
+     * @return
+     */
     public static float getDestinationToProvider(float longtitude, float latitude){
         InitialContext ic;
         try {
@@ -562,6 +683,11 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @param service
+     * @param providerLocation
+     * @return
+     */
     public static LocalPrice findPrice(int service, int providerLocation){
         InitialContext ic;
         try {
@@ -587,6 +713,10 @@ public class EJBFunctions {
     }
 
 
+    /**
+     * @param status
+     * @return
+     */
     public static LocalServiceInstance createServiceInstance(int status){
         InitialContext ic;
         try {
@@ -614,6 +744,9 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @return
+     */
     public static ArrayList<ProviderLocWrapper> getAllLocations(){
         InitialContext ic;
         try {
@@ -638,10 +771,14 @@ public class EJBFunctions {
         return locations;
     }
 
+    /**
+     * @param location
+     * @return
+     */
     public static ArrayList<PriceCatalog> getServicePriceByLoc(String location){
 
-        InitialContext ic = null;
-        LocalPriceHome home = null;
+        InitialContext ic;
+        LocalPriceHome home;
 
         try {
 
@@ -654,7 +791,7 @@ public class EJBFunctions {
 
         }
 
-        ArrayList<PriceCatalog> catalogs = null;
+        ArrayList<PriceCatalog> catalogs;
 
         try {
             catalogs = (ArrayList<PriceCatalog>) home.getServicePriceByLoc(location);
@@ -665,15 +802,22 @@ public class EJBFunctions {
         return catalogs;
     }
 
+    /**
+     * @param id_group_user
+     * @param from
+     * @param to
+     * @return
+     * @throws Exception
+     */
     public static Vector<TaskWrapper> getTasksByEngineer(int id_group_user, int from, int to) throws Exception {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalTaskHome home = null;
+        LocalTaskHome home;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
@@ -685,18 +829,25 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * @param id_group_user
+     * @return
+     * @throws Exception
+     */
     public static int getNumberOfTasksByEngineer(int id_group_user) throws Exception {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         }
-        LocalTaskHome home = null;
+        LocalTaskHome home;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
+            throw new UnknownError();
         }
 
         if (home != null) {
@@ -705,15 +856,21 @@ public class EJBFunctions {
             throw new Exception("Error with EJBs");
         }
     }
+
+    /**
+     * @param id_task
+     * @param login
+     * @throws Exception
+     */
     public static void assignTask(int id_task, String login) throws Exception {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalTaskHome home = null;
+        LocalTaskHome home;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
@@ -724,23 +881,27 @@ public class EJBFunctions {
         home.assignTask(id_task, login);
 
     }
-    
+
+    /**
+     * @param id
+     * @return
+     */
     public static LocalServiceInstance findServiceInstance(int id) {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceInstanceHome home = null;
+        LocalServiceInstanceHome home;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceInstance service_instance = null;
+        LocalServiceInstance service_instance;
         try {
             service_instance = home.findByPrimaryKey(id);
             return service_instance;
@@ -751,7 +912,11 @@ public class EJBFunctions {
         }
 
     }
-    
+
+    /**
+     * @param id
+     * @return
+     */
     public static LocalPort findLocalPortById(int id){
         InitialContext ic;
         try {
@@ -777,6 +942,11 @@ public class EJBFunctions {
             throw new UnknownError();
         }
     }
+
+    /**
+     * @param id
+     * @return
+     */
     public static LocalCircuit findLocalCircuitById(int id){
         InitialContext ic;
         try {
@@ -803,15 +973,22 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * @param login
+     * @param from
+     * @param to
+     * @return
+     * @throws Exception
+     */
     public static Collection getServiceInstances(String login, int from, int to) throws Exception {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceInstanceHome home = null;
+        LocalServiceInstanceHome home;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
@@ -823,15 +1000,20 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * @param login
+     * @return
+     * @throws Exception
+     */
     public static int getNumberOfInstancesByLogin(String login) throws Exception {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceInstanceHome home = null;
+        LocalServiceInstanceHome home;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
@@ -842,15 +1024,21 @@ public class EJBFunctions {
 
     }
 
+    /**
+     * Searches for incomplete task
+     * @param name
+     * @return LocalTask
+     * @throws FinderException
+     */
     public static LocalTask findIncompleteTask(String name) throws FinderException {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalTaskHome home = null;
+        LocalTaskHome home;
         try {
             home = (LocalTaskHome) ic.lookup("java:comp/env/ejb/Task");
         } catch (NamingException e) {
@@ -861,15 +1049,22 @@ public class EJBFunctions {
         return home.findIncompleteTask(name);
 
     }
+
+    /**
+     *
+     * @param login user's login
+     * @param id_order order you want to cancel
+     * @throws UserWasAssignedException if engineer was assigned to this task before
+     */
     public static void cancelOrder(String login, int id_order) throws UserWasAssignedException {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceOrderHome home = null;
+        LocalServiceOrderHome home;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
@@ -886,15 +1081,21 @@ public class EJBFunctions {
         }
     }
 
+    /**
+     * Searches for user's service locations
+     * @param login user login
+     * @return java.util.Collection of service locations
+     * @throws java.lang.Exception
+     */
     public static Collection getSLByLogin(String login) throws Exception {
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceInstanceHome home = null;
+        LocalServiceInstanceHome home;
         try {
             home = (LocalServiceInstanceHome) ic.lookup("java:comp/env/ejb/ServiceInstance");
         } catch (NamingException e) {
@@ -904,15 +1105,21 @@ public class EJBFunctions {
 
         return home.getSLByLogin(login);
     }
+
+    /**
+     * Searches for SO by SI
+     * @param id_service_inst
+     * @return LocalServiceOrder
+     */
     public static LocalServiceOrder findSOBySI(int id_service_inst){
-        InitialContext ic = null;
+        InitialContext ic;
         try {
             ic = new InitialContext();
         } catch (NamingException e) {
             logger.error(e.getMessage(), e);
             throw new UnknownError();
         }
-        LocalServiceOrderHome home = null;
+        LocalServiceOrderHome home;
         try {
             home = (LocalServiceOrderHome) ic.lookup("java:comp/env/ejb/ServiceOrder");
         } catch (NamingException e) {
