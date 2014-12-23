@@ -332,7 +332,7 @@ public class ServiceOrderBean implements EntityBean {
 
     public Integer ejbFindByInstanceId(int id_service_inst) throws FinderException {
         Connection connection = null;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             try {
                 connection = dataSource.getConnection();

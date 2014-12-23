@@ -26,6 +26,8 @@
   <h1 align="center">Password was successfully changed!</h1>
 <%}else if(info.contains("info_changed")){%>
   <h1 align="center">Your information was successfully changed!</h1>
+<%}else if(info.contains("user_registered")){%>
+  <h1 align="center">Thank you for registration in our system! Your user info was sent to your email.</h1>
 <%}%>
 
 <%@include file="footer.jsp"%>
