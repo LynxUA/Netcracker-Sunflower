@@ -49,7 +49,7 @@ public class GenerateServicesServlet extends HttpServlet {
             writer.println("<div class=\"radio\">\n" +
                     "            <label>\n" +
                     "            <input type=\"radio\" name=\"prices\" value=\""+ price.getId_price()+"\">\n" +
-                    ( (LocalService) local).getName() +" for "+ (price.getPrice_of_service()+distance*price.getPrice_of_location())+
+                    ( (LocalService) local).getName() +" for "+ ((double)Math.round((price.getPrice_of_service()+distance*price.getPrice_of_location()) * 100) / 100)+
                     "                </label>\n" +
                     "            </div>\n");
 
