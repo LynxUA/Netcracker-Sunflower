@@ -583,7 +583,7 @@ public class Xlscrtr {
             cellStyle1.setBorderRight(CellStyle.BORDER_THIN);
             cellStyle1.setBorderTop(CellStyle.BORDER_THIN);
             if(datab)
-                cellStyle1.setDataFormat(format.getFormat("m/d/yy h:mm:s"));
+                cellStyle1.setDataFormat(format.getFormat("m/d/yy"));
             return  cellStyle1;
 
         }
