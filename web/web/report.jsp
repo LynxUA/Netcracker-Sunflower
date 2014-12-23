@@ -34,21 +34,47 @@ and open the template in the editor.
     <aside>
         <%@ page import="com.sunflower.ejb.EJBFunctions"%>
         <%@ page import="com.sunflower.ejb.ProviderLocation.LocalProviderLocation"%>
+        <%@ page import="java.sql.SQLException" %>
+        <%@ page import="com.sunflower.ejb.DataSource" %>
+        <%@ page import="java.sql.PreparedStatement" %>
+        <%@ page import="java.sql.Connection" %>
+        <%@ page import="java.sql.ResultSet" %>
+        <%@ page import="javax.ejb.EJBException" %>
         <ul class="nav nav-list bs-docs-sidenav affix">
             <%
-                LocalProviderLocation localProviderLocation;
-            for(int i=1;true;i++)
-            {
-                localProviderLocation=EJBFunctions.findProviderLocationById(i);
-                if(localProviderLocation==null)break;
+                Connection connection = null;
+                PreparedStatement statement;
+                ResultSet rs;
+                try {
+                    try {
+                        connection = DataSource.getDataSource().getConnection();
+
+                    }catch(SQLException e)
+                    {
+                        System.out.println(e.getErrorCode());
+                        System.out.println("something wrong with connection");
+
+                    }
+                    System.out.println("war1");
+                    //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
+                    statement = connection.prepareStatement("Select Id_Prov_Location" +
+                            ", Location from PROVIDER_LOCATION ");
+                    try{
+                         rs = statement.executeQuery();
+            while (rs.next())
+                        {
+
             %>
 
             <li>
 
-                <input  type="checkbox" value="<%=localProviderLocation.getLocation()%>" name="<%=localProviderLocation.getLocation()%>"  id="loc<%=localProviderLocation.getId_Prov_Location()%>"><font color="#296293"><%=localProviderLocation.getLocation()%></font>
+                <input  type="checkbox" value="<%=rs.getString(2)%>" name="<%=rs.getString(2)%>"  id="loc<%=rs.getInt(1)%>"><font color="#296293"><%=rs.getString(2)%></font>
 
             </li>
             <%
+                }} catch (Exception ex)
+                {
+                   ex.printStackTrace();
                 }
             %>
             <!-- <li>
@@ -107,7 +133,21 @@ and open the template in the editor.
         <input class="btn btn-primary" type="button" value="Get profiatilty per month" name="siper2" onclick="doProf();"  style="width:20%"  /></p>
          <p align="right" ><input class="btn btn-primary" type="button" value="RIreports" name="siper3" onclick="doRI();"  style="width:20%" /></p>
     </form>
-
+    <%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
+    <div style="padding: 1% 7% 1% 7%;
+     margin: 1% 7% 1% 7%"  align="right" name="result">${requestScope.result}</div>
+    <%}%>
+    <%  } catch (SQLException e) {
+        throw new EJBException("SELECT exception in assign");
+    } finally {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } %>
 
     <%@include file="footer.jsp"%>
     </body>
