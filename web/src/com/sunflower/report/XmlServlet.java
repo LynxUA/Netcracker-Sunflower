@@ -5,6 +5,8 @@
  */
 package com.sunflower.report;
 
+import com.sunflower.ejb.DataSource;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -79,6 +81,28 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
     File f=null;
 
+     String loc="loc1";
+     int a=1;
+     Connection  connection=null;
+
+     ArrayList<String> locations =new ArrayList<String>();
+     while(request.getParameter(loc)!=null)
+     {
+         System.out.println(request.getParameter(loc));
+         if(!request.getParameter(loc).equals("undefined"))
+             locations.add(request.getParameter(loc));
+         String as=Integer.toString(a);
+         a++;
+         String as1=Integer.toString(a);
+         loc=loc.replace(as,as1);
+     }
+     if(locations.size()==0)
+     {
+         request.setAttribute("result", "<font color=\"#ff0000\">Set locations<font>");
+         request.getRequestDispatcher("report.jsp").forward(request, response);
+         return;
+     }
+
      try{
          String action=request.getParameter("action");
          
@@ -87,74 +111,96 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
          Xlscrtr xlscrtr=new Xlscrtr();
          Boolean urladded=false;
         
-      
-         
-        JDBC jdbc=new JDBC();
-        Connection connection=jdbc.connect();
+      System.out.println(action);
+
+         try {
+            connection = DataSource.getDataSource().getConnection();
+
+         }catch(SQLException e) {
+             System.out.println(e.getErrorCode());
+             System.out.println("something wrong with connection");
+            return;
+         }
+
+
         // Date date1=new Date(114,10,10);
           //Date date2=new Date(114,10,20);
          //xlscrtr.ProfperMonth(connection, date1);
                  
        if(action.equals("periodic"))
-       { String d1 = request.getParameter("date1");
+       {System.out.println(action);
+           String d1 = request.getParameter("date1");
          String d2 = request.getParameter("date2");
          String select=request.getParameter("option");
-           String loc="loc1";
-           int a=1;
-
-           ArrayList<String> locations =new ArrayList<String>();
-           while(request.getParameter(loc)!=null)
-           {
-               System.out.println(request.getParameter(loc));
-               locations.add(request.getParameter(loc));
-               String as=Integer.toString(a);
-               a++;
-               String as1=Integer.toString(a);
-               loc=loc.replace(as,as1);
-           }
-
+           System.out.println(select);
+           System.out.println(d1);
+           System.out.println(d2);
 
          System.out.println(select);
          String url = request.getRequestURL().toString();
          System.out.println(d2);System.out.println(url);
-        Date date1 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(d1);
-     Date date2 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(d2);
+           Date date1=null;
+           Date date2=null;
+           try {
+               date1 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(d1);
+               date2 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(d2);
+           }
+           catch (Exception ex)
+           {
+               request.setAttribute("result", "<font color=\"#ff0000\">Wrong date formant<font>");
+               request.getRequestDispatcher("report.jsp").forward(request, response);
+               return;
+           }
      if(date2.after(date1))
      {
           System.out.println(date1);  
              if(select.equals("New orders per period")){
-                 urladded=true;
+
                  f=xlscrtr.newor(connection, date1, date2, locations);
+
+                 if(f.getName()!=null)
+                     urladded=true;
              }
              else  if(select.equals("Disconnects per period")){
-                 urladded=true;
+
                  f=xlscrtr.disconperperiod(connection, date1, date2,locations);
+                 if(f.getName()!=null)
+                     urladded=true;
              }
      }
-   
-           
-         
+           else
+     {
+         request.setAttribute("result", "<font color=\"#ff0000\">Wrong date query<font>");
+         request.getRequestDispatcher("report.jsp").forward(request, response);
+         return;
+     }
 
      }
        else if(action.equals("prof"))
        {
            String year=request.getParameter("year");
            String month=request.getParameter("month");
-           
-           Date date=new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(month+"/"+1+"/"+year);
+           if(year.equals("")||month.equals(""))
+           {
+               {
+                   request.setAttribute("result", "<font color=\"#ff0000\">Set date please<font>");
+                   request.getRequestDispatcher("report.jsp").forward(request, response);
+                   return;
+               }
+           }
+           Date date=new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(month + "/" + 1 + "/" + year);
            
            urladded=true;
-           f=xlscrtr.ProfperMonth(connection, date);
+           f=xlscrtr.ProfperMonth(connection, date,locations);
        }
-         
        else if(action.equals("ri"))
        {
            urladded=true;
+           f=xlscrtr.rireports(connection,locations);
            //ArrayList inf1= excelexp.Inf1();
           // ArrayList inf2= excelexp.Inf1();
           //f=excelexp.Test(inf1, inf2);
        }
-         
          if (urladded) {
        //      response.setContentType("text/xml");
          //    response.setHeader("Cache-Control", "no-cache");
@@ -182,6 +228,7 @@ out.close();
          }
          
      }
+
    
      catch(ParseException ex)
     {
@@ -191,7 +238,16 @@ out.close();
          {
              ex.printStackTrace();
          }
-  
+
+     finally {
+         try {
+             if (connection != null) {
+                 connection.close();
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     }
     }
 
     /**

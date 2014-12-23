@@ -2,6 +2,7 @@ package com.sunflower.web;
 
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
+import javax.ejb.RemoveException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -153,6 +154,13 @@ public class CurrentTaskServlet extends HttpServlet {
                 LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder((int)Integer.parseInt(request.getParameter("Id_Order")));
                 localServiceOrder.setId_status(2);
                 localTask.setLogin(null);
+                try{
+                    localTask.remove();
+                }
+                catch (RemoveException e)
+                { e.printStackTrace();
+
+                }
                 request.setAttribute("result", "<font color=\"#191970\">Task is suspended</font>");
                 request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
             }
@@ -160,6 +168,13 @@ public class CurrentTaskServlet extends HttpServlet {
             LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder((int)Integer.parseInt(request.getParameter("Id_Order")));
             localServiceOrder.setId_status(2);
             localTask.setLogin(null);
+            try{
+                localTask.remove();
+            }
+            catch (RemoveException e)
+            { e.printStackTrace();
+
+            }
             request.setAttribute("result", "<font color=\"#191970\">Task is suspended</font>");
             request.getRequestDispatcher("CurrentTaskPE.jsp").forward(request, response);
         }
