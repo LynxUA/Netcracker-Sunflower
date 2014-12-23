@@ -209,6 +209,10 @@
         <servlet-name>CurrentTaskPEServlet</servlet-name>
         <servlet-class>com.sunflower.web.CurrentTaskPEServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AboutUsServlet</servlet-name>
+        <servlet-class>com.sunflower.web.AboutUsServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>LoggerServlet</servlet-name>
@@ -354,7 +358,10 @@
         <servlet-name>CurrentTaskPEServlet</servlet-name>
         <url-pattern>/task_pe</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>AboutUsServlet</servlet-name>
+        <url-pattern>/about_us</url-pattern>
+    </servlet-mapping>
     <ejb-local-ref>
         <ejb-ref-name>ejb/Circuit</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
