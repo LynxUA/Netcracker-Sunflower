@@ -1,5 +1,6 @@
 package com.sunflower.web;
 
+import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,18 +8,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import com.sunflower.ejb.DataSource;
 import com.sunflower.ejb.EJBFunctions;
 import com.sunflower.ejb.ServiceOrder.LocalServiceOrder;
 import com.sunflower.ejb.port.LocalPort;
 import com.sunflower.ejb.serviceinstance.LocalServiceInstance;
 import com.sunflower.ejb.task.LocalTask;
+import org.apache.log4j.Logger;
 
 /**
  * Created by Алексей on 12/9/2014.
  */
 @WebServlet(name = "CurrentTaskServlet")
 public class CurrentTaskServlet extends HttpServlet {
+    private static Logger logger = Logger.getLogger(AssignServlet.class);
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -63,6 +71,65 @@ public class CurrentTaskServlet extends HttpServlet {
         if (action.equals("completeIE"))
         {
           String[] description=request.getParameter("Description").split("Cable id = ");
+            String[] devicetest=request.getParameter("Description").split("new router");
+            if(devicetest.length>1)
+            {
+                Connection connection = null;
+                PreparedStatement statement = null;
+                ResultSet rs;
+                try{
+                try{
+                    connection = DataSource.getDataSource().getConnection();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                    throw new EJBException("Ошибка dataSource");
+                }
+                    System.out.println("zdes");
+                    Boolean free=false;
+                statement = connection.prepareStatement("SELECT d.FREE_PORTS from SERVICE_ORDER so" +
+                        "                        INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE" +
+                        "    INNER JOIN Device d on d.ID_PROV_LOCATION=p.ID_PROV_LOCATIOn INNER JOIN Task t \n" +
+                        "ON t.ID_ORDER=so.ID_ORDER where t.login=? and so.ID_status!='4'\n" +
+                        "      and so.ID_status!='2'");
+                statement.setString(1,(String)request.getSession().getAttribute("login"));
+                    try{
+                rs = statement.executeQuery();
+                    System.out.println("zdes1");
+                while (rs.next())
+                {
+                    System.out.println("zdes2");
+                    if(rs.getInt(1)>1)
+                        free=true;
+
+                }}
+                    catch (Exception ex)
+                    {
+
+                    }
+                    System.out.println("zdes3"+free);
+                    if(!free)
+                         {
+                            request.setAttribute("result", "<font color=\"#ff0000\">Create device please</font>");
+                            request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
+                            return;
+                        }
+
+
+            } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            //throw new EJBException("Ошибка INSERT");
+
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        }
+
 
             if(description.length <= 1) {
                 request.setAttribute("result", "<font color=\"#191970\">Create cable please</font>");
@@ -85,12 +152,14 @@ public class CurrentTaskServlet extends HttpServlet {
             if (action.equals("suspendIE")) {
                 LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder((int)Integer.parseInt(request.getParameter("Id_Order")));
                 localServiceOrder.setId_status(2);
+                localTask.setLogin(null);
                 request.setAttribute("result", "<font color=\"#191970\">Task is suspended</font>");
                 request.getRequestDispatcher("CurrentTaskIE.jsp").forward(request, response);
             }
         if (action.equals("suspendPE")) {
             LocalServiceOrder localServiceOrder=EJBFunctions.findServiceOrder((int)Integer.parseInt(request.getParameter("Id_Order")));
             localServiceOrder.setId_status(2);
+            localTask.setLogin(null);
             request.setAttribute("result", "<font color=\"#191970\">Task is suspended</font>");
             request.getRequestDispatcher("CurrentTaskPE.jsp").forward(request, response);
         }

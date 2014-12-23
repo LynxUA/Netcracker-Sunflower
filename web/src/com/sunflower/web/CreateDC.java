@@ -41,11 +41,12 @@ public class CreateDC extends HttpServlet {
         if(action.equals("cable")){
             if(request.getParameter("lenght")=="")
             {
-                request.setAttribute("result", "<font color=\"#ff0000\">Set lenght</font>");
+                request.setAttribute("result", "<font color=\"#ff0000\">Set length</font>");
                 request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
                 return;
             }
-            float lenght= Float.valueOf(request.getParameter("lenght"));
+           float length= Float.valueOf(request.getParameter("lenght"));
+            length= length/((float)1000.0);
             String type=request.getParameter("type");
 
 
@@ -87,7 +88,7 @@ public class CreateDC extends HttpServlet {
                 }
                 statement = connection.prepareStatement("INSERT INTO CABLE"
                         + "(LENGHT ,TYPE ) VALUES(?, ?)");
-                statement.setFloat(1, lenght);
+                statement.setFloat(1, length);
                 statement.setString(2, type);
                 statement.executeQuery();
 
@@ -95,7 +96,7 @@ public class CreateDC extends HttpServlet {
                  rs = statement.executeQuery();
                 rs.next();
                 int id_cable=rs.getInt(1);
-
+                System.out.println(description+" "+id_cable);
                 localTask.setDescription(description+" ,Cable id = "+id_cable);
                 request.setAttribute("result", "<font color=\"#191970\">Cable created</font>");
                 request.getRequestDispatcher("CreateDC.jsp").forward(request, response);

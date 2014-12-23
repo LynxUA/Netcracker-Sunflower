@@ -143,8 +143,8 @@ public class AssignServlet extends HttpServlet {
             }
         }
         if (action.equals("assign")) {
-            Integer Id_Circuit=null;
-            Integer Id_ServiceInst=null;
+            Integer Id_Circuit=0;
+            Integer Id_ServiceInst=0;
             try {
                 try {
                     connection = DataSource.getDataSource().getConnection();
@@ -154,11 +154,13 @@ public class AssignServlet extends HttpServlet {
 
                 }
                 //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-                statement = connection.prepareStatement("SELECT si.Id_CIRCUIT, si.ID_SERVICE_INST,so.ID_Scenario from SERVICE_ORDER so\n" +
+                statement = connection.prepareStatement("SELECT si.Id_CIRCUIT, si.ID_SERVICE_INST,so.ID_Scenario,p.Status from SERVICE_ORDER so\n" +
                         "  INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE\n" +
                         "  INNER JOIN Device d on d.ID_PROV_LOCATION=p.ID_PROV_LOCATIOn\n" +
                         "  Inner JOIN  Task t On t.Id_order=so.Id_order\n" +
                         "  inner JOIN SERVICE_INSTANCE si\n" +
+                        "LEFT  JOIN  CIRCUIT c on c.ID_CIRCUIT=si.ID_CIRCUIT" +
+                        " Left join Port p on p.ID_PORT=c.ID_PORT" +
                         "    On si.ID_SERVICE_INST=so.ID_SERVICE_INST\n" +
                         "where t.login=? and so.ID_status!='4'\n" +
                         "      and so.ID_status!='2'");
@@ -174,7 +176,7 @@ public class AssignServlet extends HttpServlet {
                         return;
                     }
                     int Id_Scenario=resultSet.getInt(3);
-                    if((Id_Scenario==1)&(resultSet.getInt(1)!=0))
+                    if((Id_Scenario==1)&(resultSet.getInt(4)!=0))
                     {
                         request.setAttribute("result", "<font color=\"#ff0000\">port is already assigned<font>");
                         request.getRequestDispatcher("assign.jsp").forward(request, response);
@@ -198,7 +200,7 @@ public class AssignServlet extends HttpServlet {
                 int Id_Port = Integer.parseInt(request.getParameter("Id_Port"));
                 localPort = EJBFunctions.findLocalPortById(Id_Port);
                 localPort.setStatus(1);
-
+                System.out.println(Id_Circuit);
                 if (Id_Circuit != 0) {
                     localCircuit = EJBFunctions.findLocalCircuitById(Id_Circuit);
                     localCircuit.setId_Port(Id_Port);
@@ -206,6 +208,7 @@ public class AssignServlet extends HttpServlet {
                     localCircuit = EJBFunctions.createCircuit(Id_Port);
                     Id_Circuit = localCircuit.getId_Circuit();
                 }
+                System.out.println("idserv "+Id_ServiceInst);
                 LocalServiceInstance serviceInstance = EJBFunctions.findServiceInstance(Id_ServiceInst);
                 serviceInstance.setId_circuit(Id_Circuit);
 
@@ -332,7 +335,7 @@ public class AssignServlet extends HttpServlet {
 
                 }
                 //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-                statement = connection.prepareStatement("SELECT si.ID_CIRCUIT ,si.ID_SERVICE_INST ,c.ID_PORT  from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST INNER JOIN CIRCUIT c ON so.ID_CIRCUIT=c.ID_CIRCUIT where t.login=? and so.ID_status!='4' and so.ID_status!='2'");
+                statement = connection.prepareStatement("SELECT si.ID_CIRCUIT ,si.ID_SERVICE_INST ,c.ID_PORT  from SERVICE_ORDER so INNER  JOIN PRICE p ON so.ID_PRICE=p.ID_PRICE INNER  join PROVIDER_LOCATION pl on p.ID_PROV_LOCATION=pl.ID_PROV_LOCATION Inner JOIN  Task t On t.Id_order=so.Id_order inner JOIN SERVICE_INSTANCE si On si.ID_SERVICE_INST=so.ID_SERVICE_INST INNER JOIN CIRCUIT c ON si.ID_CIRCUIT=c.ID_CIRCUIT where t.login=? and so.ID_status!='4' and so.ID_status!='2'");
                 statement.setString(1, (String) request.getSession().getAttribute("login"));
                 System.out.println("zxc2");
                 ResultSet resultSet = statement.executeQuery();
@@ -348,7 +351,10 @@ public class AssignServlet extends HttpServlet {
                 LocalServiceInstance localServiceInstance=EJBFunctions.findServiceInstance(Id_Si);
                 localPort=EJBFunctions.findLocalPortById(Id_Port);
                 localServiceInstance.setId_circuit(null);
+
+                System.out.println(localCircuit.getId_Circuit());
                 localCircuit.remove();
+
                 localPort.setStatus(0);
                 request.setAttribute("result", "<font color=\"#191970\">Circuit removed<font>");
                 request.getRequestDispatcher("assign.jsp").forward(request, response);

@@ -150,24 +150,34 @@ margin: 1% 7% 1% 7%" align="right">
     <!--<option selected="true" style="display:none;" >Select router</option>-->
   </select>
   <input type="hidden" name="action" value="assign" style=" width:20%">
+  <%if(Scenario==3){%>
+  <button  align="right"  class="btn btn-primary" width="15%" type="submit" disabled>Assign port</button>
+  <%} else{%>
   <button align="right"  class="btn btn-primary" width="15%"  type="submit"<%if(request.getAttribute("result")!=null){ if (request.getAttribute("result").equals("<font color=\"#191970\">port assigned<font>)")){%> disabled<%}}%>>Assign port  </button>
+  <% }%>
   </form>
 </div>
 <div style="padding: 1% 7% 1% 7%;
      margin: 1% 7% 1% 7%" align="right">
-
+  <%if(Scenario==3){%>
+  <button  align="right"  class="btn btn-primary" width="15%" type="submit" disabled>Create circuit</button>
+  <%} else{%>
 <form method="get" action="assign" align="right">
   <input type="hidden" name="action" value="createCir" style=" width:0">
   <button  align="right"  class="btn btn-primary" width="15%" type="submit" >Create circuit</button>
-</form> </div>
+</form> <% }%></div>
 
 <div style="padding: 1% 7% 1% 7%;
      margin: 1% 7% 1% 7%" align="right">
+  <%if(Scenario==3){%>
+  <button  align="right"  class="btn btn-primary" width="15%" type="submit" disabled>Unassign port</button>
+  <%} else{%>
 <form method="get" action="assign">
   <input  type="text" name="unports" placeholder="Write port id" onkeyup="this.value=this.value.replace(/[^0-9]+/g,''); isrightm(this);" >
   <input type="hidden" name="action" value="unassign" style=" width:55%">
+
 <button  align="right"  class="btn btn-primary" width="15%" type="submit">Unassign port</button>
-</form>
+</form><% }%>
 </div>
 <div style="padding: 1% 7% 1% 7%;
      margin: 1% 7% 1% 7%" align="right">

@@ -258,7 +258,7 @@ public class EJBFunctions {
                 }
             }else{
                 try {
-                    createTask("Add new router for new instances and connect cable", UserGroups.IE, order.getId_order());
+                    createTask("Connect cable for "+login+"'s instance and add new router  ", UserGroups.IE, order.getId_order());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw new UnknownError();

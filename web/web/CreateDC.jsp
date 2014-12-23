@@ -87,7 +87,7 @@
 <div style="padding: 1% 7% 1% 7%;
      margin: 1% 7% 1% 7%" align="right">
 <form accept-charset="UTF-8" role="form"  action="CreateDC?action=device&option=device" method="get">
-  <input  type="text" name="lenght" placeholder="Lenght of cable in KM" onkeyup="this.value=this.value.replace(/[^0-9]+/g,'');" >
+  <input  type="text" name="lenght" placeholder="Length of cable in metres" onkeyup="this.value=this.value.replace(/[^0-9]+/g,'');" >
   <input  type="text" name="type" placeholder="Type of Cable"  >
   <input type="hidden" name="action" value="cable" style=" width:0">
   <input align="right"  class="btn btn-primary" type="submit"  style="  width:15%"    value="Create Cable">
