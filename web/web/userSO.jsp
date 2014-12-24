@@ -59,7 +59,7 @@
             <th>Scenario</th>
             <th>Status</th>
               <th>Location</th>
-              <th>Disconnect</th>
+              <th>Cancel</th>
 
           </tr>
           </thead>

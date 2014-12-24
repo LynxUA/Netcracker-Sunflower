@@ -41,6 +41,11 @@ public class ChangeInfoServlet extends HttpServlet {
             request.getRequestDispatcher("changeInfo.jsp").forward(request, response);
             return;
         }
+        if(surname == null || surname.equals("")) {
+            request.setAttribute("surname_error", "Type your surname");
+            request.getRequestDispatcher("signup.jsp").forward(request, response);
+            return;
+        }
 
         if(password == null || repeat_password == null ||
                 (password.compareTo("") == 0) || (repeat_password.compareTo("") == 0)) {
@@ -84,6 +89,7 @@ public class ChangeInfoServlet extends HttpServlet {
     private void clearError(HttpServletRequest request) {
         request.setAttribute("login_error", "");
         request.setAttribute("name_error","");
+        request.setAttribute("surname_error","");
         request.setAttribute("password_error","");
         request.setAttribute("capcha_error", "");
     }

@@ -28,6 +28,6 @@ public class CancelOrderServlet extends HttpServlet {
         } catch (UserWasAssignedException e) {
             response.sendRedirect("orders");
         }
-        response.sendRedirect("orders");
+        response.sendRedirect("success?info=order_canceled");
     }
 }

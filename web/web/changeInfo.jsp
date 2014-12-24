@@ -56,7 +56,7 @@
             </div>
             <input  type="hidden" name="check" value="">
             <div class="col-xs-6 col-sm-6 col-md-offset-3">
-              <input type="submit" class="btn btn-lg btn-success btn-block" value="Change info">
+              <input type="submit" class="btn btn-lg btn-success btn-block" value="Save info">
             </div>
           </form>
 

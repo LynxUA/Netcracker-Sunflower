@@ -18,9 +18,8 @@
   <%@ page import="java.sql.ResultSet" %>
   <%@ page import="javax.ejb.ObjectNotFoundException" %>
   <%@ page import="javax.ejb.EJBException" %>
-  <%@ page import="javax.ejb.EJBException" %>
 
-  <script type="text/javascript"  src="js/create.js" ></script>
+  <script type="text/javascript" src="js/create.js"></script>
 
   <style>
     aside {
@@ -30,16 +29,19 @@
     }
 
     select, input {
-      padding:0.5% 2% 0.5% 2% ;
+      padding: 0.5% 2% 0.5% 2%;
       margin: 0.5% 2% 0.5% 2%;
       width: 30%;
       height: 4%;
     }
-    p {padding: 0.3% 7% 0.3% 7%;
-      margin: 0.3% 7% 0.3% 7%  }
 
-    button{
-      width:15%;
+    p {
+      padding: 0.3% 7% 0.3% 7%;
+      margin: 0.3% 7% 0.3% 7%
+    }
+
+    button {
+      width: 15%;
     }
   </style>
 </head>
