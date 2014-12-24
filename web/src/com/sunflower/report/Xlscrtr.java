@@ -30,23 +30,25 @@ public class Xlscrtr {
 
     public File newor(Connection connection, Date d1, Date d2,ArrayList<String> locations) throws SQLException {
 
-        java.sql.Date sd1 = new java.sql.Date(d1.getTime());
+        java.sql.Date sd1 = new java.sql.Date(d1.getTime());//conver java date to sql date
         java.sql.Date sd2 = new java.sql.Date(d2.getTime());
         System.out.println(d1);
         System.out.print(sd1);
-        String pst = "SELECT so.ID_ORDER,su.login,su.Name,su.Surname,p.Price_of_service" +
+        String pst = "SELECT so.ID_ORDER,su.login,su.Name,su.Surname,p.Price_of_service" +//statement that get data for our report
                 ",pl.location,so.So_Date From SERVICE_ORDER so INNER JOIN Sun_User su " +
                 "On so.login=su.login INNER JOIN PRICE p On so.ID_Price = p.ID_Price" +
                 " Inner JOIN PROVIDER_LOCATION pl On p.Id_Prov_location=pl.Id_Prov_location " +
                 " WHERE so.ID_Scenario='1' AND so.ID_STATUS='4' AND pl.location IN (?";
         String locationpstmt = ",? ";
-        for (int a = 1; a < locations.size(); a++) {
+        for (int a = 1; a < locations.size(); a++)//we add ? to add location later 
+        {
             pst += locationpstmt;
         }
         pst += ") and so.So_Date between ? and ? ORDER by pl.location";
         PreparedStatement pstmt = connection.prepareStatement(pst);
         int a;
-        for (a = 1; a <= locations.size(); a++) {
+        for (a = 1; a <= locations.size(); a++)//we set locations in statement 
+        {
             pstmt.setString(a, locations.get(a - 1));
             System.out.println(a);
             System.out.println(locations.get(a - 1));
@@ -64,10 +66,10 @@ public class Xlscrtr {
             format = wb.createDataFormat();
 
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm");
+            DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm");//set date format
             Date date = new Date();
             System.out.println(dateFormat.format(date));
-            String strdate = dateFormat.format(date);
+            String strdate = dateFormat.format(date);//get current time
             filename = "NewOrderReport" + strdate + ".xls";
             f = new File(filename);
             FileOutputStream fileOut = new FileOutputStream(f);
@@ -76,10 +78,10 @@ public class Xlscrtr {
 
             Font font = CreateFont(12, "Times New Roman", IndexedColors.WHITE.getIndex());
             Font font1 = CreateFont(12, "Times New Roman", IndexedColors.BLACK.getIndex());
-            CellStyle cellStyle1 = CreateCS(IndexedColors.WHITE.getIndex(), font1, false);
+            CellStyle cellStyle1 = CreateCS(IndexedColors.WHITE.getIndex(), font1, false);//create cellstyle
             CellStyle cellStyle2 = CreateCS(IndexedColors.WHITE.getIndex(), font1, true);
             CellStyle cellStyle3 = CreateCS(IndexedColors.ROYAL_BLUE.getIndex(), font, false);
-            CrtHEADER(sheet,cellStyle3,0,"ORDER_ID","Login","First Name","Last Name","Order Price","Provider Location","ORDER_DATE");
+            CrtHEADER(sheet,cellStyle3,0,"ORDER_ID","Login","First Name","Last Name","Order Price","Provider Location","ORDER_DATE");//create header
             String location = null;
             int sum = 0;
             try {
@@ -99,16 +101,17 @@ public class Xlscrtr {
                             sheet.autoSizeColumn(3);
                             sheet.autoSizeColumn(4);
                             sheet.autoSizeColumn(5);
-                            sheet.autoSizeColumn(6);
-                            sheet=wb.createSheet(rs.getString(6));
+                            sheet.autoSizeColumn(6);//this function automatically aligns cells
+                            sheet=wb.createSheet(rs.getString(6));//we create new sheet with location name
                             i=0;
+                            //we set header for new sheet
                             CrtHEADER(sheet,cellStyle3,i,"ORDER_ID","Login","First Name","Last Name","Order Price","Provider Location","ORDER_DATE");
                             i++;
                         }
                     }
                     if(i==1)
                     {
-                        wb.setSheetName(wb.getSheetIndex(sheet), rs.getString(6));
+                        wb.setSheetName(wb.getSheetIndex(sheet), rs.getString(6));//change name to location name
                     }
                     row = sheet.createRow(i);
                     CrtCell(cellStyle1,rs.getInt(1),0);
@@ -129,7 +132,7 @@ public class Xlscrtr {
                 cell.setCellStyle(cellStyle3);
                 cell.setCellValue("New orders for "+location);
                 cell = row.createCell(1);
-                cell.setCellValue(sum);
+                cell.setCellValue(sum);//print total number of new orders
                 cell.setCellStyle(cellStyle3);
                 sheet.autoSizeColumn(0);
                 sheet.autoSizeColumn(1);
@@ -399,8 +402,8 @@ public class Xlscrtr {
 
 
 
-        String pst = "select d.ID_DEVICE, d.name,d.Number_of_ports,d.free_ports," +
-                "p.id_port,p.status,pl.location,pr.Price_Of_service\n" +
+        String pst = "select d.ID_DEVICE, d.name,d.Number_of_ports,d.free_ports," +//this statement get all values that we need and
+                "p.id_port,p.status,pl.location,pr.Price_Of_service\n" +//sort it by location, device, and port
                 "from Device d Inner Join PORT p on p.ID_Device=d.ID_DEVICE\n" +
                 "  inner join Provider_location pl On pl.id_prov_location=d.id_prov_location\n" +
                 "  Left join Circuit c On c.ID_Port=p.ID_port\n" +
@@ -408,13 +411,15 @@ public class Xlscrtr {
                 "  Left join Service_order so On so.ID_Service_inst=si.ID_Service_inst\n" +
                 "  left join Price pr On pr.Id_price=so.Id_price  where pl.location IN (?";
         String locationpstmt = ",? ";
-        for (int a = 1; a < locations.size(); a++) {
+        for (int a = 1; a < locations.size(); a++) // we add ? symbol to statement
+        {
             pst += locationpstmt;
         }
         pst += ")  ORDER by pl.location ,d.ID_Device, p.ID_Port ";
         PreparedStatement pstmt = connection.prepareStatement(pst);
         int a;
-        for (a = 1; a <= locations.size(); a++) {
+        for (a = 1; a <= locations.size(); a++) //we set locations instead of ? symbol
+        {
             pstmt.setString(a, locations.get(a - 1));
             System.out.println(a);
             System.out.println(locations.get(a - 1));
@@ -424,13 +429,13 @@ public class Xlscrtr {
         File f = null;
 
         try {
-            wb = new HSSFWorkbook();
+            wb = new HSSFWorkbook();//we create our workbook
             format = wb.createDataFormat();
 
 
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm");
             Date date = new Date();
-            System.out.println(dateFormat.format(date));
+            System.out.println(dateFormat.format(date));//get current date
             String strdate = dateFormat.format(date);
             filename = "RIreport" + strdate + ".xls";
             f = new File(filename);
@@ -446,25 +451,22 @@ public class Xlscrtr {
 
             CrtHEADER(sheet,cellStyle3,0,"Device Id","Device name","Device location","Port","Status","SI price");
 
-            double sum = 0;
-            String location = null;
-            int capacity=0;
-            int device_id=0;
-            int utilization=0;
-            String name=null;
-            Boolean newdev=true;
+            double sum = 0;//profitability parametr
+            String location = null;//parameter thaw we will compare to current location
+            int capacity=0;//capacity of router parameter
+            int device_id=0;//parameter thaw we will compare to current device id
+            int utilization=0;//utilization of router
+       
+            Boolean newdev=true;// that parametr have true value when we in the first line of new device 
             int portmin=0;
             ;
-            String status;
+            String status;//status of port
             double price;
             try {
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     i++;
-                    if(i==1)
-                    {
-                        wb.setSheetName(wb.getSheetIndex(sheet), rs.getString(7));
-                    }
+                  
 
                     if (i > 1) {
                         if (rs.getInt(1)!=device_id) {
@@ -482,11 +484,11 @@ public class Xlscrtr {
                             sheet.autoSizeColumn(4);
                             sheet.autoSizeColumn(5);
                             sheet.autoSizeColumn(6);
-                            sheet.autoSizeColumn(7);
+                            sheet.autoSizeColumn(7);//auto align cell
                             newdev=true;
                             sum = 0;
                             i+=2;
-                            if(rs.getString(7)!=location)
+                            if(rs.getString(7)!=location)//create new sheet if location changed
                             {
                                 sheet=wb.createSheet(rs.getString(7));
                                 i=0;
@@ -498,10 +500,15 @@ public class Xlscrtr {
                             i++;
                         }
                     }
+                      if(i==1)
+                    {
+                        wb.setSheetName(wb.getSheetIndex(sheet), rs.getString(7));
+                    }
 
                     row = sheet.createRow(i);
-                    if(newdev) {
-                        portmin=rs.getInt(5)-1;
+                    if(newdev) //set values if we in the first row of new device
+                    {
+                        portmin=rs.getInt(5)-1;//value that we will subtract from port id value
                         CrtCell(cellStyle1,rs.getInt(1),0);
                         CrtCell(cellStyle1, rs.getString(2),1);
                         CrtCell(cellStyle1, rs.getString(7),2);
@@ -530,7 +537,7 @@ public class Xlscrtr {
                     }
                     location = rs.getString(7);
                     device_id =rs.getInt(1);
-                    //name=rs.getString(2);
+                    
 
                     capacity=rs.getInt(3);
                     utilization= (int)(100.0-((rs.getInt(4)*100.0)/rs.getInt(3)));
@@ -570,7 +577,7 @@ public class Xlscrtr {
 
 
 
-        public CellStyle CreateCS(short clrindx, Font f,boolean datab)
+        public CellStyle CreateCS(short clrindx, Font f,boolean datab)//function that create our cellstyle
         {
             CellStyle cellStyle1  = wb.createCellStyle();
             cellStyle1.setFont(f);
@@ -597,7 +604,8 @@ public class Xlscrtr {
             font.setBoldweight(Font.BOLDWEIGHT_BOLD);
             return font;
         }
-        public void CrtCell(    CellStyle cellStyle, String value,int num){
+        public void CrtCell(    CellStyle cellStyle, String value,int num)//different cell creation function for different value
+        {
             cell = row.createCell(num);
             cell.setCellStyle(cellStyle);
             cell.setCellValue(value);
