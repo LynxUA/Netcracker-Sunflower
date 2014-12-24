@@ -15,6 +15,5 @@ public interface LocalTaskHome extends EJBLocalHome {
     public int getNumberOfTasksByEngineer(int id_group_user) throws FinderException;
     public void assignTask(int id_task, String login) throws UserWasAssignedException, UserHaveAssignedTaskException;
     public LocalTask findIncompleteTask(String name) throws FinderException;
-    //public LocalTask findIncompleteTask() throws FinderException;
 
  }

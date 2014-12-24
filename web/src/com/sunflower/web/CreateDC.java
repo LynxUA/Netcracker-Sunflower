@@ -102,7 +102,6 @@ public class CreateDC extends HttpServlet {
                 request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
-                //throw new EJBException("Ошибка INSERT");
 
             } finally {
                 try {
@@ -140,14 +139,11 @@ public class CreateDC extends HttpServlet {
                 statement.setString(1, name);
                 statement.setInt(2, Id_Prov_Loc);
                 resultSet=statement.executeQuery();
-               // response.setContentType("text/html;charset=UTF-8");
-                //response.getWriter().write("<font color=\"#191970\">Device successfully created</font>");
 
                 request.setAttribute("result", "<font color=\"#191970\">Device successfully created</font>");
                 request.getRequestDispatcher("CreateDC.jsp").forward(request, response);
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
-                //throw new EJBException("Ошибка INSERT");
 
             } finally {
                 try {

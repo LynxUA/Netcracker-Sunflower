@@ -29,11 +29,7 @@ public class StaticFunctions {
 //    {6,20}	#        length at least 6 characters and maximum of 20
 //            )			# End of group
 
-    public static boolean isValidPassword(String password){
-//        Matcher matcher = PASSWORD_PATTERN.matcher(password);
-//        return matcher.matches();
-        return true;
-    }
+
 
     public static boolean isValidEmail(String login){
         Matcher matcher = EMAIL_PATTERN.matcher(login);

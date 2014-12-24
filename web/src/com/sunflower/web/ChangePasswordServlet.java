@@ -42,7 +42,6 @@ public class ChangePasswordServlet extends HttpServlet {
 
         if(password.compareTo(repeat_password) != 0) {
             request.setAttribute("password_error", "Passwords should be equal");
-            //response.sendRedirect("change_password?login="+login);
             request.getRequestDispatcher("changePassword.jsp?login="+login).forward(request, response);
             return;
         }
@@ -61,14 +60,6 @@ public class ChangePasswordServlet extends HttpServlet {
             response.sendRedirect("access_denied");
         }
 
-//        try {
-//            EJBFunctions.setPassword(login, password);
-//        } catch (NoSuchUserException e) {
-//            response.sendRedirect("access_denied");
-//        }
-
-
-        //MailServer.messageAfterRegistration(name,password,email,login);
         response.sendRedirect("success?info=password_changed");
 
 

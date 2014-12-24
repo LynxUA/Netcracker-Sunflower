@@ -33,8 +33,7 @@ public class UserGroupServlet extends HttpServlet {
             LocalUserGroup userGroup = null;
             try {
                 userGroup = groupHome.findByPrimaryKey(1);
-           /* } catch (CreateException e) {
-                e.printStackTrace();*/
+
             } catch (FinderException e) {
                 logger.error(e.getMessage(), e);
             }

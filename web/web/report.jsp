@@ -77,23 +77,7 @@ and open the template in the editor.
                    ex.printStackTrace();
                 }
             %>
-            <!-- <li>
 
-                 <input  type="checkbox" value="borshaga" name="borshaga"  id="borshaga"><font color="#296293">Borshaga</font>
-
-             </li>
-
-             <li>
-
-                 <input  type="checkbox" value="troya" name="troya" id="troya"/><font color="#296293">Troya</font>
-
-             </li>
-
-             <li>
-
-                 <input  type="checkbox" value="goloseevo" name="goloseevo" id="goloseevo"/><font color="#296293">Goloseevo</font>
-
-             </li>-->
         </ul>
     </aside>
     <form accept-charset="UTF-8" role="form"  action="xmlxprt" method="get">

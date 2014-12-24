@@ -100,8 +100,7 @@ public class SignUpServlet extends HttpServlet {
             return;
         }
 
-        //addNewUser(login, email,name,StaticFunctions.getHashCode(password));
-        //addNewUser(login, email,name, password);
+
         try {
             LocalUser user = EJBFunctions.createUser(login, email, name, surname, password, 1);
         }catch(DuplicateKeyException e) {
@@ -113,19 +112,7 @@ public class SignUpServlet extends HttpServlet {
         }
         request.getSession().setAttribute("login", login);
         request.getSession().setAttribute("status", 1);
-//        if(EJBFunctions.createUser(login.toLowerCase(), email, name, surname, password)==null){
-//                request.setAttribute("login_error", "User with this login is already exist");
-//                request.getRequestDispatcher("signup.jsp").forward(request, response);
-//            }else{
-//                request.getSession().setAttribute("login", login);
-//                request.getSession().setAttribute("status", 1);
-//                /** Прибрати*/
-//                System.out.println(login);
-//            }
-//        } catch (CreateException e) {
-//            e.printStackTrace();
-//        }
-        //MailServer.messageAfterRegistration(name,password,email,login);
+
         MailServer.messageAfterRegistration(name,password,email,login);
         response.sendRedirect("success?info=user_registered");
 
@@ -135,32 +122,7 @@ public class SignUpServlet extends HttpServlet {
         clearError(request);
         request.getRequestDispatcher("signup.jsp").forward(request, response);
     }
-    /*private void addNewUser(String login,String email, String name, String password){
-        //StaticFunctions.users.put(login,password);
-        InitialContext ic = null;
-        try {
-            ic = new InitialContext();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-        LocalUserHome home = null;
-        try {
-            home = (LocalUserHome) ic.lookup("java:comp/env/ejb/User");
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-        LocalUser user = null;
-        try {
-            if (home != null) {
-                user = home.create(login, email, name, "Burlakov", password, 1);
-            }
-        } catch (CreateException e) {
-            e.printStackTrace();
-        }
-        System.out.println("hurray");
 
-        return;
-    }*/
     private void clearError(HttpServletRequest request) {
         request.setAttribute("login_error", "");
         request.setAttribute("name_error","");

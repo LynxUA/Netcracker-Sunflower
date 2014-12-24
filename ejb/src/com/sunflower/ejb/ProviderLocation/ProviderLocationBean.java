@@ -262,9 +262,6 @@ public class ProviderLocationBean implements EntityBean {
                 throw new UnknownError();
 
             }
-            //statement.setFloat(1, latitude);
-            //statement.setFloat(2, latitude);
-            //statement.setFloat(3, longtitude);
             statement = connection.createStatement();
             ResultSet resultSet = null;
             if (statement != null) {

@@ -16,9 +16,7 @@
   <%@ page import="java.sql.PreparedStatement" %>
   <%@ page import="java.sql.SQLException" %>
   <%@ page import="java.sql.ResultSet" %>
-  <%@ page import="javax.ejb.ObjectNotFoundException" %>
   <%@ page import="javax.ejb.EJBException" %>
-  <%@ page import="javax.ejb.FinderException" %>
 
   <script type="text/javascript"  src="js/assign.js" ></script>
 

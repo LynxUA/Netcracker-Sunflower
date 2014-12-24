@@ -120,11 +120,11 @@
           map.setCenter(latlng);
           geocodePosition(latlng);
         }, function() {
-          //handleNoGeolocation(true);
+          handleNoGeolocation(true);
         });
       } else {
         // Browser doesn't support Geolocation
-        //handleNoGeolocation(false);
+        handleNoGeolocation(false);
       }
     }
 

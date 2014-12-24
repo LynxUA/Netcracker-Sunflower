@@ -88,20 +88,6 @@
                 state = false;
             }
 
-            /*if (statement.executeUpdate() != 1) {
-
-                throw new CreateException("Insert exception");
-            }*/
-
-
-//                LocalTask localTask;
-//                String name=(String) request.getSession().getAttribute("login");
-//                try{
-//                localTask=EJBFunctions.findIncompleteTask(name);
-//                }catch(FinderException e){
-//
-//                }
-
                 if(state) {
             %>
 

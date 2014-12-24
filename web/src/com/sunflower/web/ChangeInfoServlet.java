@@ -77,7 +77,6 @@ public class ChangeInfoServlet extends HttpServlet {
         user.setName(name);
         user.setSurname(surname);
         user.setPassword(password);
-        //MailServer.messageAfterRegistration(name,password,email,login);
         response.sendRedirect("success?info=info_changed");
     }
 

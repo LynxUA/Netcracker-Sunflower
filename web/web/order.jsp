@@ -130,11 +130,11 @@
           $('#services').html('');
           $('#price').html('');
         }, function() {
-          //handleNoGeolocation(true);
+          handleNoGeolocation(true);
         });
       } else {
         // Browser doesn't support Geolocation
-        //handleNoGeolocation(false);
+        handleNoGeolocation(false);
       }
     }
 
@@ -174,14 +174,7 @@
   </script>
   <script>
     $(document).ready(function() {
-//      $('#services').on('click', '#servicecheck', function (){
-//        var x=document.getElementById('x').value;
-//        var y=document.getElementById('y').value;
-//        var service = $("input[name='services']:checked").val();
-//        $.post('generateprices',{x:x, y:y, service:service},function(responseText) {
-//          $('#price').html(responseText);
-//        });
-//      });
+
       $('#submit').click(function(event) {
         $('#services').html('<img src="img/loading-blue.gif" alt="loading" width="25%" height="25%" style="display: block; margin-left: auto; margin-right: auto;">');
         var x=$('#x').val();
@@ -208,7 +201,6 @@
       <input type="button" class="btn btn-success btn-block" value="Find location" onclick="codeAddress()">
       <input type="button" id="submit" class="btn btn-success btn-block" value="Next" style="margin-top: 20px">
       <div id="services" style="margin-top: 20px"></div>
-      <%--<div class="price" id="price"></div>--%>
 
     </form>
   </div>

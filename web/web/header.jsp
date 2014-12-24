@@ -63,7 +63,6 @@ int status;
 
             %>
                   <li><a href="/webWeb/">Home</a></li>
-                  <%--<li><a href="users">Users</a></li>--%>
             <%
                 break;
               case UserGroups.CSE:
@@ -121,7 +120,6 @@ int status;
                     <li><a href="user_si">My instances</a></li>
                     <li><a href="user_so">My orders</a></li>
                      <li><a href="profile">My profile</a></li>
-                    <%--<li><a href="location">My location</a></li>--%>
                     <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>
                 <%
@@ -130,7 +128,6 @@ int status;
                 %>
                     <li><a href="reg_emp">Register employee</a></li>
                   <li><a href="profile">My profile</a></li>
-                    <%--<li><a href="location">My location</a></li>--%>
                     <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>
 
@@ -138,8 +135,6 @@ int status;
                     break;
                   case UserGroups.CSE:
                 %>
-                    <%--<li><a href="reg_emp">Register employee</a></li>--%>
-                    <%--<li><a href="location">My location</a></li>--%>
 
                   <li><a href="profile">My profile</a></li>
                     <li class="divider"></li>
@@ -148,8 +143,6 @@ int status;
                     break;
                     case UserGroups.PE:
                 %>
-                    <%--<li><a href="reg_emp">Register employee</a></li>--%>
-                    <%--<li><a href="location">My location</a></li>--%>
                     <li><a href="profile">My profile</a></li>
                     <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>
@@ -157,8 +150,6 @@ int status;
                     break;
                     case UserGroups.IE:
                 %>
-                    <%--<li><a href="reg_emp">Register employee</a></li>--%>
-                    <%--<li><a href="location">My location</a></li>--%>
                     <li><a href="profile">My profile</a></li>
                     <li class="divider"></li>
                     <li><a href="exit">Exit</a></li>

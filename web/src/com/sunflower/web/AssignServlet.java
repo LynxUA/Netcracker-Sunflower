@@ -37,55 +37,7 @@ public class AssignServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      /*  String action = request.getParameter("action");
-        Connection connection = null;
-        System.out.println("cxz1123");
-        PreparedStatement statement;
-        if (action.equals("getports")) {
-            StringBuffer sb = new StringBuffer();
-            System.out.println("cxz1");
-            int id_device = Integer.parseInt(request.getParameter("id_router"));
-            System.out.println("cxz2");
-            try {
-                try {
-                    System.out.println("cxz3");
-                    connection = DataSource.getDataSource().getConnection();
-                    System.out.println("zxc1");
-                } catch (SQLException e) {
-                    System.out.println(e.getErrorCode());
-                    System.out.println("something wrong with connection");
 
-                }
-                System.out.println("cxz4");
-                //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
-                statement = connection.prepareStatement("SELECT ID_PORT from PORT  where ID_DEVICE=? AND  STATUS='0'");
-                statement.setInt(1, id_device);
-                System.out.println("zxc2");
-                ResultSet resultSet = statement.executeQuery();
-
-
-                while (resultSet.next()) {
-                    sb.append("<option value=\"" + resultSet.getInt(1) +"\">" + resultSet.getInt(1) + "</option>");
-
-                }
-                response.setContentType("text/html");
-                response.getWriter().write(sb.toString());
-                //request.setAttribute("ports", sb.toString());
-                // request.getRequestDispatcher("assign.jsp").forward(request, response);
-
-            } catch (SQLException e) {
-                throw new EJBException("SELECT exception in ejbFindIncomplete");
-            } finally {
-                try {
-                    System.out.println("cxz5");
-                    if (connection != null) {
-                        connection.close();
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

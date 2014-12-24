@@ -11,4 +11,5 @@ public interface LocalPrice extends EJBLocalObject {
     public float getPrice_of_location();
     public int getId_service();
     public int getId_prov_location();
+
 }

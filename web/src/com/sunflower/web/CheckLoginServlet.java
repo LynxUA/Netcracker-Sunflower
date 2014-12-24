@@ -31,7 +31,6 @@ public class CheckLoginServlet extends HttpServlet {
             return;
         }
 
-        //String login = request.getParameter("login").toLowerCase();
         String login = request.getParameter("login").toLowerCase();
         String password = request.getParameter("password");
         request.setAttribute("login", login);
@@ -45,11 +44,7 @@ public class CheckLoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request,response);
             return;
         }
-//        if(validateUser(login, StaticFunctions.getHashCode(password))){
-//            //code for loggining in
-//            //request.getSession().setAttribute("user",user);
-//            response.sendRedirect("welcome");
-//        }
+
         LocalUser user;
         try {
             user = EJBFunctions.login(login, password);
@@ -71,17 +66,6 @@ public class CheckLoginServlet extends HttpServlet {
         request.getSession().setAttribute("login", user.getLogin());
         request.getSession().setAttribute("status", user.getGroup());
         response.sendRedirect("/webWeb/");
-//        if(validateUser(login, password){
-//            //code for loggining in
-//            //request.getSession().setAttribute("user",user);
-//
-//        }
-//        else
-//        {
-//            request.setAttribute("login", login);
-//            request.setAttribute("error", "Not valid user");
-//            request.getRequestDispatcher("login.jsp").forward(request,response);
-//        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -89,10 +73,4 @@ public class CheckLoginServlet extends HttpServlet {
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
-    boolean validateUser(String login, String password) {
-        String value = StaticFunctions.users.get(login);
-        if(value == null)
-            return false;
-        return value.compareTo(password) == 0;
-    }
 }
