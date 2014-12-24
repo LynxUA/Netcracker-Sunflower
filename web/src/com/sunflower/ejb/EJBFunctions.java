@@ -130,8 +130,8 @@ public class EJBFunctions {
     }
 
     /**
-     * @param login
-     * @param password
+     * @param login user login
+     * @param password user password
      * @throws NoSuchUserException
      */
     public static void setPassword(String login, String password) throws NoSuchUserException {
@@ -156,10 +156,10 @@ public class EJBFunctions {
 
     }
 
-    /**
-     * @param from
-     * @param to
-     * @return
+    /** Get customers
+     * @param from used for paging
+     * @param to used for paging
+     * @return Collection of users
      * @throws Exception
      */
     public static Vector<CustomerWrapper> getCustomers(int from, int to) throws Exception {
@@ -204,8 +204,8 @@ public class EJBFunctions {
     }
 
     /**
-     * @param description
-     * @param id_group_user
+     * @param description task desription
+     * @param id_group_user UserGroups
      * @param id_order
      * @return
      */
