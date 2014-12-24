@@ -142,7 +142,7 @@
       <%if(!(to/10 == 1)){%><li class="active"><a href="user_si?from=<%=from-10%>&to=<%=to-10%>"><%=(to-10)/10%></a></li><%}%>
       <li class="disabled"><a href="#"><%=to/10%></a></li>
       <%if(!(from+10 > numberOfRecords )){%><li class="active"><a href="user_si?from=<%=from+10%>&to=<%=to+10%>"><%=(to+10)/10%></a></li><%}%>
-      <%if(!(from+20 > numberOfRecords )){%><li class="active"><a href="user_si?from=<%=numberOfRecords - (numberOfRecords%10)%>&to=<%=numberOfRecords/10%>">&raquo;</a></li><%}%>
+      <%if(!(from+20 > numberOfRecords )){%><li class="active"><a href="user_si?from=<%=numberOfRecords - (numberOfRecords%10)%>&to=<%=(numberOfRecords+10) - (numberOfRecords%10)%>">&raquo;</a></li><%}%>
     </ul>
   </div>
   <%}%>

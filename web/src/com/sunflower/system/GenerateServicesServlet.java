@@ -20,16 +20,11 @@ import java.util.Collection;
 @WebServlet(name = "GenerateServicesServlet")
 public class GenerateServicesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String name=null;
-//        name = "Hello "+request.getParameter("user");
-//        if(request.getParameter("user").toString().equals("")){
-//            name="Hello User";
-//        }
+
 
         float longtitude = Float.valueOf((String)(request.getParameter("y")));
         float latitude = Float.valueOf((String)(request.getParameter("x")));
 
-        //System.out.println(EJBFunctions.findProviderLocationById(1).getLocation());
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         LocalProviderLocation prov_location = EJBFunctions.findProviderLocation(longtitude, latitude);
@@ -45,7 +40,6 @@ public class GenerateServicesServlet extends HttpServlet {
             LocalPrice price = EJBFunctions.findPrice(service.getId_service(), prov_location.getId_Prov_Location());
             float distance = EJBFunctions.getDestinationToProvider(longtitude, latitude);
 
-            //writer.println(price.getPrice_of_service()+distance*price.getPrice_of_location());
             writer.println("<div class=\"radio\">\n" +
                     "            <label>\n" +
                     "            <input type=\"radio\" name=\"prices\" value=\""+ price.getId_price()+"\">\n" +
@@ -53,11 +47,8 @@ public class GenerateServicesServlet extends HttpServlet {
                     "                </label>\n" +
                     "            </div>\n");
 
-            //writer.println(((LocalService) local).getName() + "<br>");
         }
-       // writer.println("<form action=\"proceedorder?price="++"\" method = \"post\"></form>");
         writer.println("<input type=\"submit\" class=\"btn btn-success btn-block\" value=\"Confirm\">");
-        //writer.println("<input type=\"button\" id=\"servicecheck\" class=\"btn btn-success btn-block\" value=\"Save\" style=\"margin-top: 20px\">");
         writer.println("</form>");
     }
 
