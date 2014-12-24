@@ -56,7 +56,6 @@ and open the template in the editor.
 
                     }
                     System.out.println("war1");
-                    //statement = connection.prepareStatement("SELECT ID_TASK FROM TASK WHERE STATUS = ? Order by ID_TASK");
                     statement = connection.prepareStatement("Select Id_Prov_Location" +
                             ", Location from PROVIDER_LOCATION ");
                     try{
@@ -81,15 +80,15 @@ and open the template in the editor.
         </ul>
     </aside>
     <form accept-charset="UTF-8" role="form"  action="xmlxprt" method="get">
-      <!--  <form name="crtr" action="xmlxprt">-->
+   
 
-		<!-- add class="tcal" to your input field -->
+	
 		<p align="right"> <input  type="text" name="date1" class=" input-medium tcal " value="" id="date1" placeholder="From" style="  padding:0.5% 2% 0.5% 2% ;
                 margin: 0.5% 2% 0.5% 2%;
                 width: 15%;
                 height: 4%;" >
 
-		<!-- add class="tcal" to your input field -->
+	
 		  <input  type="text" name="date2" class="input-medium tcal " value="" id="date2" placeholder="To" style="  padding:0.5% 2% 0.5% 2% ;
                 margin: 0.5% 2% 0.5% 2%;
                 width: 15%;
@@ -114,8 +113,8 @@ and open the template in the editor.
                 margin: 0.5% 2% 0.5% 2%;
                 width: 20%;
                 height: 4%;"  class="input-medium" type="text" name="month" value="" id="month" onkeyup="this.value=this.value.replace(/[^0-9]+/g,''); isrightm(this);"/>
-        <input class="btn btn-primary" type="button" value="Get profiatilty per month" name="siper2" onclick="doProf();"  style="width:20%"  /></p>
-         <p align="right" ><input class="btn btn-primary" type="button" value="RIreports" name="siper3" onclick="doRI();"  style="width:20%" /></p>
+        <input class="btn btn-primary" type="button" value="Get profitabilty per month" name="siper2" onclick="doProf();"  style="width:20%"  /></p>
+         <p align="right" ><input class="btn btn-primary" type="button" value="RI report" name="siper3" onclick="doRI();"  style="width:20%" /></p>
     </form>
     <%if(request.getAttribute("result") != null && !((String) request.getAttribute("result")).isEmpty()){%>
     <div style="padding: 1% 7% 1% 7%;
