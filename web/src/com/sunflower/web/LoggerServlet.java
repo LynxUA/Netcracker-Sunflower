@@ -19,6 +19,9 @@ import org.apache.log4j.helpers.Loader;
 @WebServlet(name = "LoggerServlet")
 public class LoggerServlet extends HttpServlet {
 
+    /**
+     * Initialization of properties for logging
+     * */
     public void init(){
 
         Loader.getResource("resources/log4j.properties", Logger.class);
