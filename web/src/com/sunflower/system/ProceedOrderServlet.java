@@ -22,7 +22,7 @@ public class ProceedOrderServlet extends HttpServlet {
         float latitude = Float.valueOf(request.getParameter("x"));
         //It hasn't preInstance to send, so we send null
         EJBFunctions.createServiceOrder(null, scenario, login, price, longtitude, latitude);
-        response.sendRedirect("success?info=");
+        response.sendRedirect("success?info=ordered");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

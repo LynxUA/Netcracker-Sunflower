@@ -23,17 +23,17 @@
   <h1 align="center">
 <%if(info==null){%>
   You are successful person!
-<%}else if(info.contains("password_changed")){%>
+<%}else if(info.equals("password_changed")){%>
   Password was successfully changed
-<%}else if(info.contains("info_changed")){%>
+<%}else if(info.equals("info_changed")){%>
   Your information was successfully changed!
-<%}else if(info.contains("user_registered")){%>
+<%}else if(info.equals("user_registered")){%>
   Thank you for registration in our system! Your user info was sent to your email.
-<%}else if(info.contains("ordered")){%>
+<%}else if(info.equals("ordered")){%>
   Thank you for using our service! Order is being processed.
-<%}else if(info.contains("order_canceled")){%>
+<%}else if(info.equals("order_canceled")){%>
   Order was successfully canceled!
-<%}else if(info.contains("user_created")){%>
+<%}else if(info.equals("user_created")){%>
     User was successfully created!
     <%}%></h1>
 
