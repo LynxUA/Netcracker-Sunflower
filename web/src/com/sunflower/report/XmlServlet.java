@@ -64,17 +64,17 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
      Connection  connection=null;
 
      ArrayList<String> locations =new ArrayList<String>();
-     while(request.getParameter(loc)!=null)
+     while(request.getParameter(loc)!=null)//we get location from reqest
      {
          System.out.println(request.getParameter(loc));
-         if(!request.getParameter(loc).equals("undefined"))
+         if(!request.getParameter(loc).equals("undefined")) // if location unchoosen we dont add it to AL
              locations.add(request.getParameter(loc));
          String as=Integer.toString(a);
          a++;
          String as1=Integer.toString(a);
-         loc=loc.replace(as,as1);
+         loc=loc.replace(as,as1);//we change location parameter name to get next location 
      }
-     if(locations.size()==0)
+     if(locations.size()==0)//check that that we choose locations
      {
          request.setAttribute("result", "<font color=\"#ff0000\">Set locations<font>");
          request.getRequestDispatcher("report.jsp").forward(request, response);
@@ -95,7 +95,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
          }catch(SQLException e) {
              System.out.println(e.getErrorCode());
              System.out.println("something wrong with connection");
-              request.setAttribute("result", "<font color=\"#ff0000\">Connection failed<font>");
+              request.setAttribute("result", "<font color=\"#ff0000\">Connection failed<font>");//push error message if connection to db failed
              request.getRequestDispatcher("report.jsp").forward(request, response);
              return;
          }
@@ -114,7 +114,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
            Date date1=null;
            Date date2=null;
            try {
-               date1 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(d1);
+               date1 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(d1);//convert request date to java date
                date2 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(d2);
            }
            catch (Exception ex)
@@ -177,7 +177,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
              response.setHeader("Content-Disposition",
                 "attachment;filename="+f.getName());
              
-FileInputStream fileIn = new FileInputStream(f);
+FileInputStream fileIn = new FileInputStream(f);//prepare file to upload it to clienr
 ServletOutputStream out = response.getOutputStream();
  
 byte[] outputByte = new byte[4096];
@@ -189,7 +189,7 @@ while(fileIn.read(outputByte, 0, 4096) != -1)
 fileIn.close();
 out.flush();
 out.close();
-             f.delete();
+             f.delete();//delete file after uploading
          } else {
              //nothing to show
              response.setStatus(HttpServletResponse.SC_NO_CONTENT);
