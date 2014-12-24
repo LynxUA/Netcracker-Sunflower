@@ -95,7 +95,9 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
          }catch(SQLException e) {
              System.out.println(e.getErrorCode());
              System.out.println("something wrong with connection");
-            return;
+              request.setAttribute("result", "<font color=\"#ff0000\">Connection failed<font>");
+             request.getRequestDispatcher("report.jsp").forward(request, response);
+             return;
          }
        if(action.equals("periodic"))
        {System.out.println(action);
