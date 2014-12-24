@@ -55,6 +55,42 @@
         <url-pattern>/assign</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>JSPFilter</filter-name>
+        <filter-class>
+            com.sunflower.filters.JSPFilter
+        </filter-class>
+
+    </filter>
+    <filter-mapping>
+        <filter-name>JSPFilter</filter-name>
+        <url-pattern>/aboutUs.jsp</url-pattern>
+        <url-pattern>/accessDenied.jsp</url-pattern>
+        <url-pattern>/catalog.jsp</url-pattern>
+        <url-pattern>/catalogResponce.jsp</url-pattern>
+        <url-pattern>/changeInfo.jsp</url-pattern>
+        <url-pattern>/changePassword.jsp</url-pattern>
+        <url-pattern>/comlete.jsp</url-pattern>
+        <url-pattern>/catalogResponce.jsp</url-pattern>
+        <url-pattern>/contuctus.jsp</url-pattern>
+        <url-pattern>/error.jsp</url-pattern>
+        <url-pattern>/footer.jsp</url-pattern>
+        <url-pattern>/header.jsp</url-pattern>
+        <url-pattern>/includes.jsp</url-pattern>
+        <url-pattern>/location.jsp</url-pattern>
+        <url-pattern>/login.jsp</url-pattern>
+        <url-pattern>/order.jsp</url-pattern>
+        <url-pattern>/registerEmployee.jsp</url-pattern>
+        <url-pattern>/report.jsp</url-pattern>
+        <url-pattern>/signup.jsp</url-pattern>
+        <url-pattern>/success.jsp</url-pattern>
+        <url-pattern>/tasks.jsp</url-pattern>
+        <url-pattern>/userInfo.jsp</url-pattern>
+        <url-pattern>/userSI.jsp</url-pattern>
+        <url-pattern>/usersList.jsp</url-pattern>
+        <url-pattern>/userSO.jsp</url-pattern>
+
+    </filter-mapping>
 
 
 
