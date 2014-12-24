@@ -140,7 +140,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
      }
            else
      {
-         request.setAttribute("result", "<font color=\"#ff0000\">Wrong sequence of date<font>");
+         request.setAttribute("result", "<font color=\"#ff0000\">Wrong sequence of dates<font>");
          request.getRequestDispatcher("report.jsp").forward(request, response);
          return;
      }
