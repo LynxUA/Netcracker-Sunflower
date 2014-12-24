@@ -24,6 +24,9 @@ public class EngineerFilter extends MainFilter{
             response.sendRedirect("/webWeb/login");
         }else if(!(status== UserGroups.IE||status==UserGroups.PE)) {
             response.sendRedirect("/webWeb/access_denied");
+        }else if((request.getRequestURI().equals("/webWeb/task_ie")&&status==UserGroups.PE)
+                ||(request.getRequestURI().equals("/webWeb/task_pe")&&status==UserGroups.IE)){
+            response.sendRedirect("/webWeb/access_denied");
         }else {
             chain.doFilter(request, response);
         }
