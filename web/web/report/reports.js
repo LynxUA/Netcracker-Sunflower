@@ -1,8 +1,4 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 
 
@@ -40,17 +36,13 @@ function doCompletion() {
  date2=document.getElementById("date2");
  option=document.getElementById("option");
     locations();
- //document.write(location.pathname-"sirep.jsp")
+
         var url = "xmlxprt?action=periodic&date1=" + escape(date1.value)+"&date2="+ escape(date2.value)+"&option="+ escape(option.value)+"&loc1="+escape(loc1.value)+"&loc2="+escape(loc2.value)+"&loc3="+escape(loc3.value)+"&loc4="+escape(loc4.value)+"&loc5="+escape(loc5.value) ;
 
 
 
     window.location.href = url;
-       //window.location.href ="http://localhost:8084/sirep/"+url
-// req = initRequest();
-       // req.open("GET", url, false);
-       // req.onreadystatechange = callback;
-       // req.send(null);
+   
 }
 function doProf(){
  month=document.getElementById("month");
