@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.sunflower.report;
 
 import com.sunflower.ejb.DataSource;
@@ -36,15 +32,7 @@ public void init(ServletConfig config) throws ServletException {
     this.context = config.getServletContext();
 }
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws javax.servlet.ServletException if a servlet-specific error occurs
-     * @throws java.io.IOException if an I/O error occurs
-     */
+  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -65,16 +53,6 @@ public void init(ServletConfig config) throws ServletException {
         out.close();
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws javax.servlet.ServletException if a servlet-specific error occurs
-     * @throws java.io.IOException if an I/O error occurs
-     */
     
  @Override
 public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -105,9 +83,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
 
      try{
          String action=request.getParameter("action");
-         
-         
-         //EcxelExp excelexp=new EcxelExp();
+
          Xlscrtr xlscrtr=new Xlscrtr();
          Boolean urladded=false;
         
@@ -121,12 +97,6 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
              System.out.println("something wrong with connection");
             return;
          }
-
-
-        // Date date1=new Date(114,10,10);
-          //Date date2=new Date(114,10,20);
-         //xlscrtr.ProfperMonth(connection, date1);
-                 
        if(action.equals("periodic"))
        {System.out.println(action);
            String d1 = request.getParameter("date1");
@@ -147,7 +117,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
            }
            catch (Exception ex)
            {
-               request.setAttribute("result", "<font color=\"#ff0000\">Wrong date formant<font>");
+               request.setAttribute("result", "<font color=\"#ff0000\">Wrong date format<font>");
                request.getRequestDispatcher("report.jsp").forward(request, response);
                return;
            }
@@ -197,14 +167,10 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
        {
            urladded=true;
            f=xlscrtr.rireports(connection,locations);
-           //ArrayList inf1= excelexp.Inf1();
-          // ArrayList inf2= excelexp.Inf1();
-          //f=excelexp.Test(inf1, inf2);
+        
        }
          if (urladded) {
-       //      response.setContentType("text/xml");
-         //    response.setHeader("Cache-Control", "no-cache");
-           //  response.getWriter().write("<composers>" + sb.toString() + "</composers>");
+     
              response.setContentType("application/octet-stream");
              response.setHeader("Content-Disposition",
                 "attachment;filename="+f.getName());
@@ -250,25 +216,14 @@ out.close();
      }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws javax.servlet.ServletException if a servlet-specific error occurs
-     * @throws java.io.IOException if an I/O error occurs
-     */
+
+   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
