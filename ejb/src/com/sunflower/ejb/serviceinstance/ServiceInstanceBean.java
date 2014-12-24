@@ -210,10 +210,11 @@ public class ServiceInstanceBean implements EntityBean {
         PreparedStatement statement;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT DISTINCT A,B,C, D, E, F\n" +
-                    "FROM (SELECT SERVICE_ORDER.ID_SERVICE_INST AS A, SI_STATUS.NAME AS B, SERVICE.NAME AS C, SERVICE_ORDER.LONGTITUDE AS D, SERVICE_ORDER.LATITUDE AS E, PROVIDER_LOCATION.LOCATION AS F, ROWNUM R\n" +
+            statement = connection.prepareStatement("SELECT *\n" +
+                    "FROM (SELECT DISTINCT A,B,C, D, E, F, ROWNUM R\n" +
+                    "FROM (SELECT SERVICE_ORDER.ID_SERVICE_INST AS A, SI_STATUS.NAME AS B, SERVICE.NAME AS C, SERVICE_ORDER.LONGTITUDE AS D, SERVICE_ORDER.LATITUDE AS E, PROVIDER_LOCATION.LOCATION AS F\n" +
                     "FROM ((((SERVICE_ORDER JOIN SERVICE_INSTANCE ON SERVICE_ORDER.ID_SERVICE_INST = SERVICE_INSTANCE.ID_SERVICE_INST) JOIN SI_STATUS ON SERVICE_INSTANCE.STATUS = SI_STATUS.ID_STATUS) JOIN PRICE ON SERVICE_ORDER.ID_PRICE = PRICE.ID_PRICE) JOIN SERVICE ON PRICE.ID_SERVICE = SERVICE.ID_SERVICE) JOIN PROVIDER_LOCATION ON PRICE.ID_PROV_LOCATION = PROVIDER_LOCATION.ID_PROV_LOCATION\n" +
-                    "WHERE LOGIN = ?)\n" +
+                    "WHERE LOGIN = ?))\n" +
                     "WHERE R >= ? AND R <=?");
             statement.setString(1, login);
             statement.setInt(2, from);
@@ -226,7 +227,7 @@ public class ServiceInstanceBean implements EntityBean {
             return instances;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new EJBException("Ошибка SELECT");
+            throw new UnknownError();
         } finally {
             DataSource.closeConnection(connection);
         }
@@ -237,8 +238,8 @@ public class ServiceInstanceBean implements EntityBean {
         PreparedStatement statement = null;
         try {
             connection = DataSource.getDataSource().getConnection();
-            statement = connection.prepareStatement("SELECT COUNT(DISTINCT ID_SERVICE_INST)\n" +
-                    "FROM (SERVICE_ORDER)\n" +
+            statement = connection.prepareStatement("SELECT COUNT(DISTINCT SERVICE_INSTANCE.ID_SERVICE_INST)\n" +
+                    "FROM (SERVICE_INSTANCE JOIN SERVICE_ORDER ON SERVICE_INSTANCE.ID_SERVICE_INST = SERVICE_ORDER.ID_SERVICE_INST)\n" +
                     "WHERE LOGIN = ?");
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();

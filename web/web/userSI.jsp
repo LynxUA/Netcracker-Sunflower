@@ -134,7 +134,6 @@
       </table>
     </div>
   </div>
-  <div id="map-canvas"></div>
   <%}%>
   <%if(numberOfRecords >10){%>
   <div class="pagination pagination-centered">
@@ -147,6 +146,7 @@
     </ul>
   </div>
   <%}%>
+  <div id="map-canvas"></div>
 </div>
 <%@include file="footer.jsp"%>
 </body>
