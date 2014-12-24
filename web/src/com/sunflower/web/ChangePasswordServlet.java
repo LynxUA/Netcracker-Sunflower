@@ -46,12 +46,7 @@ public class ChangePasswordServlet extends HttpServlet {
             return;
         }
 
-        if(!StaticFunctions.isValidPassword(password))
-        {
-            request.setAttribute("password_error", "Wrong password format");
-            request.getRequestDispatcher("changePassword.jsp").forward(request, response);
-            return;
-        }
+
 
         try {
             LocalUser user = EJBFunctions.findUser(login);

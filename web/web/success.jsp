@@ -19,20 +19,23 @@
 </div>
 
 <%
-  String info = request.getParameter("info");
-  if(info==null){%>
-  <h1 align="center">You are successful person!</h1>
+  String info = request.getParameter("info");%>
+  <h1 align="center">
+<%if(info==null){%>
+  You are successful person!
 <%}else if(info.contains("password_changed")){%>
-  <h1 align="center">Password was successfully changed!</h1>
+  Password was successfully changed
 <%}else if(info.contains("info_changed")){%>
-  <h1 align="center">Your information was successfully changed!</h1>
+  Your information was successfully changed!
 <%}else if(info.contains("user_registered")){%>
-  <h1 align="center">Thank you for registration in our system! Your user info was sent to your email.</h1>
+  Thank you for registration in our system! Your user info was sent to your email.
 <%}else if(info.contains("ordered")){%>
-<h1 align="center">Thank you for using our service! Order is being processed.</h1>
+  Thank you for using our service! Order is being processed.
 <%}else if(info.contains("order_canceled")){%>
-<h1 align="center">Order was successfully canceled!</h1>
-<%}%>
+  Order was successfully canceled!
+<%}else if(info.contains("user_created")){%>
+    User was successfully created!
+    <%}%></h1>
 
 <%@include file="footer.jsp"%>
 </body>

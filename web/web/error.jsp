@@ -18,7 +18,11 @@
 <div id="body">
 </div>
 
-<h1 align="center">Sorry, an error has occured!</h1>
+<h1 align="center">
+  <%if(request.getParameter("info")==null){%>Sorry, an error has occured!<%}%>
+  <%if(request.getParameter("info")=="user_assigned"){%>Error. Task has assigned user!<%}%>
+  <%if(request.getParameter("info")=="has_task"){%>Error. You already have a task!<%}%>
+</h1>
 
 <%@include file="footer.jsp"%>
 </body>

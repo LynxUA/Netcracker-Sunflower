@@ -39,11 +39,6 @@ public class CheckLoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        if(!StaticFunctions.isValidPassword(password)){
-            request.setAttribute("error", "Bad password format");
-            request.getRequestDispatcher("login.jsp").forward(request,response);
-            return;
-        }
 
         LocalUser user;
         try {

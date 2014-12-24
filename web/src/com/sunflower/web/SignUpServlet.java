@@ -93,12 +93,6 @@ public class SignUpServlet extends HttpServlet {
             return;
         }
 
-        if(!StaticFunctions.isValidPassword(password))
-        {
-            request.setAttribute("password_error", "Wrong password format");
-            request.getRequestDispatcher("signup.jsp").forward(request, response);
-            return;
-        }
 
 
         try {

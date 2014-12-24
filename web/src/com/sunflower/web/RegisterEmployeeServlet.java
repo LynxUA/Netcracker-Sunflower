@@ -85,13 +85,6 @@ public class RegisterEmployeeServlet extends HttpServlet {
             return;
         }
 
-        if(!StaticFunctions.isValidPassword(password))
-        {
-            request.setAttribute("password_error", "Wrong password format");
-            request.getRequestDispatcher("registerEmployee.jsp").forward(request, response);
-            return;
-        }
-
         try {
             LocalUser user = EJBFunctions.createUser(login, email, name, surname, password, Integer.parseInt(request.getParameter("group")));
         }catch(DuplicateKeyException e) {
@@ -103,7 +96,7 @@ public class RegisterEmployeeServlet extends HttpServlet {
         }
 
         MailServer.messageAfterRegistration(name,password,email,login);
-        response.sendRedirect("/webWeb");
+        response.sendRedirect("/webWeb/success?info=user_created");
 
     }
 

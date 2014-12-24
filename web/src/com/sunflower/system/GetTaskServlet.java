@@ -29,9 +29,11 @@ public class GetTaskServlet extends HttpServlet {
             EJBFunctions.assignTask(id_task, login);
         } catch (UserWasAssignedException e) {
             logger.error(e.getMessage(), e);
+            response.sendRedirect("error?info=user_assigned");
         }
         catch (UserHaveAssignedTaskException e) {
             logger.error(e.getMessage(), e);
+            response.sendRedirect("error?info=has_task");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
