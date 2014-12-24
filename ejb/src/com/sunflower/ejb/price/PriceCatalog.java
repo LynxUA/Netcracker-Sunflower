@@ -17,6 +17,13 @@ public class PriceCatalog {
 
     public PriceCatalog(){}
 
+    /**
+     * Initializes a newly created PriceCatalog object
+     * that represents prices of ISP services
+     * @param nameOfService
+     * @param priceOfService
+     * @param priceOfLocation
+     * */
     public PriceCatalog(String nameOfService, double priceOfService, double priceOfLocation){
 
         this.nameOfService = nameOfService;
@@ -24,6 +31,13 @@ public class PriceCatalog {
         this.priceOfLocation = priceOfLocation;
     }
 
+    /**
+     * Initializes a newly created PriceCatalog object
+     * with ResultSet that represents prices of ISP services
+     * gotten from database
+     * @param rs java.sql.ResultSet
+     *
+     * */
     public PriceCatalog(ResultSet rs){
 
         try {

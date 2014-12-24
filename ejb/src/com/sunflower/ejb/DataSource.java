@@ -14,6 +14,9 @@ public class DataSource {
     private static OracleDataSource dataSource;
     private static Logger logger = Logger.getLogger(DataSource.class);
 
+    /**
+     * Properties for connection to database
+     * */
     public static void setDataSource(){
         try {
             Locale.setDefault(new Locale("EN"));

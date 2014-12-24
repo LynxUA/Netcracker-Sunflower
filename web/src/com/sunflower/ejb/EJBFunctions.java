@@ -45,6 +45,7 @@ public class EJBFunctions {
 
 
     /**
+     * Creates user
      * @param login
      * @param email
      * @param name
@@ -745,6 +746,7 @@ public class EJBFunctions {
     }
 
     /**
+     * Returns list of all ISP locations
      * @return
      */
     public static ArrayList<ProviderLocWrapper> getAllLocations(){
@@ -772,6 +774,7 @@ public class EJBFunctions {
     }
 
     /**
+     * Gets price of service by given location
      * @param location
      * @return
      */
