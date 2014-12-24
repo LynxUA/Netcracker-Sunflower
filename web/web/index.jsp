@@ -78,7 +78,12 @@
         <h1>Sunflower the internet provider</h1>
         <img id="logo" src="resources/sunflower_logo.png" />
         <p>
-          <form action="signup" method="get">
+          <form action="<%if(status == UserGroups.GUEST){
+          %>signup<%}else if(status == UserGroups.CUSTOMER){
+          %>order<%}else if(status == UserGroups.IE || status == UserGroups.PE){
+          %>tasks<%}else if(status == UserGroups.CSE){
+          %>users<%}else if(status == UserGroups.ADMIN){
+          %>reg_emp<%}%>" method="get">
             <input class="btn btn-lg btn-primary" type="submit" value="&nbsp;&nbsp;Make me feel good&nbsp;&nbsp;">
           </form>
         </p>
