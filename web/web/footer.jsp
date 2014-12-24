@@ -6,9 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<div id="footer" style="position: absolute;
-  bottom: 9%;
-    ">
+<div id="footer">
   <div class="bs-example">
     <nav id="myNavbar" class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->

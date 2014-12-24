@@ -38,7 +38,7 @@ public class GenerateServicesServlet extends HttpServlet {
         request.setAttribute("lat", prov_location.getLatitude());
         PrintWriter writer = response.getWriter();
         writer.println("<form action=\"proceedorder\" method=\"post\">");
-        writer.println("Nearest provider location: Netflower " + prov_location.getLocation() + "<br>");
+        writer.println("Nearest provider location: " + prov_location.getLocation() + "<br>");
         for(Object local:services)
         {
             LocalService service = (LocalService)local;
