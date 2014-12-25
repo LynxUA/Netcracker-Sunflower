@@ -63,6 +63,7 @@ int status;
 
             %>
                   <li><a href="/webWeb/">Home</a></li>
+                  <li><a href="xmlxprt">Reports</a></li>
             <%
                 break;
               case UserGroups.CSE:
